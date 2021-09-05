@@ -47,7 +47,7 @@ int ft_stdin(char **path, t_list *list)
 	{
 		printf("here\n");
 		dup2(fd, 0);
-		execve(full_path, list->cmd, list->env);
+		ft_distributor(path, list);
 		close(fd);
 	}
 	if (pid != 0)

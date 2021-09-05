@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envs)
+int main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
@@ -9,25 +9,25 @@ int main(int argc, char **argv, char **envs)
 	t_list *new;
 	t_list *ff;
 	t_list *current;
-	char **env;
-	env = ft_env(envs);
+	
+
 	
 	
 	
 	
-	char *cmdd[] = {"pwd", NULL};
-	char *cmdd2[] = {"wc", "-l", NULL};
+	char *cmdd[] = {"cat", "variations.txt", NULL};
+	// char *cmdd2[] = {"pwd", NULL};
 	// char *cmdd2[] = {"wc", "-l", NULL};
-	// char *str = "test";
+	char *str = "test";
 
 	
 
 
 	list = ft_lstnew(cmdd, env);
-	new = ft_lstnew(cmdd2, env);
-	list->next = new;
+	// new = ft_lstnew(cmdd2, env);
+	// list->next = new;
 	// ff = ft_lstnew(cmdd3, env);
-	// ff->filename = str;
+	list->filename = str;
 	// list->next = ff;
 
 
@@ -53,9 +53,10 @@ int main(int argc, char **argv, char **envs)
 
 
 		
-		list->flag_for_pipe = 1;
+		// list->flag_for_pipe = 1;
 		// list->next->flag_for_pipe = -1;
-		// list->next->flag_for_stdout = 2;
+		// list->flag_for_stdin = 1;
+		list->flag_for_stdout = 2;
 		
 		
 		
@@ -124,26 +125,5 @@ int ft_empty(char **path, t_list *list)
 		wait(NULL);
 	}
 	return (0);
-}
-
-
-char **ft_env(char **en)
-{
-	int i;
-	char **env;
-	
-	i = 0;
-	while (en[i])
-		i++;
-	
-	env = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (en[i])
-	{
-		env[i] = malloc(ft_strlen(en[i]));
-		ft_strlcpy(env[i], en[i], ft_strlen(en[i]) + 1);
-		i++;
-	}
-	return (env);
 }
 

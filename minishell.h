@@ -28,4 +28,5 @@ int ft_distributor(char **path, t_list *list);
 void ft_pwd(char *full_path, t_list *list);
 int ft_empty(char **path, t_list *list);
 char **ft_env(char **en);
+void ft_cd(char *full_path, t_list *list);
 #endif
