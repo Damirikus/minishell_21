@@ -5,31 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdominqu <sdominqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/27 18:58:41 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/07/27 18:58:43 by sdominqu         ###   ########.fr       */
+/*   Created: 2020/12/12 11:44:01 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/09/08 12:07:36 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/uio.h>
 # include <unistd.h>
+# include <fcntl.h>
 
-# define BUFFER_SIZE 1
-
-typedef struct s_list1
-{
-	int				fd;
-	char			*prev_str;
-	struct s_list1	*next;
-}					t_list1;
-
-int		get_next_line(const int fd, char **line);
-size_t	ft_strlen1(const char *str);
-size_t	ft_strlcpy1(char *dst, const char *src, size_t size);
-char	*ft_strjoin1(char *s1, char *s2, size_t n);
-char	*ft_strdup1(char *str);
+int		get_next_line(int fd, char **line);
+char	*till_n(char *src);
+char	*n_till(char *src);
+int		ft_strlen_g(const char *str);
+char	*ft_strchr1(const char *s, int c);
+char	*ft_strdup1(const char *s1);
 
 #endif

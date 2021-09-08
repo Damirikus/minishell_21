@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+// тут происходит распределение по командам на исполнение
+
 int ft_distributor(char **path, t_list *list)
 {
 	char *full_path;

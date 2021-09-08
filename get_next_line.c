@@ -5,82 +5,87 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdominqu <sdominqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/27 18:58:33 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/07/27 18:58:35 by sdominqu         ###   ########.fr       */
+/*   Created: 2020/12/12 11:43:37 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/09/08 12:08:33 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-static int	get_index(char *str)
+#define BUFFER_SIZE 1
+
+int	badr_hari(char **line, char **tmp, char **buf)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0' && str[i] != '\n')
-		i++;
-	return (i);
+	free(*buf);
+	*line = till_n(*tmp);
+	*tmp = n_till(*tmp);
+	return (1);
 }
 
-static int	fun(const int fd, char **line, char *buffer, char **prev_str)
+char	*join(char *s1, char *s2)
 {
-	int		fdx;
-	int		index;
+	char	*dd;
+	int		i;
+	int		j;
+	int		sl1;
+	int		sl2;
 
-	fdx = read(fd, buffer, BUFFER_SIZE);
-	while (fdx > 0)
+	i = -1;
+	j = 0;
+	if (!s1 && !s2)
+		return (NULL);
+	sl1 = ft_strlen_g(s1);
+	sl2 = ft_strlen_g(s2);
+	dd = (char *)malloc(sizeof(char) * (sl1 + sl2 + 1));
+	if (dd == NULL)
+		return (NULL);
+	while (++i < sl1)
+		dd[i] = s1[i];
+	while (j < sl2)
+		dd[i++] = s2[j++];
+	dd[i] = '\0';
+	free(s1);
+	return (dd);
+}
+
+int	check(int fd, char **buf, char **line)
+{
+	if (BUFFER_SIZE < 1 || read(fd, NULL, 0) == -1 || \
+	line == NULL)
 	{
-		buffer[fdx] = '\0';
-		index = get_index(buffer);
-		*line = ft_strjoin1(*line, buffer, index);
-		if (index != (int)ft_strlen1(buffer))
-		{
-			*prev_str = ft_strdup1(buffer + index + 1);
-			return (1);
-		}
-		fdx = read(fd, buffer, BUFFER_SIZE);
+		return (1);
 	}
-	if (fdx == 0 || (fdx == -1 && !(*prev_str)))
-		free(*prev_str);
-	return (fdx);
+	*buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (*buf == NULL)
+		return (1);
+	return (0);
 }
 
-static int	solve(const int fd, char **line, char **prev_str)
+int	get_next_line(int fd, char **line)
 {
-	int		index;
-	char	*temp;
-	char	buffer[BUFFER_SIZE + 1];
+	int			ret;
+	static char	*tmp;
+	char		*buf;
 
-	if (*prev_str != NULL)
-	{
-		index = get_index(*prev_str);
-		*line = ft_strjoin1(*line, *prev_str, index);
-		if (index != (int)ft_strlen1(*prev_str))
-		{
-			temp = *prev_str;
-			*prev_str = ft_strdup1(*prev_str + index + 1);
-			free(temp);
-			return (1);
-		}
-		free(*prev_str);
-		*prev_str = NULL;
-	}
-	return (fun(fd, line, buffer, prev_str));
-}
-
-int	get_next_line(const int fd, char **line)
-{
-	int			fdx;
-	static char	*prev_str = NULL;
-
-	if (BUFFER_SIZE <= 0 || line == NULL)
+	if (check(fd, &buf, line))
 		return (-1);
-	*line = 0;
-	fdx = solve(fd, line, &prev_str);
-	if (fdx == 0 && !(*line))
+	ret = 1;
+	while ((ret || ft_strchr1(tmp, '\n')))
 	{
-		*line = malloc(1);
-		*line[0] = '\0';
+		ret = read(fd, buf, BUFFER_SIZE);
+		buf[ret] = '\0';
+		tmp = join(tmp, buf);
+		if (ft_strchr1(tmp, '\n') != NULL)
+			return (badr_hari(line, &tmp, &buf));
 	}
-	return (fdx);
+	free(buf);
+	if (!tmp)
+	{
+		*line = ft_strdup1("");
+		return (0);
+	}
+	*line = tmp;
+	tmp = NULL;
+	return (0);
 }

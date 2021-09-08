@@ -12,7 +12,7 @@ int main(int argc, char **argv, char **env)
 	
 
 	
-	char *cmdd[] = {"ls", NULL};
+	char *cmdd[] = {"wc","-l", NULL};
 	// char *cmdd2[] = {"pwd", NULL};
 	// char *cmdd2[] = {"wc", "-l", NULL};
 	char *str = "1";
@@ -49,6 +49,9 @@ int main(int argc, char **argv, char **env)
 
 
 
+        //на этом этапе происходит парс, на выходе лист со всеми командами
+
+
 		
 		// list->flag_for_pipe = 1;
 		// list->next->flag_for_pipe = -1;
@@ -56,7 +59,11 @@ int main(int argc, char **argv, char **env)
 		// list->flag_for_stdout = 2;
 		
 		
-		
+		/* далее полученный лист отправляем в цикле на исполнение
+        в зависимотсти какой флаг, лист будет отправяться в соответсвующую функцию
+        во всех функциях создаетя дочерний процесс, который после исполнения будет завершаться
+        на исполнение все листы, после создания дочернего процесса, отправляются в функцию ft_distributor 
+        */ 
 		
 		current = list;
 		while(current)
