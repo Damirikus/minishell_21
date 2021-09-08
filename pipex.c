@@ -20,16 +20,12 @@ int ft_pipe(char **path, t_list *list)
 	int fd[2];
 	int pid;
 
-	// char *full_path;
-
-	// full_path = ft_make_path(path, list);
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
 		dup2(fd[1], 1);
 		close(fd[0]);
-		// execve(full_path, list->cmd, list->env);
 		ft_distributor(path, list);
 		close(fd[1]);
 	}

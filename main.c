@@ -12,13 +12,10 @@ int main(int argc, char **argv, char **env)
 	
 
 	
-	
-	
-	
-	char *cmdd[] = {"cat", "variations.txt", NULL};
+	char *cmdd[] = {"ls", NULL};
 	// char *cmdd2[] = {"pwd", NULL};
 	// char *cmdd2[] = {"wc", "-l", NULL};
-	char *str = "test";
+	char *str = "1";
 
 	
 
@@ -55,8 +52,8 @@ int main(int argc, char **argv, char **env)
 		
 		// list->flag_for_pipe = 1;
 		// list->next->flag_for_pipe = -1;
-		// list->flag_for_stdin = 1;
-		list->flag_for_stdout = 2;
+		list->flag_for_stdin = 2;
+		// list->flag_for_stdout = 2;
 		
 		
 		
@@ -77,9 +74,13 @@ int main(int argc, char **argv, char **env)
 			{
 				ft_stdout(path, current);
 			}
-			else if (current->flag_for_stdin > 0)
+			else if (current->flag_for_stdin == 1)
 			{
 				ft_stdin(path, current);
+			}
+            else if (current->flag_for_stdin == 2)
+			{
+				ft_stdin2(path, current);
 			}
 			else
 			{
@@ -88,19 +89,6 @@ int main(int argc, char **argv, char **env)
 			}
 			current = current->next;
 		}
-
-
-
-//		if (!strcmp(input, "ls"))
-//		{
-//			execve("/bin/ls", cmdd, env);
-//		}
-//		prepars();
-//		pars
-
-//
-//		if (!strcmp(input, "pwd"))
-//			printf("%s\n", getenv("PWD"));
 
 		/* do stuff */
 

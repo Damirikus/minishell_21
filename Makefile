@@ -7,7 +7,7 @@ CC		= gcc
 
 HEADER		= minishell.h
 
-SRCS	= main.c pipex.c redirect.c distributor.c
+SRCS	= main.c pipex.c redirect.c distributor.c get_next_line.c get_next_line_utils.c
 
 %.o: 	%.c $(HEADER)
 		$(CC) $(CFLAGS) -c $< -o $@

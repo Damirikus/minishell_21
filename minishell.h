@@ -13,9 +13,11 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <errno.h>
+#include "get_next_line.h"
 # define RED "\x1B[31m"
 # define WHITE "\x1B[37m"
 
+int code_exit;
 
 char **ft_path(char *str);
 void ft_echo(char *full_path, t_list *list);
@@ -29,4 +31,13 @@ void ft_pwd(char *full_path, t_list *list);
 int ft_empty(char **path, t_list *list);
 char **ft_env(char **en);
 void ft_cd(char *full_path, t_list *list);
+int ft_stdin2(char **path, t_list *list);
+
 #endif
+
+
+
+/*
+
+
+*/

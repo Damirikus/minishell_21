@@ -16,6 +16,7 @@ int ft_distributor(char **path, t_list *list)
 		if (execve(full_path, list->cmd, list->env) == -1)
 		{
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
+            code_exit = 127;
 			exit (1);
 		}
 	}
@@ -29,6 +30,12 @@ void ft_pwd(char *full_path, t_list *list)
 	int i;
 	
 	str = malloc(200);
+    if (!str)
+    {
+        printf("memory allocation error\n");
+        code_exit = 2;
+        exit(1);
+    }
 	getcwd(str, 200);
 	i = 0;
 	while (str[i])
@@ -38,6 +45,7 @@ void ft_pwd(char *full_path, t_list *list)
 	}
 	write(1, "\n", 1);
 	free(str);
+    code_exit = 0;
 	exit(0);
 }
 
@@ -46,10 +54,17 @@ void ft_echo(char *full_path, t_list *list)
 	int i;
 	int count;
 	int qw;
+
 	count = 0;
 	qw = 0;
 	while (list->cmd[qw])
 		qw++;
+    if (qw == 1)
+    {
+        write(1, "\n", 1);
+        code_exit = 0;
+        exit(0);
+    }
 	if (strcmp(list->cmd[1], "-n"))
 	{
 		
@@ -88,13 +103,7 @@ void ft_echo(char *full_path, t_list *list)
 			i++;
 		}
 	}
-	// i = 1;
-	// while (list->cmd[i])
-	// {
-	// 	printf("%s\n", list->cmd[i]);
-	// 	write(1, " ", 1);
-	// 	i++;
-	// }
+    code_exit = 0;
 	exit(0);
 }
 
@@ -106,18 +115,16 @@ void ft_cd(char *full_path, t_list *list)
 	i = 0;
 	while (list->cmd[i])
 		i++;
-	if (i > 2)
-	{
-		printf("miniHELL: cd: %s: string not in pwd\n", list->cmd[1]);
-		exit(1);
-	}
 	if (chdir(list->cmd[1]) != 0)
 	{
 		printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
+        code_exit = 1;
 		exit(1);
 	}
 	else
 	{
-		printf("%s\n", getcwd(s, 100));
+		// printf("%s\n", getcwd(s, 100));
+        code_exit = 0;
+        exit(0);
 	}
 }

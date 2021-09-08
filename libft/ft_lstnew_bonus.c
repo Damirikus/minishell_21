@@ -15,6 +15,7 @@ t_list	*ft_lstnew(char **content, char **envpe)
 	begin->filename = NULL;
 	begin->env = envpe;
 	begin->next = NULL;
+	begin->head_redirect = NULL;
 	return (begin);
 }
 
