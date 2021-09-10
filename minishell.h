@@ -24,15 +24,28 @@ void ft_echo(char *full_path, t_list *list);
 int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
 int ft_nextpipe(char **path, t_list *list);
-int ft_stdout(char **path, t_list *list);
-int ft_stdin(char **path, t_list *list);
+int ft_stdout(char **path, t_list *list, t_redirect *current);
+int ft_stdin(char **path, t_list *list, t_redirect *current);
 int ft_distributor(char **path, t_list *list);
 void ft_pwd(char *full_path, t_list *list);
 int ft_empty(char **path, t_list *list);
 char **ft_env(char **en);
 void ft_cd(char *full_path, t_list *list);
 int ft_stdin2(char **path, t_list *list);
-
+void ft_exit(t_list *list);
+int ft_redirections(t_list *list, char **path);
+int ft_first_variation(t_list *list, char **path);
+int ft_second_variation(t_list *list, char **path);
+char **ft_creat_all_key(t_list *list);
+int ft_stdin_key(char **key);
+int ft_stdin_stdout(t_list *list, char **path, t_redirect *pstdin, t_redirect *pstdout);
+int ft_fourth_variation(t_list *list, char **path);
+int ft_write_third_stdin(char **key);
+int ft_third_variation(t_list *list, char **path);
+int ft_fifth_variation(t_list *list, char **path);
+t_redirect *ft_chek_files_fifth(t_list *list, char **path);
+int ft_chek_all_files(t_list *list);
+void ft_pipe_redirect(void);
 #endif
 
 

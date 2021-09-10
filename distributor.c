@@ -18,7 +18,7 @@ int ft_distributor(char **path, t_list *list)
 		if (execve(full_path, list->cmd, list->env) == -1)
 		{
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
-            code_exit = 127;
+			code_exit = 127;
 			exit (1);
 		}
 	}
@@ -129,4 +129,32 @@ void ft_cd(char *full_path, t_list *list)
         code_exit = 0;
         exit(0);
 	}
+}
+
+
+void ft_exit(t_list *list)
+{
+	int i;
+	
+	i = 0;
+	while (list->cmd[1][i])
+	{
+		if (!ft_isdigit(list->cmd[1][i]))
+		{
+			printf("exit\n");
+			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
+			exit(255);
+		}
+		i++;
+	}
+	i = 0;
+	while (list->cmd[i])
+		i++;
+	if (i > 2)
+	{
+		printf("exit\n");
+		printf("miniHELL: exit: too many arguments\n");
+		code_exit = 1;
+	}
+
 }

@@ -9,10 +9,10 @@ t_list	*ft_lstnew(char **content, char **envpe)
 		return (NULL);
 	begin->cmd = content;
 	begin->flag_for_pipe = 0;
-	begin->flag_for_stdout = 0;
-	begin->flag_for_stdin = 0;
+	// begin->flag_for_stdout = 0;
+	// begin->flag_for_stdin = 0;
 	begin->pid_mother = dup(0);
-	begin->filename = NULL;
+	// begin->filename = NULL;
 	begin->env = envpe;
 	begin->next = NULL;
 	begin->head_redirect = NULL;
@@ -22,6 +22,7 @@ t_list	*ft_lstnew(char **content, char **envpe)
 
 /*
  * if flag_for_pipe = 1  -  команда до пайпа
+ 	if flag_for_pipe = -1
  * if flag_for_pipe = 0  -  нет пайпа
  *
  *

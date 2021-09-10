@@ -7,6 +7,7 @@
 # include <string.h>
 # include <strings.h>
 
+void	ft_bzero1(int *s, size_t n);
 void	ft_bzero(void *s, size_t n);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
@@ -45,7 +46,9 @@ char	*ft_strjoin(char const *s1, char const *s2);
 typedef struct s_redirect
 {
 	int flag;
-	char *name;
+	char *filename;
+	int		flag_for_stdout;
+	int		flag_for_stdin;
 	struct s_redirect *next;
 } t_redirect;
 
@@ -54,17 +57,17 @@ typedef struct s_list
 	t_redirect		*head_redirect;
 	char			**cmd;
 	char			**env;
-	char			*filename;
+	// char			*filename;
 	int				flag_for_pipe;
-	int				flag_for_stdout;
-	int				flag_for_stdin;
+	// int				flag_for_stdout;
+	// int				flag_for_stdin;
 	int				pid_mother;
 	struct s_list	*next;
 	
 }					t_list;
 
 
-
+t_redirect	*ft_lstnew_redirect(void);
 t_list	*ft_lstnew(char **content, char **envpe);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);

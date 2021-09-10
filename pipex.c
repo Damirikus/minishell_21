@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//функция получает path из окржуения и сплитом делит все пути и заполняет двумерный массив
 char **ft_path(char *str)
 {
 	char **tmp;
@@ -38,6 +39,8 @@ int ft_pipe(char **path, t_list *list)
 	return (0);
 }
 
+
+//создаем полный путь исполняемого файлы для execve
 char *ft_make_path(char **path, t_list *list)
 {
 	int i;
@@ -58,6 +61,24 @@ char *ft_make_path(char **path, t_list *list)
 	}
 	return (NULL);
 }
+
+
+
+
+
+
+
+void ft_pipe_redirect(void)
+{
+	int fd[2];
+	pipe(fd);
+	dup2(fd[0], 0);
+	close(fd[1]);
+}
+
+
+
+
 
 
 
