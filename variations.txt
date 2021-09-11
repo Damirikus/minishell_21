@@ -48,7 +48,8 @@ _____________________________________________________________
 _____________________________________________________________________
 
 
-cat < 3 << 1 > 2 << 4 < 5
+cat < 3 << 1 > 2 << 4 < 5 
+cat < 3 << 1 > 2 << 4 < 5 << 6 
 
 
 char *cmdd[] = {"cat", NULL};
@@ -252,3 +253,42 @@ char *cmdd[] = {"ls", NULL};
 
 	list->flag_for_pipe = 1;
 	list->next->flag_for_pipe = -1;
+	
+	
+	_____________________________________________________________
+
+
+cat << 3 | ls << 2 (ls > 2)
+
+char *cmdd[] = {"ls", NULL};
+
+	list = ft_lstnew(cmdd, env);
+
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "3";
+	list->head_redirect->flag = 1;
+	list->head_redirect->flag_for_stdin = 1;
+	
+	
+
+	char *cmdd2[] = {"wc", NULL};
+
+	new = ft_lstnew(cmdd2, env);
+	list->next = new;
+
+	list->next->head_redirect = ft_lstnew_redirect();
+	list->next->head_redirect->filename = "2";
+	list->next->head_redirect->flag = 1;
+	list->next->head_redirect->flag_for_stdin = 1;
+
+
+
+
+	list->flag_for_pipe = 1;
+	list->next->flag_for_pipe = -1;
+	
+	
+	_____________________________________________________________________
+	
+	
+	 

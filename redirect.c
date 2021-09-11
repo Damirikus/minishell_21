@@ -27,7 +27,7 @@ int ft_redirections(t_list *list, char **path)
 {
 	t_redirect *current;
 	int var[3];
-	
+	char *str;
 	ft_bzero1(var, 3);
 	current = list->head_redirect;
 	
@@ -43,6 +43,10 @@ int ft_redirections(t_list *list, char **path)
 	}
 
 	// распределяем все 5 вариантов(все работают по разному)
+	// 1) в этом варианте обрабатываются только прямые редиректы
+	// если команда идет до пайпа, сначала обрабатывается функция и записывается в файл,
+	//после чего создается пустой дискриптор чтения, который заменяет материнский дискриптор
+	// если посел пайпа, так же выполняется запись и возврат материнского дискрипттора
 	if (var[0] == 1 && !var[1] && !var[2])
 	{
 		printf("11111\n");
@@ -51,40 +55,64 @@ int ft_redirections(t_list *list, char **path)
 			ft_pipe_redirect();
 		if (list->flag_for_pipe == -1)
 			dup2(list->pid_mother, 0);
+		
+		
 	}
+	//2) в данном варианте только обратные редиректы (последний - ординарный обратный)
+	// если идет до пайпа, отправляется в функцию, где сначала создается пайп, в который записывается читаемое
+	// и подменяется материнский дискриптор
+	// если после пайпа, выполняется и возвращается материнский дискриптор
 	if (!var[0] && var[1] == 1 && !var[2])
 	{
 		printf("222222\n");
-		ft_second_variation(list, path);
+		if (list->flag_for_pipe == 1)
+			ft_pipe_redirect_out(path, list);
+		if (list->flag_for_pipe == -1)
+		{
+			ft_second_variation(list, path);
+			dup2(list->pid_mother, 0);
+		}
+		if (list->flag_for_pipe == 0)
+			ft_second_variation(list, path);
+			
 	}
+	//3) в данном варианте только обратные редиректы (последний - дыойной обратный)
 	if (!var[0] && !var[1] && var[2] == 1)
 	{
 		printf("333333\n");
-		ft_third_variation(list, path);
+		if (list->flag_for_pipe == 1)
+			ft_pipe_redirect_outout(path, list);
+		// get_next_line(0, &str);
+		// printf(" str = %s\n", str);
+		if (list->flag_for_pipe == -1)
+		{
+			dup2(list->pid_mother, 0);
+			ft_third_variation(list, path);
+		}
+		if (list->flag_for_pipe == 0)
+			ft_third_variation(list, path);
 	}
+	//4) в данном прямой и обратный
 	if (var[0] == 1 && var[1] == 1 && !var[2])
 	{
 		printf("444444\n");
 		ft_fourth_variation(list, path);
+		if (list->flag_for_pipe == 1)
+			ft_pipe_redirect();
+		if (list->flag_for_pipe == -1)
+			dup2(list->pid_mother, 0);
+			
 	}
+	// 5) прямой и двойной обратный
 	if (var[0] == 1 && !var[1] && var[2] == 1)
 	{
 		printf("55555\n");
 		ft_fifth_variation(list, path);
+		if (list->flag_for_pipe == 1)
+			ft_pipe_redirect();
+		if (list->flag_for_pipe == -1)
+			dup2(list->pid_mother, 0);
 	}
-
-				// else if (current->flag_for_stdout > 0)
-			// {
-			// 	ft_stdout(path, current);
-			// }
-			// else if (current->flag_for_stdin == 1)
-			// {
-			// 	ft_stdin(path, current);
-			// }
-			// else if (current->flag_for_stdin == 2)
-			// {
-			// 	ft_stdin2(path, current);
-			// }
 	return (0);
 }
 
@@ -134,10 +162,12 @@ int ft_third_variation(t_list *list, char **path)
 	char **key;
 	int fd[2];
 	int pid;
+	// char *str;
 	t_redirect *current;
 	//создаем все ключи в массиве
 	key = ft_creat_all_key(list);
 	pipe(fd);
+	
 	pid = fork();
 	if (pid == 0)
 	{
@@ -145,7 +175,10 @@ int ft_third_variation(t_list *list, char **path)
 		dup2(fd[1], 1);
 		close(fd[0]);
 		ft_write_third_stdin(key);
+		// get_next_line(0, &str);
+		// printf(" str = %s\n", str);
 		close(fd[1]);
+		// exit(0);
 	}
 	if (pid != 0)
 	{
@@ -162,6 +195,7 @@ int ft_third_variation(t_list *list, char **path)
 			current = current->next;
 		}
 		//после проверки меняем дискриптор чтения на пайп, чтобы команда читала оттуда и отправляется на выполнение а ft_empty
+		printf("SHEEET\n");
 		dup2(fd[0], 0);
 		close(fd[1]);
         ft_empty(path, list);
@@ -330,7 +364,7 @@ int ft_stdin(char **path, t_list *list, t_redirect *current)
 		{
 			close(fd);
 			wait(NULL);
-			dup2(list->pid_mother, 0);
+			// dup2(list->pid_mother, 0);
 		}
 	}
 	return (0);
@@ -440,12 +474,6 @@ int ft_write_third_stdin(char **key)
 	}
 	return (0);
 }
-
-
-
-
-
-
 
 
 

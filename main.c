@@ -12,7 +12,7 @@ int main(int argc, char **argv, char **env)
 	
 
 	
-	char *cmdd[] = {"ls", NULL};
+	char *cmdd[] = {"cat", NULL};
 	// char *cmdd2[] = {"pwd", NULL};
 	// char *cmdd2[] = {"wc", "-l", NULL};
 	// char *str = "1";
@@ -25,17 +25,17 @@ int main(int argc, char **argv, char **env)
 	// list->filename = str;
 	// list->next = ff;
 	list->head_redirect = ft_lstnew_redirect();
-	list->head_redirect->filename = "3";
+	list->head_redirect->filename = "1";
 	list->head_redirect->flag = 1;
-	list->head_redirect->flag_for_stdin = 1;
+	list->head_redirect->flag_for_stdin = 2;
 
-	// t_redirect *one;
-	// one = ft_lstnew_redirect();
-	// one->filename = "2";
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filename = "2";
 	// // one->flag_for_stdin = 1;
-	// one->flag = 1;
-	// one->flag_for_stdout = 2;
-	// list->head_redirect->next = one;
+	one->flag = 1;
+	one->flag_for_stdout = 2;
+	list->head_redirect->next = one;
 
 
 
@@ -43,7 +43,7 @@ int main(int argc, char **argv, char **env)
 
 
 
-	char *cmdd2[] = {"wc", NULL};
+	char *cmdd2[] = {"wc","-l",  NULL};
 	// char *cmdd2[] = {"pwd", NULL};
 	// char *cmdd2[] = {"wc", "-l", NULL};
 	// char *str = "1";
@@ -52,13 +52,13 @@ int main(int argc, char **argv, char **env)
 	// list = ft_lstnew(cmdd, env);
 	new = ft_lstnew(cmdd2, env);
 	list->next = new;
-	// ff = ft_lstnew(cmdd3, env);
+	// ff = ft_lstnew(cmdd3, env);1
 	// list->filename = str;
 	// list->next = ff;
 	list->next->head_redirect = ft_lstnew_redirect();
-	list->next->head_redirect->filename = "2";
+	list->next->head_redirect->filename = "3";
 	list->next->head_redirect->flag = 1;
-	list->next->head_redirect->flag_for_stdin = 1;
+	list->next->head_redirect->flag_for_stdout = 2;
 
 	// t_redirect *on;
 	// on = ft_lstnew_redirect();
@@ -115,28 +115,10 @@ int main(int argc, char **argv, char **env)
 				printf("YOO\n");
 				ft_pipe(path, current);
 			}
-			// else if (current->flag_for_pipe == -1)
-			// {
-			// 	ft_empty(path, current);
-			// 	dup2(list->pid_mother, 0);
-			// }
 			else if (current->head_redirect)
 			{
-				
 				ft_redirections(current, path);
 			}
-			// else if (current->flag_for_stdout > 0)
-			// {
-			// 	ft_stdout(path, current);
-			// }
-			// else if (current->flag_for_stdin == 1)
-			// {
-			// 	ft_stdin(path, current);
-			// }
-			// else if (current->flag_for_stdin == 2)
-			// {
-			// 	ft_stdin2(path, current);
-			// }
 			else if (!strcmp(current->cmd[0], "exit"))
 				ft_exit(current);
 			else
@@ -250,7 +232,7 @@ int ft_chek_all_files(t_list *list)
 				{
 					printf("miniHELL: %s: No such file or directory\n", redent->filename);
 					code_exit = 1;
-					return (1);
+					break;
 				}
 			}
 			redent = redent->next;

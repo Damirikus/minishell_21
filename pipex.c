@@ -77,7 +77,53 @@ void ft_pipe_redirect(void)
 }
 
 
+int ft_pipe_redirect_out(char **path, t_list *list)
+{
+	int fd[2];
+	int pid;
 
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(fd[1], 1);
+		close(fd[0]);
+		ft_second_variation(list, path);
+		close(fd[1]);
+		exit(0);
+	}
+	if (pid != 0)
+	{
+		dup2(fd[0], 0);
+		close(fd[1]);
+		wait(NULL);
+	}
+	return (0);
+}
+
+int ft_pipe_redirect_outout(char **path, t_list *list)
+{
+	int fd[2];
+	int pid;
+
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(fd[1], 1);
+		close(fd[0]);
+		ft_third_variation(list, path);
+		close(fd[1]);
+		exit(0);
+	}
+	if (pid != 0)
+	{
+		dup2(fd[0], 0);
+		close(fd[1]);
+		wait(NULL);
+	}
+	return (0);
+}
 
 
 

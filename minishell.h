@@ -46,6 +46,8 @@ int ft_fifth_variation(t_list *list, char **path);
 t_redirect *ft_chek_files_fifth(t_list *list, char **path);
 int ft_chek_all_files(t_list *list);
 void ft_pipe_redirect(void);
+int ft_pipe_redirect_out(char **path, t_list *list);
+int ft_pipe_redirect_outout(char **path, t_list *list);
 #endif
 
 
