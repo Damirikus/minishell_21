@@ -9,7 +9,7 @@
 
 void	ft_bzero1(int *s, size_t n);
 void	ft_bzero(void *s, size_t n);
-int		ft_atoi(const char *str);
+long	ft_atoi(const char *str);
 int		ft_strlen(char *str);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
 char	*ft_strdup(char *src);
@@ -57,11 +57,12 @@ typedef struct s_list
 	t_redirect		*head_redirect;
 	char			**cmd;
 	char			**env;
-	// char			*filename;
 	int				flag_for_pipe;
-	// int				flag_for_stdout;
-	// int				flag_for_stdin;
+	int				fd0;
+	int				fd1;
 	int				pid_mother;
+	int				flag_for_job;
+	char			*filename_for_job;
 	struct s_list	*next;
 	
 }					t_list;

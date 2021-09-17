@@ -23,21 +23,19 @@ char **ft_path(char *str);
 void ft_echo(char *full_path, t_list *list);
 int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
-int ft_nextpipe(char **path, t_list *list);
 int ft_stdout(char **path, t_list *list, t_redirect *current);
 int ft_stdin(char **path, t_list *list, t_redirect *current);
 int ft_distributor(char **path, t_list *list);
 void ft_pwd(char *full_path, t_list *list);
-int ft_empty(char **path, t_list *list);
-char **ft_env(char **en);
+
 void ft_cd(char *full_path, t_list *list);
-int ft_stdin2(char **path, t_list *list);
-void ft_exit(t_list *list);
+void ft_exit(t_list *list, int len);
 int ft_redirections(t_list *list, char **path);
 int ft_first_variation(t_list *list, char **path);
 int ft_second_variation(t_list *list, char **path);
-char **ft_creat_all_key(t_list *list);
-int ft_stdin_key(char **key);
+//char **ft_creat_all_key(t_list *list);
+// int ft_stdin_key(char **key);
+int ft_stdin_key(char **key, t_list *list);
 int ft_stdin_stdout(t_list *list, char **path, t_redirect *pstdin, t_redirect *pstdout);
 int ft_fourth_variation(t_list *list, char **path);
 int ft_write_third_stdin(char **key);
@@ -48,6 +46,12 @@ int ft_chek_all_files(t_list *list);
 void ft_pipe_redirect(void);
 int ft_pipe_redirect_out(char **path, t_list *list);
 int ft_pipe_redirect_outout(char **path, t_list *list);
+int	ft_check_max_min(char *str);
+int ft_exit_redirect(t_list *list);
+int ft_open_pipe(t_list *list);
+int ft_key_handler(t_list *list, t_redirect *redirect);
+int ft_creat_chek_files(t_list *list, t_redirect *redirect);
+int ft_realization(t_list *list, char **path, int len);
 #endif
 
 

@@ -15,5 +15,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	ft_strlcpy(str, s1, ls1 + 1);
 	ft_strlcpy(str + ls1, s2, ls2 + 1);
+	free((void *)s1);
 	return (str);
 }
