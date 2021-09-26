@@ -29,7 +29,7 @@ int ft_realization(t_list *list, char **path, int len)
 				dup2(list->fd0, 0);
 			if (list->fd1 != -1)
 				dup2(list->fd1, 1);
-			ft_distributor(path, list);
+			ft_distributor(path, list, len);
 		}
 		if (pid != 0)
 		{
@@ -45,7 +45,7 @@ int ft_realization(t_list *list, char **path, int len)
 
 
 
-int ft_distributor(char **path, t_list *list)
+int ft_distributor(char **path, t_list *list, int len)
 {
 	char *full_path;
 
@@ -56,7 +56,7 @@ int ft_distributor(char **path, t_list *list)
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd(full_path, list);
 	else if (!strcmp(list->cmd[0], "cd"))
-		ft_cd(full_path, list);
+		ft_cd(full_path, list, len);
 	else
 	{
 		if (execve(full_path, list->cmd, list->env) == -1)
@@ -153,14 +153,14 @@ void ft_echo(char *full_path, t_list *list)
 	exit(0);
 }
 
-void ft_cd(char *full_path, t_list *list)
+void ft_cd(char *full_path, t_list *list, int len)
 {
 	int i;
 	char s[200];
 	i = 0;
 	while (list->cmd[i])
 		i++;
-	if (!list->cmd[1])
+	if (!list->cmd[1] || list->cmd[1][0] == '~')
 	{
 		ft_find_home(list);
 	}
@@ -172,14 +172,37 @@ void ft_cd(char *full_path, t_list *list)
 	}
 	else
 	{
-		// printf("%s\n", getcwd(s, 100));
+		printf("%s\n", getcwd(s, 100));
         code_exit = 0;
         exit(0);
 	}
 }
-
+//
 int ft_find_home(t_list *list)
 {
+	int i;
+	i = 0;
+	while (list->env[i])
+	{
+		if (list->env[i][0] == 'H' && list->env[i][1] == 'O' && list->env[i][2] == 'M' && list->env[i][3] == 'E')
+		{
+			if (!list->cmd[1])
+			{
+//				free(list->cmd[0]);
+//				free(list->cmd[1]);
+//				free(cmd);
+				list->cmd = malloc( sizeof(char *) * 3);
+				list->cmd[2] = NULL;
+				list->cmd[0] = malloc(3);
+				ft_strlcpy(list->cmd[0], "cd", 3);
+				list->cmd[1] = ft_strjoin(list->env[i] + 5, "");
+
+			}
+			else if (list->cmd[1][0] == '~')
+				list->cmd[1] = ft_strjoin(list->env[i] + 5, list->cmd[1] + 1);
+		}
+		i++;
+	}
 	return (0);
 }
 
