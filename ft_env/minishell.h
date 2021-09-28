@@ -31,12 +31,12 @@ int		ft_strlen_g(const char *str);
 char	*add_quotes(char *str);
 
 /*      LIST          */
-void	print_env(t_env *head);
-t_env	*ft_lstnew_initial(char *content);
-t_env	*ft_lstnew_export(char *content);
-void	ft_lstadd_back(t_env **lst, t_env *new);
-t_env	*ft_lstlast(t_env *lst);
-int		ft_lstsize(t_env *lst);
+void	print_list_env(t_env *head);
+t_env	*ft_lstnew_initial_env(char *content);
+t_env	*ft_lstnew_export_env(char *content);
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+t_env	*ft_lstlast_env(t_env *lst);
+int		ft_lstsize_env(t_env *lst);
 
 /*      ENV          */
 void	env_to_list(t_shell *shell);

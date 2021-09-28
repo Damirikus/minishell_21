@@ -7,7 +7,7 @@ int	both_are_sys(t_shell *shell, int i)
 	t_env	*tmp;
 	int		first_match;
 	int		second_match;
-
+	
 	first_match = 0;
 	second_match = 0;
 	tmp = shell->head_env;
@@ -85,7 +85,7 @@ void	unset_env(t_shell *shell, char *key)
 
 void	export_env(t_shell *shell, char *string) // Скетч, нужно доработать
 {
-	ft_lstadd_back(&shell->head_env, ft_lstnew_initial(string));
+	ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(string));
 	renew_env_export_massive(shell);
 }
 
@@ -98,12 +98,12 @@ int	main(int argc, char **argv, char **env) // Нужно добавить free
 	shell.current_env = NULL;
 	shell.current_export = NULL;
 	env_to_list(&shell);
-	print_env(shell.head_env);
+	print_list_env(shell.head_env);
 	unset_env(&shell, "MANPATH");
 	export_env(&shell, "check");
 	export_env(&shell, "ABC=chekislav");
 	printf("\n\n\n\n");
-	print_env(shell.head_env);
+	print_list_env(shell.head_env);
 	printf("\n\n\n\n");
 	print_2d_massive(shell.current_env);
 	printf("\n\n\n\n");
