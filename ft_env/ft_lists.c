@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int ft_lstsize(t_list *lst)
+int ft_lstsize(t_env *lst)
 {
-	t_list *tmp;
+	t_env *tmp;
 	int i;
 	
 	i = 0;
@@ -15,9 +15,9 @@ int ft_lstsize(t_list *lst)
 	return (i);
 }
 
-t_list *ft_lstlast(t_list *lst)
+t_env *ft_lstlast(t_env *lst)
 {
-	t_list *tmp;
+	t_env *tmp;
 	
 	tmp = lst;
 	while (tmp)
@@ -29,9 +29,9 @@ t_list *ft_lstlast(t_list *lst)
 	return (tmp);
 }
 
-void ft_lstadd_back(t_list **lst, t_list *new)
+void ft_lstadd_back(t_env **lst, t_env *new)
 {
-	t_list *last;
+	t_env *last;
 	if (*lst == NULL)
 	{
 		*lst = new;
@@ -43,11 +43,11 @@ void ft_lstadd_back(t_list **lst, t_list *new)
 }
 
 
-t_list *ft_lstnew_initial(char *content)
+t_env *ft_lstnew_initial(char *content)
 {
-	t_list *result;
+	t_env *result;
 	
-	if (!(result = malloc(sizeof(t_list))))
+	if (!(result = malloc(sizeof(t_env))))
 		return (NULL);
 	result->sys = 1;
 	result->content = ft_strdup(content);
@@ -55,9 +55,9 @@ t_list *ft_lstnew_initial(char *content)
 	return (result);
 }
 
-void	print_list(t_list *head)
+void	print_env(t_env *head)
 {
-	t_list *tmp;
+	t_env *tmp;
 	
 	tmp = head;
 	while (tmp)

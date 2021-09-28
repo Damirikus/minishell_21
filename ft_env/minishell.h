@@ -6,16 +6,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct	s_list
+typedef struct	s_env
 {
 	int				sys;
 	char			*content;
-	struct s_list	*next;
-}				t_list;
+	struct s_env	*next;
+}				t_env;
 
 typedef struct	s_shell
 {
-	t_list	*head_env;
+	t_env	*head_env;
 
 	char	**original_env;
 	char	**current_env;
@@ -31,12 +31,12 @@ int		ft_strlen_g(const char *str);
 char	*add_quotes(char *str);
 
 /*      LIST          */
-void	print_list(t_list *head);
-t_list	*ft_lstnew_initial(char *content);
-t_list	*ft_lstnew_export(char *content);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstlast(t_list *lst);
-int		ft_lstsize(t_list *lst);
+void	print_env(t_env *head);
+t_env	*ft_lstnew_initial(char *content);
+t_env	*ft_lstnew_export(char *content);
+void	ft_lstadd_back(t_env **lst, t_env *new);
+t_env	*ft_lstlast(t_env *lst);
+int		ft_lstsize(t_env *lst);
 
 /*      ENV          */
 void	env_to_list(t_shell *shell);

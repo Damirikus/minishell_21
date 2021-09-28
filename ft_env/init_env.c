@@ -36,7 +36,7 @@ void	list_to_2D_massive_export(t_shell *shell)
 {
 	int		i;
 	int		j;
-	t_list	*tmp;
+	t_env	*tmp;
 
 	if (shell->current_export)
 		ft_free_for_export(shell);
@@ -60,7 +60,7 @@ void	list_to_2D_massive_export(t_shell *shell)
 void	list_to_2D_massive_env(t_shell *shell) // Листы в двойной чар-массив для execve
 {
 	int		i;
-	t_list	*tmp;
+	t_env	*tmp;
 
 	if (shell->current_env)
 		free(shell->current_env);

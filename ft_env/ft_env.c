@@ -4,10 +4,10 @@
 
 int	both_are_sys(t_shell *shell, int i)
 {
-	t_list	*tmp;
+	t_env	*tmp;
 	int		first_match;
 	int		second_match;
-	
+
 	first_match = 0;
 	second_match = 0;
 	tmp = shell->head_env;
@@ -57,8 +57,8 @@ void	renew_env_export_massive(t_shell *shell)
 
 void	unset_env(t_shell *shell, char *key)
 {
-	t_list	*tmp;
-	t_list	*prev;
+	t_env	*tmp;
+	t_env	*prev;
 
 	tmp = shell->head_env;
 	while (tmp)
@@ -98,18 +98,18 @@ int	main(int argc, char **argv, char **env) // Нужно добавить free
 	shell.current_env = NULL;
 	shell.current_export = NULL;
 	env_to_list(&shell);
-	print_list(shell.head_env);
+	print_env(shell.head_env);
 	unset_env(&shell, "MANPATH");
 	export_env(&shell, "check");
 	export_env(&shell, "ABC=chekislav");
 	printf("\n\n\n\n");
-	print_list(shell.head_env);
+	print_env(shell.head_env);
 	printf("\n\n\n\n");
 	print_2d_massive(shell.current_env);
 	printf("\n\n\n\n");
 	print_2d_massive(shell.current_export);
 	// while (1);
-	t_list *tmp = shell.head_env;
+	t_env *tmp = shell.head_env;
 	
 	// while (tmp)
 	// {
