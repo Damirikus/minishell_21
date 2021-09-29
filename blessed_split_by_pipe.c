@@ -97,9 +97,9 @@ char	**ft_split_by_pipe(char *str) // Выполняем первый пункт
 	i = 0;
 	mass_size = 0;
 	coordinates = take_coordinates(str);
-	while (coordinates[i])
+	while (coordinates[i] != -1)
 		i++;
-	mass_size = i;
+	mass_size = i + 1;
 	result = malloc(sizeof(char *) * (mass_size + 1));
 	result[0] = ft_cutstr(str, 0, coordinates[0]);
 	// printf("%d\n", i);

@@ -16,6 +16,8 @@ int main(int argc, char **argv, char **env)
 	t_list *current;
 	data->path = ft_path(getenv("PATH"));
 
+	t_list *tmp;
+
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);
@@ -36,16 +38,22 @@ int main(int argc, char **argv, char **env)
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, env);
+			tmp = data->head_command;
+			while (tmp)
+			{
+				tmp->env = env;
+				tmp = tmp->next;
+			}
 
 			ft_print_all(data);
-
 
 			//на этом тапе происходит проверка всех файлов и их создание, если листов несколько, то есть пайпы
 			data->len = ft_chek_all_files(data->head_command);
 			current = data->head_command;
 			while (current)
 			{
-				ft_realization(current, data);
+				if (current->cmd[0])
+					ft_realization(current, data);
 				current = current->next;
 			}
 		}
@@ -70,5 +78,21 @@ void ft_print_all(t_data *data)
 		printf("path[%d] = %s\n", i, data->path[i]);
 		i++;
 	}
+	printf("\n");
+	i = 0;
+	t_list *tmp;
+	tmp = data->head_command;
+	while (tmp)
+	{
+		while (data->head_command->cmd[i])
+		{
+			printf("CMD[%d] = %s\n", i, data->head_command->cmd[i]);
+			i++;
+		}
+		printf("______________\n");
+		tmp = tmp->next;
+	}
+
+
 }
 
