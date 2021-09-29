@@ -4,13 +4,12 @@ SRC_NAME =	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memch
 		ft_calloc.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strjoin.c\
 		ft_substr.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c \
 		ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
-		ft_lstnew_redirect.c ft_bzero_old.c
-			
-
-BONUS	=	ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \
+		ft_lstnew_redirect.c ft_bzero_old.c ft_strlen_g.c ft_strjoin_pars.c ft_lstadd_back_redirect.c \
+        ft_lstprelast.c  ft_lstprelast_redirect.c ft_lstclear_redirect.c \
+        ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \
 		ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c \
-		ft_lstiter_bonus.c ft_lstmap_bonus.c
-BONUS_OBJS		=	$(BONUS:.c=.o)
+		ft_lstiter_bonus.c ft_lstmap_bonus.c ft_lstlast_redirect.c ft_lstsize_redirect.c \
+
 OBJ_NAME = $(SRC_NAME:.c=.o)
 SRC = $(SRC_NAME)
 OBJ = $(addprefix ,$(OBJ_NAME))
@@ -28,13 +27,12 @@ $(NAME) : $(OBJ) libft.h
 
 $%.o: $(SRC_PATH)%.c 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
-bonus:	$(OBJS) $(BONUS_OBJS)
-		ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
+
 clean:
-	rm -f $(OBJ) $(BONUS_OBJS)
+	rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)  $(bonus)
+	rm -f $(NAME)
 
 re : fclean all
 

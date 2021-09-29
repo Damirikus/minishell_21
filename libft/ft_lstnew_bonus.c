@@ -19,20 +19,3 @@ t_list	*ft_lstnew(char **content, char **envpe)
 	return (begin);
 }
 
-
-/*
- * if flag_for_pipe = 1  -  команда до пайпа
- 	if flag_for_pipe = -1
- * if flag_for_pipe = 0  -  нет пайпа
- *
- *
- * if flag_for_stdout = 1  -  команда до ">"
- * if flag_for_stdout = 2  -  команда до ">>" 
- * if flag_for_stdout = 0  -  нет stdout
- * 
- * 
- * if flag_for_stdin = 1  -  команда до "<"
- * if flag_for_stdin = 0  -  нет stdin
- * 
- * 
- */

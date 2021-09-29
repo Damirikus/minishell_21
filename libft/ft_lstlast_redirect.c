@@ -1,8 +1,8 @@
 #include "libft.h"
 
-t_list *ft_lstlast(t_list *lst)
+t_redirect	*ft_lstlast_redirect(t_redirect *lst)
 {
-	t_list *tmp;
+	t_redirect	*tmp;
 
 	tmp = lst;
 	while (tmp)
