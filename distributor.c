@@ -3,7 +3,7 @@
 // тут происходит распределение по командам на исполнение
 
 
-int ft_realization(t_list *list, char **path, int len)
+int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
 
@@ -14,7 +14,7 @@ int ft_realization(t_list *list, char **path, int len)
 		return (0);
 	}
 	if (!strcmp(list->cmd[0], "exit"))
-		ft_exit(list, len);
+		ft_exit(list, data->len);
 //	else if (!strcmp(list->cmd[0], "export"))
 //		ft_exit(list);
 //	else if (!strcmp(list->cmd[0], "unset"))
@@ -29,7 +29,7 @@ int ft_realization(t_list *list, char **path, int len)
 				dup2(list->fd0, 0);
 			if (list->fd1 != -1)
 				dup2(list->fd1, 1);
-			ft_distributor(path, list, len);
+			ft_distributor(list, data);
 		}
 		if (pid != 0)
 		{
@@ -45,18 +45,18 @@ int ft_realization(t_list *list, char **path, int len)
 
 
 
-int ft_distributor(char **path, t_list *list, int len)
+int ft_distributor(t_list *list, t_data *data)
 {
 	char *full_path;
 
-	full_path = ft_make_path(path, list);
+	full_path = ft_make_path(data->path, list);
 
 	if (!strcmp(list->cmd[0], "echo"))
 		ft_echo(full_path, list);
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd(full_path, list);
 	else if (!strcmp(list->cmd[0], "cd"))
-		ft_cd(full_path, list, len);
+		ft_cd(full_path, list, data->len);
 	else
 	{
 		if (execve(full_path, list->cmd, list->env) == -1)

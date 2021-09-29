@@ -4,6 +4,7 @@
 char **ft_path(char *str)
 {
 	char **tmp;
+
 	int i;
 	tmp = ft_split(str, ':');
 	i = 0;

@@ -51,8 +51,9 @@ int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
 int ft_stdout(char **path, t_list *list, t_redirect *current);
 int ft_stdin(char **path, t_list *list, t_redirect *current);
-int ft_distributor(char **path, t_list *list, int len);
+//int ft_distributor(char **path, t_list *list, int len);
 void ft_pwd(char *full_path, t_list *list);
+int ft_distributor(t_list *list, t_data *data);
 
 void ft_cd(char *full_path, t_list *list, int len);
 void ft_exit(t_list *list, int len);
@@ -77,7 +78,8 @@ int ft_exit_redirect(t_list *list);
 int ft_open_pipe(t_list *list);
 int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
-int ft_realization(t_list *list, char **path, int len);
+//int ft_realization(t_list *list, char **path, int len);
+int ft_realization(t_list *list, t_data *data);
 int ft_find_home(t_list *list);
 
 
@@ -115,6 +117,8 @@ char	**ft_split_by_pipe(char *str);
 char	*ft_cutstr(char *str, int start, int finish);
 void	ft_skip_quotes(char *str, int *i);
 
+
+
 /* DOLLAR PULL  */
 void	dollar_pull(char **pipe_mass, char **env);
 
@@ -137,12 +141,18 @@ void	quotes_killer_command(t_list *head_command);
 int		quotes_killer_result_len(char *name);
 void	quotes_killer_result_len_skip(char *name, int *i, int *result);
 
-
+/*	COMMAND LIST FREE */
+void	list_free_redirect(t_redirect **redirect);
+void	list_free_command(t_list **head);
+void	list_free(t_list **head);
 
 void	check_quotes_skip(char *str, int *i, int code);
 void	check_pipe(char *str, int *i);
 void	check_redir(char *str, int *i);
 void	ft_print_list(t_list *head_command);
+
+
+void ft_print_all(t_data *data);
 #endif
 
 

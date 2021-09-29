@@ -81,6 +81,8 @@ void	list_free_command(t_list **head)
 		pre->next = NULL;
 		i++;
 	}
+	// free(*head);
+	*head = NULL;
 }
 
 void	list_free_redirect_cmd(t_list *tmp)
@@ -120,36 +122,36 @@ t_list	*parser(char *str, char **env)
 	head_command = NULL;
 	pipe_mass = ft_split_by_pipe(str);
 	int i = -1;
-	
-	while (pipe_mass[++i])
-		printf("%d: |%s|\n", i, pipe_mass[i]);
+
+//	while (pipe_mass[++i])
+//		printf("%d: |%s|\n", i, pipe_mass[i]);
 //////////////////////////////////////////////
 	dollar_pull(pipe_mass, env);
 	redirect_parser(pipe_mass, &head_command);
 	cmd_maker(pipe_mass, &head_command);
 	quotes_killer(&head_command);
 //////////////////////////////////////////////
-	ft_print_list(head_command);
+//	ft_print_list(head_command);
 	i = 0;
 	i = -1;
-	while (pipe_mass[++i])
-		printf("%d: |%s|\n", i, pipe_mass[i]);
+//	while (pipe_mass[++i])
+//		printf("%d: |%s|\n", i, pipe_mass[i]);
 	i = -1;
-	printf("\nComands: \n");
+//	printf("\nComands: \n");
 	t_list *tmp;
 	tmp = head_command;
 	int j = 0;
-	while (tmp)
-	{
-		j = 0;
-		while (tmp->cmd[j])
-		{
-			printf("%s ", tmp->cmd[j]);
-			j++;
-		}
-		printf("\n");
-		tmp = tmp->next;
-	}
+//	while (tmp)
+//	{
+//		j = 0;
+//		while (tmp->cmd[j])
+//		{
+//			printf("%s ", tmp->cmd[j]);
+//			j++;
+//		}
+//		printf("\n");
+//		tmp = tmp->next;
+//	}
 	
 //	list_free(&head_command);
 	// list_free_redirect(&head_command->head_redirect);

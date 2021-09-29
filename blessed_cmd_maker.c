@@ -12,12 +12,15 @@ int	cmd_allocator_helper(char *str)
 	while (str[i] != '\0')
 	{
 		while (str[i] > 32 && str[i] != '\0')
-			i++;
+		{
+			if (str[i] == '\'' || str[i] == '\"')
+				ft_skip_quotes(str, &i);
+			if (str[i] > 32 && str[i] != '\0')
+				i++;
+		}
 		result++;
 		while (str[i] < 33 && str[i] != '\0')
 			i++;
-		// if (str[i] != '\0')
-		// 	i++;
 	}
 	return (result + 1);
 }
@@ -51,7 +54,12 @@ void	cmd_pull_helper(char *str, t_list *tmp)
 	{
 		start = i;
 		while (str[i] > 32 && str[i] != '\0')
-			i++;
+		{
+			if (str[i] == '\'' || str[i] == '\"')
+				ft_skip_quotes(str, &i);
+			if (str[i] > 32 && str[i] != '\0')
+				i++;
+		}
 		tmp->cmd[number] = ft_cutstr(str, start, i);
 		number++;
 		while (str[i] < 33 && str[i] != '\0')
