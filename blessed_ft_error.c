@@ -6,6 +6,7 @@ int	ft_error(int code)
 	{
 		printf("Minishell: error: unclosed quotes detected\n");
 		// exit (1);
+		return(1);
 	}
 	if (code == 2)
 	{

@@ -14,9 +14,13 @@ int	preparser(char *str) // Смотрим закрыты ли все кавыч
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
-			check_quotes(str, &i);
+		{
+			if (check_quotes(str, &i))
+				return(1);
+		}
 		if (str[i] == '>' || str[i] == '<' || str[i] == '|')
-			check_pipe_redir(str, &i);
+			if (check_pipe_redir(str, &i))
+				return(1);
 		if (str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 			i++;
 	}
