@@ -73,20 +73,21 @@ void ft_print_all(t_data *data)
 {
 	int i;
 	i = 0;
-	while (data->path[i])
-	{
-		printf("path[%d] = %s\n", i, data->path[i]);
-		i++;
-	}
+	// while (data->path[i])
+	// {
+	// 	printf("path[%d] = %s\n", i, data->path[i]);
+	// 	i++;
+	// }
 	printf("\n");
 	i = 0;
 	t_list *tmp;
 	tmp = data->head_command;
 	while (tmp)
 	{
-		while (data->head_command->cmd[i])
+		i = 0;
+		while (tmp->cmd[i])
 		{
-			printf("CMD[%d] = %s\n", i, data->head_command->cmd[i]);
+			printf("CMD[%d] = %s\n", i, tmp->cmd[i]);
 			i++;
 		}
 		printf("______________\n");
