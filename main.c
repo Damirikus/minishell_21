@@ -5,125 +5,94 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	char* input;
-	t_list *list;
-	t_list *new;
-	t_list *ff;
+	t_data *data;
+	data = malloc(sizeof(t_data));
+	data->head_command = NULL;
+	data->len = 0;
+	data->current_env = NULL;
+	data->current_export = NULL;
+	data->original_env = NULL;
+	data->head_env = NULL;
 	t_list *current;
-	
+	data->path = ft_path(getenv("PATH"));
 
-	
-	
-	
-	
-	char *cmdd[] = {"cat", "variations.txt", NULL};
-	// char *cmdd2[] = {"pwd", NULL};
-	// char *cmdd2[] = {"wc", "-l", NULL};
-	char *str = "test";
+	t_list *tmp;
 
-	
-
-
-	list = ft_lstnew(cmdd, env);
-	// new = ft_lstnew(cmdd2, env);
-	// list->next = new;
-	// ff = ft_lstnew(cmdd3, env);
-	list->filename = str;
-	// list->next = ff;
-
-
-
-
-	char **path;
-	path = ft_path(getenv("PATH"));
-
-
-//	char shell_prompt[100];
 	while(1)
 	{
-		// getting the current user's path
+//		signal(SIGINT, ft_ctrlc);
+//		signal(SIGQUIT, ft_ctrlq);
+//		signal(SIGQUIT, ft_ctrld);
+
+
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("miniHELL %> ");
 		if (!input)
 			break;
-		// path autocompletion when tabulation hit
 		rl_bind_key('\t', rl_complete);
-		// adding the previous input into history
 		add_history(input);
 
 
-
-		
-		// list->flag_for_pipe = 1;
-		// list->next->flag_for_pipe = -1;
-		// list->flag_for_stdin = 1;
-		list->flag_for_stdout = 2;
-		
-		
-		
-		
-		current = list;
-		while(current)
+        //на этом этапе происходит парс, на выходе лист со всеми командами
+		//  list = ft_pars(input);
+		if (!preparser(input))
 		{
-			if (current->flag_for_pipe == 1)
+			data->head_command = parser(input, env);
+			tmp = data->head_command;
+			while (tmp)
 			{
-				ft_pipe(path, current);
+				tmp->env = env;
+				tmp = tmp->next;
 			}
-			// else if (current->flag_for_pipe == -1)
-			// {
-			// 	ft_empty(path, current);
-			// 	dup2(list->pid_mother, 0);
-			// }
-			else if (current->flag_for_stdout > 0)
+
+			ft_print_all(data);
+
+			//на этом тапе происходит проверка всех файлов и их создание, если листов несколько, то есть пайпы
+			data->len = ft_chek_all_files(data->head_command);
+			current = data->head_command;
+			while (current)
 			{
-				ft_stdout(path, current);
+				if (current->cmd[0])
+					ft_realization(current, data);
+				current = current->next;
 			}
-			else if (current->flag_for_stdin > 0)
-			{
-				ft_stdin(path, current);
-			}
-			else
-			{
-				ft_empty(path, current);
-				dup2(list->pid_mother, 0);
-			}
-			current = current->next;
 		}
-
-
-
-//		if (!strcmp(input, "ls"))
-//		{
-//			execve("/bin/ls", cmdd, env);
-//		}
-//		prepars();
-//		pars
-
-//
-//		if (!strcmp(input, "pwd"))
-//			printf("%s\n", getenv("PWD"));
 
 		/* do stuff */
 
 		// Т. к. вызов readline() выделяет память, но не освобождает (а возвращает), то эту память нужно вернуть (освободить).
+		list_free(&data->head_command);
 		free(input);
 
 	}
 }
 
 
-int ft_empty(char **path, t_list *list)
-{
-	int pid;
 
-	pid = fork();
-	if (pid == 0)
+void ft_print_all(t_data *data)
+{
+	int i;
+	i = 0;
+	while (data->path[i])
 	{
-		ft_distributor(path, list);
+		printf("path[%d] = %s\n", i, data->path[i]);
+		i++;
 	}
-	if (pid != 0)
+	printf("\n");
+	i = 0;
+	t_list *tmp;
+	tmp = data->head_command;
+	while (tmp)
 	{
-		wait(NULL);
+		while (data->head_command->cmd[i])
+		{
+			printf("CMD[%d] = %s\n", i, data->head_command->cmd[i]);
+			i++;
+		}
+		printf("______________\n");
+		tmp = tmp->next;
 	}
-	return (0);
+
+
 }
 

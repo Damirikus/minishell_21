@@ -2,15 +2,11 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list	*current;
+	t_list	*tmp;
 
-	if (!*lst)
-		return ;
-	while (*lst != NULL)
-	{
-		current = (*lst)->next;
-		del((*lst)->cmd);
-		free(*lst);
-		*lst = current;
-	}
+	tmp = *lst;
+	// есть что удалит
+	(*del)(tmp->next);
+	free(tmp);
+	*lst = NULL;
 }

@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_lstsize_redirect(t_redirect *lst)
 {
-	t_list	*tmp;
+	t_redirect	*tmp;
 	int		i;
 
 	i = 0;

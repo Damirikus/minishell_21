@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+long ft_atoi(const char *str)
 {
-	int	nb;
+	long	nb;
 	int	i;
 	int	k;
 
