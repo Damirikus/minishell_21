@@ -15,13 +15,14 @@ int	cmd_allocator_helper(char *str)
 		{
 			if (str[i] == '\'' || str[i] == '\"')
 				ft_skip_quotes(str, &i);
-			if (str[i] > 32 && str[i] != '\0')
+			if (str[i] > 32 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 				i++;
 		}
 		result++;
-		while (str[i] < 33 && str[i] != '\0')
+		while (str[i] < 33 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 			i++;
 	}
+	printf("result: %d\n", result);
 	return (result + 1);
 }
 
@@ -57,7 +58,7 @@ void	cmd_pull_helper(char *str, t_list *tmp)
 		{
 			if (str[i] == '\'' || str[i] == '\"')
 				ft_skip_quotes(str, &i);
-			if (str[i] > 32 && str[i] != '\0')
+			if (str[i] > 32 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 				i++;
 		}
 		tmp->cmd[number] = ft_cutstr(str, start, i);
