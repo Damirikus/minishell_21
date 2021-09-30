@@ -72,37 +72,25 @@ int main(int argc, char **argv, char **env)
 void ft_print_all(t_data *data)
 {
 	int i;
-//	i = 0;
-//	while (data->path[i])
-//	{
-//		printf("path[%d] = %s\n", i, data->path[i]);
-//		i++;
-//	}
-//	printf("\n");
-//	i = 0;
+	i = 0;
+	// while (data->path[i])
+	// {
+	// 	printf("path[%d] = %s\n", i, data->path[i]);
+	// 	i++;
+	// }
+	printf("\n");
+	i = 0;
 	t_list *tmp;
-	t_redirect *red;
 	tmp = data->head_command;
 	while (tmp)
 	{
-		red = tmp->head_redirect;
 		i = 0;
 		while (tmp->cmd[i])
 		{
 			printf("CMD[%d] = %s\n", i, tmp->cmd[i]);
 			i++;
 		}
-		printf("_____________________\n");
-		printf("flag_for_pipe = %d\n", tmp->flag_for_pipe);
-		printf("_____________________\n");
-		while (red)
-		{
-			printf("REDIRECTS\n");
-			printf("stdin = %d\n", red->flag_for_stdin);
-			printf("stdout = %d\n", red->flag_for_stdout);
-			red = red->next;
-		}
-		printf("______________________________________________________________\n");
+		printf("______________\n");
 		tmp = tmp->next;
 	}
 }
