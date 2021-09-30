@@ -22,7 +22,6 @@ int	cmd_allocator_helper(char *str)
 		while (str[i] < 33 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 			i++;
 	}
-	printf("result: %d\n", result);
 	return (result + 1);
 }
 

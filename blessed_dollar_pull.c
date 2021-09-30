@@ -4,7 +4,7 @@ void	dollar_cut_from_str(char **pipe_mass, int number, int start, int finish)
 {
 	char	*result;
 	int		i;
-
+	
 	result = malloc(sizeof(char) * (strlen(pipe_mass[number]) - (finish - start + 1) + 1)); // Искать здесь
 	i = 0;
 	while (i < start)
@@ -60,7 +60,39 @@ void	dollar_pull_swaper(char **pipe_mass, int number, char *value, int start)
 	pipe_mass[number] = result;
 }
 
-int flah = 0;
+void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
+{
+	char	*result;
+	char	*exit_code_str;
+	int		i;
+	int		j;
+
+	exit_code_str = ft_itoa(code_exit);
+	result = malloc(sizeof(char) * ( ft_strlen(pipe_mass[number]) - 2 + ft_strlen(exit_code_str) + 1));
+	i = 0;
+	j = 0;
+	while (i < start)
+	{
+		result[i] = pipe_mass[number][i];
+		i++;
+	}
+	while (exit_code_str[j])
+	{
+		result[i] = exit_code_str[j];
+		j++;
+		i++;
+	}
+	start += 2;
+	while (pipe_mass[number][start])
+	{
+		result[i] = pipe_mass[number][start];
+		start++;
+		i++;
+	}
+	result[i] = 0;
+	free(pipe_mass[number]);
+	pipe_mass[number] = result;
+}
 
 void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Встретили знак даллара в строке, пробуем менять
 {
@@ -72,6 +104,11 @@ void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Вс
 	start = j + 1;
 	value = NULL;
 	j++;
+	if (pipe_mass[number][start] == '?')
+	{
+		dollar_pull_exit_code(pipe_mass, number, j - 1);
+		return ;
+	}
 	while (isalnum(pipe_mass[number][j]) && pipe_mass[number][j] != 0)
 		j++;
 	key = ft_cutstr(pipe_mass[number], start, j);

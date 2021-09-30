@@ -26,7 +26,7 @@ int main(int argc, char **argv, char **env)
 
 
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
-		input = readline("miniHELL %> ");
+		input = readline("minishell %> ");
 		if (!input)
 			break;
 		rl_bind_key('\t', rl_complete);
@@ -67,8 +67,6 @@ int main(int argc, char **argv, char **env)
 	}
 }
 
-
-
 void ft_print_all(t_data *data)
 {
 	int i;
@@ -106,4 +104,3 @@ void ft_print_all(t_data *data)
 		tmp = tmp->next;
 	}
 }
-
