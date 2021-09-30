@@ -1,40 +1,294 @@
  
- ls | grep mini | wc -l > test
- 
- char *cmdd[] = {"ls", NULL};
- char *cmdd2[] = {"grep", "mini", NULL};
- char *cmdd3[] = {"wc", "-l", NULL};
- char *str = "test";
- 
- 	list = ft_lstnew(cmdd, env);
+
+wc -l > exit 4
+
+wc -l < exit 4
+
+exit 4 | wc -l
+
+wc -l | exit 5
+
+_____________________________________________________________
+
+	cat < 3 << 1 < 2 << 4 < 5
+
+	char *cmdd[] = {"cat", NULL};
+	
+
+	list = ft_lstnew(cmdd, env);
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filname = "3";
+	list->head_redirect->flag_for_stdin = 1;
+
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filname = "1";
+	one->flag_for_stdin = 2;
+	list->head_redirect->next = one;
+
+	t_redirect *two;
+	two = ft_lstnew_redirect();
+	two->filname = "2";
+	two->flag_for_stdin = 1;
+	list->head_redirect->next->next = two;
+
+	t_redirect *three;
+	three = ft_lstnew_redirect();
+	three->filname = "4";
+	three->flag_for_stdin = 2;
+	list->head_redirect->next->next->next = three;
+
+	t_redirect *ch;
+	ch = ft_lstnew_redirect();
+	ch->filname = "5";
+	ch->flag_for_stdin = 1;
+	ch->flag = 1;
+	list->head_redirect->next->next->next->next = ch;
+
+_____________________________________________________________________
+
+
+cat < 3 << 1 > 2 << 4 < 5 
+cat < 3 << 1 > 2 << 4 < 5 << 6 
+
+
+char *cmdd[] = {"cat", NULL};
+	
+	
+	list = ft_lstnew(cmdd, env);
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filname = "3";
+	list->head_redirect->flag_for_stdin = 1;
+
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filname = "1";
+	one->flag_for_stdin = 2;
+	list->head_redirect->next = one;
+
+	t_redirect *two;
+	two = ft_lstnew_redirect();
+	two->filname = "2";
+	two->flag_for_stdout = 2;
+	two->flag = 1;
+	list->head_redirect->next->next = two;
+
+	t_redirect *three;
+	three = ft_lstnew_redirect();
+	three->filname = "4";
+	three->flag_for_stdin = 2;
+	list->head_redirect->next->next->next = three;
+
+	t_redirect *ch;
+	ch = ft_lstnew_redirect();
+	ch->filname = "5";
+	ch->flag_for_stdin = 1;
+	ch->flag = 1;
+	list->head_redirect->next->next->next->next = ch;
+
+
+___________________________________________________
+
+
+wc -l < 1 << 2 << 3 < 4 << 5
+
+
+char *cmdd[] = {"wc", "-l", NULL};
+
+	list = ft_lstnew(cmdd, env);
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "1";
+	list->head_redirect->flag_for_stdin = 1;
+
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filename = "2";
+	one->flag_for_stdin = 2;
+	list->head_redirect->next = one;
+
+	t_redirect *two;
+	two = ft_lstnew_redirect();
+	two->filename = "3";
+	two->flag_for_stdin = 2;
+	list->head_redirect->next->next = two;
+
+	t_redirect *three;
+	three = ft_lstnew_redirect();
+	three->filename = "4";
+	three->flag_for_stdin = 1;
+	list->head_redirect->next->next->next = three;
+
+	t_redirect *ch;
+	ch = ft_lstnew_redirect();
+	ch->filename = "5";
+	ch->flag_for_stdin = 2;
+	ch->flag = 1;
+	list->head_redirect->next->next->next->next = ch;
+	
+	
+	____________________________________________________________
+	
+	
+	
+	cat < 1 > 2 >> 3 << 4 << 5 > 6
+	
+	
+	
+	char *cmdd[] = {"cat", NULL};
+
+
+	list = ft_lstnew(cmdd, env);
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "1";
+	list->head_redirect->flag_for_stdin = 1;
+
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filename = "2";
+	one->flag_for_stdout = 1;
+	list->head_redirect->next = one;
+
+	t_redirect *two;
+	 two = ft_lstnew_redirect();
+	 two->filename = "3";
+	 two->flag_for_stdout = 2;
+	 list->head_redirect->next->next = two;
+
+	 t_redirect *three;
+	 three = ft_lstnew_redirect();
+	 three->filename = "4";
+	 three->flag_for_stdin = 2;
+	 list->head_redirect->next->next->next = three;
+
+	 t_redirect *ch;
+	 ch = ft_lstnew_redirect();
+	 ch->filename = "5";
+	 ch->flag_for_stdin = 2;
+	 ch->flag = 1;
+	 list->head_redirect->next->next->next->next = ch;
+
+	 t_redirect *c;
+	 c = ft_lstnew_redirect();
+	 c->filename = "6";
+	 c->flag_for_stdout = 1;
+	 c->flag = 1;
+	 list->head_redirect->next->next->next->next->next = c;
+	
+	
+	_____________________________________________________________
+	
+	
+	ls > 1 >> 2 | wc -l > 3 > 4
+	
+	char *cmdd[] = {"ls", NULL};
+
+	list = ft_lstnew(cmdd, env);
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "1";
+	list->head_redirect->flag_for_stdout = 1;
+
+	t_redirect *one;
+	one = ft_lstnew_redirect();
+	one->filename = "2";
+	one->flag = 1;
+	one->flag_for_stdout = 2;
+	list->head_redirect->next = one;
+
+
+
+
+
+	char *cmdd2[] = {"wc", "-l", NULL};
+
 	new = ft_lstnew(cmdd2, env);
 	list->next = new;
-	ff = ft_lstnew(cmdd3, env);
-	ff->filename = str;
-	list->next->next = ff;
- 
- 		list->flag_for_pipe = 1;
-		list->next->flag_for_pipe = 1;
-		list->next->next->flag_for_stdout = 2;
-__________________________________________________________
+	list->next->head_redirect = ft_lstnew_redirect();
+	list->next->head_redirect->filename = "3";
+	list->next->head_redirect->flag_for_stdout = 1;
 
-
-echo fff ggg | wc -l > test
-
-char *cmdd[] = {"echo", "fff", "ggg", NULL};
-char *cmdd3[] = {"wc", "-l", NULL};
-char *str = "test";
- 
- 
- 	list = ft_lstnew(cmdd, env);
-	ff = ft_lstnew(cmdd3, env);
-	ff->filename = str;
-	list->next = ff;
+	t_redirect *on;
+	on = ft_lstnew_redirect();
+	on->filename = "4";
+	// one->flag_for_stdin = 1;
+	on->flag = 1;
+	on->flag_for_stdout = 2;
+	list->next->head_redirect->next = on;
 	
-		list->flag_for_pipe = 1;
-		list->next->flag_for_stdout = 2;
-		
-___________________________________________________________
+	
+	
+	
+	list->flag_for_pipe = 1;
+	list->next->flag_for_pipe = -1;
 
 
-ls > 3 > 5 > 6
+
+_____________________________________________________________________
+
+
+cat < 3 | ls < 2 (ls > 2)
+
+char *cmdd[] = {"ls", NULL};
+
+	list = ft_lstnew(cmdd, env);
+
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "3";
+	list->head_redirect->flag = 1;
+	list->head_redirect->flag_for_stdin = 1;
+	
+	
+
+	char *cmdd2[] = {"wc", NULL};
+
+	new = ft_lstnew(cmdd2, env);
+	list->next = new;
+
+	list->next->head_redirect = ft_lstnew_redirect();
+	list->next->head_redirect->filename = "2";
+	list->next->head_redirect->flag = 1;
+	list->next->head_redirect->flag_for_stdin = 1;
+
+
+
+
+	list->flag_for_pipe = 1;
+	list->next->flag_for_pipe = -1;
+	
+	
+	_____________________________________________________________
+
+
+cat << 3 | ls << 2 (ls > 2)
+
+char *cmdd[] = {"ls", NULL};
+
+	list = ft_lstnew(cmdd, env);
+
+	list->head_redirect = ft_lstnew_redirect();
+	list->head_redirect->filename = "3";
+	list->head_redirect->flag = 1;
+	list->head_redirect->flag_for_stdin = 1;
+	
+	
+
+	char *cmdd2[] = {"wc", NULL};
+
+	new = ft_lstnew(cmdd2, env);
+	list->next = new;
+
+	list->next->head_redirect = ft_lstnew_redirect();
+	list->next->head_redirect->filename = "2";
+	list->next->head_redirect->flag = 1;
+	list->next->head_redirect->flag_for_stdin = 1;
+
+
+
+
+	list->flag_for_pipe = 1;
+	list->next->flag_for_pipe = -1;
+	
+	
+	_____________________________________________________________________
+	
+	
+	 
