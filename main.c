@@ -92,7 +92,5 @@ void ft_print_all(t_data *data)
 		printf("______________\n");
 		tmp = tmp->next;
 	}
-
-
 }
 
