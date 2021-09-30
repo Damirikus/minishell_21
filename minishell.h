@@ -55,7 +55,7 @@ int ft_stdin(char **path, t_list *list, t_redirect *current);
 void ft_pwd(char *full_path, t_list *list);
 int ft_distributor(t_list *list, t_data *data);
 
-void ft_cd(char *full_path, t_list *list, int len);
+void ft_cd(t_list *list, int len);
 void ft_exit(t_list *list, int len);
 int ft_redirections(t_list *list, char **path);
 int ft_first_variation(t_list *list, char **path);

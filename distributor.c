@@ -15,6 +15,8 @@ int ft_realization(t_list *list, t_data *data)
 	}
 	if (!strcmp(list->cmd[0], "exit"))
 		ft_exit(list, data->len);
+	if (!strcmp(list->cmd[0], "cd"))
+		ft_cd(list, data->len);
 //	else if (!strcmp(list->cmd[0], "export"))
 //		ft_exit(list);
 //	else if (!strcmp(list->cmd[0], "unset"))
@@ -55,8 +57,8 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_echo(full_path, list);
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd(full_path, list);
-	else if (!strcmp(list->cmd[0], "cd"))
-		ft_cd(full_path, list, data->len);
+//	else if (!strcmp(list->cmd[0], "cd"))
+//		ft_cd(full_path, list, data->len);
 	else
 	{
 		if (execve(full_path, list->cmd, list->env) == -1)
@@ -153,7 +155,7 @@ void ft_echo(char *full_path, t_list *list)
 	exit(0);
 }
 
-void ft_cd(char *full_path, t_list *list, int len)
+void ft_cd(t_list *list, int len)
 {
 	int i;
 	char s[200];
@@ -168,14 +170,14 @@ void ft_cd(char *full_path, t_list *list, int len)
 	{
 		printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
         code_exit = 1;
-		exit(1);
+		return ;
 	}
-	else
-	{
-		printf("%s\n", getcwd(s, 100));
+//	else
+//	{
+//		printf("%s\n", getcwd(s, 100));
         code_exit = 0;
-        exit(0);
-	}
+		return;
+//	}
 }
 //
 int ft_find_home(t_list *list)
