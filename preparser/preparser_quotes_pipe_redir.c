@@ -1,14 +1,14 @@
-#include "minishell.h"
+#include "preparser.h"
 
 
-int	check_quotes_skip(char *str, int *i, int code)
+void	check_quotes_skip(char *str, int *i, int code)
 {
 	if (code == 2)
 	{
 		while (str[*i] != '\"' && str[*i] != '\0')
 			*i = *i + 1;
 		if (str[*i] == '\0')
-			return(ft_error(1));
+			ft_error(1);
 		else
 			*i = *i + 1;
 	}
@@ -17,31 +17,29 @@ int	check_quotes_skip(char *str, int *i, int code)
 		while (str[*i] != '\'' && str[*i] != '\0')
 			*i = *i + 1;
 		if (str[*i] == '\0')
-			return(ft_error(1));
+			ft_error(1);
 		else
 			*i = *i + 1;
 	}
-	return (0);
 }
 
-int	check_quotes(char *str, int *i)
+void	check_quotes(char *str, int *i)
 {
 	if (str[*i] == '\"')
 	{
 		*i = *i + 1;
-		if (check_quotes_skip(str, i, 2))
-			return (1);
+		check_quotes_skip(str, i, 2);
+			// return (1);
 	}
 	if (str[*i] == '\'')
 	{
 		*i = *i + 1;
-		if (check_quotes_skip(str, i, 1))
-			return (1);
-	}
-	return (0);
+		check_quotes_skip(str, i, 1);
+			// return (1);
+	} // 'l''s' "-l'a" | wc '-"l'
 }
 
-int	check_pipe(char *str, int *i)
+void	check_pipe(char *str, int *i)
 {
 	int	j;
 
@@ -57,10 +55,9 @@ int	check_pipe(char *str, int *i)
 		ft_error(2);
 	if (str[j] == '\0')
 		ft_error(3);
-	return (0);
 }
 
-int	check_redir(char *str, int *i) //wc -l > ""
+void	check_redir(char *str, int *i) //wc -l > ""
 {
 	int	j;
 	
@@ -82,14 +79,12 @@ int	check_redir(char *str, int *i) //wc -l > ""
 		ft_error(4);
 	if (str[j] == '>')
 		ft_error(6);
-	return (0);
 }
 
-int	check_pipe_redir(char *str, int *i)
+void	check_pipe_redir(char *str, int *i)
 {
 	if (str[*i] == '|')
 		check_pipe(str, i);
 	if (str[*i] == '<' || str[*i] == '>')
 		check_redir(str, i);
-	return (0);
 }

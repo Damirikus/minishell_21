@@ -107,8 +107,11 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell);
 /* prepars && pars */
 int		ft_error(int code);
 int		preparser(char *str);
-void	check_quotes(char *str, int *i);
-void	check_pipe_redir(char *str, int *i);
+int		check_quotes(char *str, int *i);
+int		check_pipe_redir(char *str, int *i);
+int		check_quotes_skip(char *str, int *i, int code);
+int		check_pipe(char *str, int *i);
+int		check_redir(char *str, int *i);
 //void	parser(char *str, char **env);
 t_list	*parser(char *str, char **env);
 
@@ -146,9 +149,6 @@ void	list_free_redirect(t_redirect **redirect);
 void	list_free_command(t_list **head);
 void	list_free(t_list **head);
 
-void	check_quotes_skip(char *str, int *i, int code);
-void	check_pipe(char *str, int *i);
-void	check_redir(char *str, int *i);
 void	ft_print_list(t_list *head_command);
 
 
