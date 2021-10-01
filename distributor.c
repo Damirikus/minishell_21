@@ -17,7 +17,7 @@ int ft_realization(t_list *list, t_data *data)
 		ft_exit(list, data->len);
 	if (!strcmp(list->cmd[0], "cd"))
 		ft_cd(list, data->len);
-//	else if (!strcmp(list->cmd[0], "export"))
+	// else if (!strcmp(list->cmd[0], "export") && data->head_command->next == NULL)
 //		ft_exit(list);
 //	else if (!strcmp(list->cmd[0], "unset"))
 //		ft_exit(list);
@@ -61,7 +61,8 @@ int ft_distributor(t_list *list, t_data *data)
 //		ft_cd(full_path, list, data->len);
 	else
 	{
-		if (execve(full_path, list->cmd, list->env) == -1)
+		// if (execve(full_path, list->cmd, list->env) == -1)
+		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
 			code_exit = 127;
