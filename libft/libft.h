@@ -43,6 +43,7 @@ char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_export(char *s1, char *s2);
+char	*ft_strjoin_cd(char const *s1, char const *s2);
 
 int		ft_strlen_g(const char *str);
 int		ft_strcmp(const char *ss1, const char *ss2);
