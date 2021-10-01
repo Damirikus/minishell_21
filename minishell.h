@@ -14,6 +14,7 @@
 #include <readline/history.h>
 #include <errno.h>
 #include <ctype.h>
+#include <dirent.h>
 #include "get_next_line.h"
 # define RED "\x1B[31m"
 # define WHITE "\x1B[37m"
@@ -53,7 +54,7 @@ char *ft_make_path(char **path, t_list *list);
 void ft_pwd(char *full_path, t_list *list);
 int ft_distributor(t_list *list, t_data *data);
 
-void ft_cd(t_list *list, int len);
+void ft_cd(t_list *list, t_data *data);
 void ft_exit(t_list *list, int len);
 t_redirect *ft_chek_files_fifth(t_list *list, char **path);
 int ft_chek_all_files(t_list *list);
@@ -63,7 +64,7 @@ int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
 //int ft_realization(t_list *list, char **path, int len);
 int ft_realization(t_list *list, t_data *data);
-int ft_find_home(t_list *list);
+int ft_find_home(t_list *list, t_data *data);
 
 
 /* Aslan utils */

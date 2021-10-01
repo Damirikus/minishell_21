@@ -16,7 +16,7 @@ int ft_realization(t_list *list, t_data *data)
 	if (!strcmp(list->cmd[0], "exit"))
 		ft_exit(list, data->len);
 	if (!strcmp(list->cmd[0], "cd"))
-		ft_cd(list, data->len);
+		ft_cd(list, data);
 	// else if (!strcmp(list->cmd[0], "export") && data->head_command->next == NULL)
 //		ft_exit(list);
 //	else if (!strcmp(list->cmd[0], "unset"))
@@ -57,8 +57,6 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_echo(full_path, list);
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd(full_path, list);
-//	else if (!strcmp(list->cmd[0], "cd"))
-//		ft_cd(full_path, list, data->len);
 	else
 	{
 		// if (execve(full_path, list->cmd, list->env) == -1)
@@ -156,16 +154,33 @@ void ft_echo(char *full_path, t_list *list)
 	exit(0);
 }
 
-void ft_cd(t_list *list, int len)
+void ft_cd(t_list *list, t_data *data)
 {
+
 	int i;
+	DIR *str;
 	char s[200];
 	i = 0;
 	while (list->cmd[i])
 		i++;
 	if (!list->cmd[1] || list->cmd[1][0] == '~')
 	{
-		ft_find_home(list);
+		ft_find_home(list, data);
+	}
+	if (data->len > 1)
+	{
+		if (list->fd1 != -1)
+			close(list->fd1);
+		str = opendir(list->cmd[1]);
+		if (!str)
+		{
+			printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
+			code_exit = 1;
+			return;
+		}
+		closedir(str);
+		return;
+
 	}
 	if (chdir(list->cmd[1]) != 0)
 	{
@@ -173,36 +188,31 @@ void ft_cd(t_list *list, int len)
         code_exit = 1;
 		return ;
 	}
-//	else
-//	{
-//		printf("%s\n", getcwd(s, 100));
-        code_exit = 0;
-		return;
-//	}
+	code_exit = 0;
 }
-//
-int ft_find_home(t_list *list)
+
+int ft_find_home(t_list *list, t_data *data)
 {
 	int i;
 	i = 0;
-	while (list->env[i])
+	while (data->current_env[i])
 	{
-		if (list->env[i][0] == 'H' && list->env[i][1] == 'O' && list->env[i][2] == 'M' && list->env[i][3] == 'E')
+		if (data->current_env[i][0] == 'H' && data->current_env[i][1] == 'O' && data->current_env[i][2] == 'M'
+		&& data->current_env[i][3] == 'E' && data->current_env[i][4] == '=')
 		{
 			if (!list->cmd[1])
 			{
-//				free(list->cmd[0]);
-//				free(list->cmd[1]);
-//				free(cmd);
+				free(list->cmd[0]);
+				free(list->cmd);
 				list->cmd = malloc( sizeof(char *) * 3);
 				list->cmd[2] = NULL;
-				list->cmd[0] = malloc(3);
+				list->cmd[0] = malloc(sizeof(char) * 3);
 				ft_strlcpy(list->cmd[0], "cd", 3);
-				list->cmd[1] = ft_strjoin(list->env[i] + 5, "");
+				list->cmd[1] = ft_strjoin_cd(data->current_env[i] + 5, "");
 
 			}
 			else if (list->cmd[1][0] == '~')
-				list->cmd[1] = ft_strjoin(list->env[i] + 5, list->cmd[1] + 1);
+				list->cmd[1] = ft_strjoin_cd(list->env[i] + 5, list->cmd[1] + 1);
 		}
 		i++;
 	}
