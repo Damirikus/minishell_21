@@ -19,8 +19,8 @@ int ft_realization(t_list *list, t_data *data)
 		ft_cd(list, data);
 	// else if (!strcmp(list->cmd[0], "export") && data->head_command->next == NULL)
 //		ft_exit(list);
-//	else if (!strcmp(list->cmd[0], "unset"))
-//		ft_exit(list);
+	else if (!strcmp(list->cmd[0], "unset"))
+		ft_unset(data, list);
 	else
 	{
 //		printf("cheeettttttt\n");
@@ -45,8 +45,6 @@ int ft_realization(t_list *list, t_data *data)
 	return (0);
 }
 
-
-
 int ft_distributor(t_list *list, t_data *data)
 {
 	char *full_path;
@@ -69,6 +67,19 @@ int ft_distributor(t_list *list, t_data *data)
 	}
 	exit(0);
 		
+}
+
+void	ft_unset(t_data *data, t_list *list)
+{
+	int	i;
+
+	i = 1;
+	while (list->cmd[i])
+	{
+		if (!check_name_unset(list->cmd[i]))
+			unset_env(data, list->cmd[i]);
+		i++;
+	}
 }
 
 void ft_pwd(char *full_path, t_list *list)
