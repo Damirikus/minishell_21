@@ -75,7 +75,6 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_pwd(full_path, list);
 	else
 	{
-		// if (execve(full_path, list->cmd, list->env) == -1)
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
@@ -193,17 +192,14 @@ void ft_echo(char *full_path, t_list *list)
 
 void ft_cd(t_list *list, t_data *data)
 {
-
 	int i;
 	DIR *str;
-	char s[200];
+
 	i = 0;
 	while (list->cmd[i])
 		i++;
 	if (!list->cmd[1] || list->cmd[1][0] == '~')
-	{
 		ft_find_home(list, data);
-	}
 	if (data->len > 1)
 	{
 		if (list->fd1 != -1)
@@ -217,7 +213,6 @@ void ft_cd(t_list *list, t_data *data)
 		}
 		closedir(str);
 		return;
-
 	}
 	if (chdir(list->cmd[1]) != 0)
 	{
