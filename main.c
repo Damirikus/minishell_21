@@ -47,7 +47,7 @@ int main(int argc, char **argv, char **env)
 		//  list = ft_pars(input);
 		if (!preparser(input))
 		{
-			data->head_command = parser(input, env);
+			data->head_command = parser(input, data->current_env);
 			tmp = data->head_command;
 			while (tmp)
 			{

@@ -88,7 +88,11 @@ void	ft_free_for_export(t_data *shell);
 void	list_to_2D_massive_export_sort_sys(t_data *shell);
 void	print_list_env1(t_env *head);
 void	print_2d_massive(char **mass);
-
+void	unset_env(t_data *shell, char *key);
+void	renew_env_export_massive(t_data *shell);
+int		ft_strlen_key(char *str);
+void	ft_unset(t_data *data, t_list *list);
+int		check_name_unset(char *str);
 
 /* prepars && pars */
 int		ft_error(int code);
