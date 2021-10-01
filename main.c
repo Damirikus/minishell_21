@@ -18,11 +18,11 @@ int main(int argc, char **argv, char **env)
 
 	t_list *tmp;
 	env_to_list(data);
-	print_list_env1(data->head_env);
-	printf("\n\n\n\n");
-	print_2d_massive(data->current_env);
-	printf("\n\n\n\n");
-	print_2d_massive(data->current_export);
+	// print_list_env1(data->head_env);
+	// printf("\n\n\n\n");
+	// print_2d_massive(data->current_env);
+	// printf("\n\n\n\n");
+	// print_2d_massive(data->current_export);
 	
 	
 	
