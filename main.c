@@ -18,16 +18,6 @@ int main(int argc, char **argv, char **env)
 
 	t_list *tmp;
 	env_to_list(data);
-	// print_list_env1(data->head_env);
-	// printf("\n\n\n\n");
-	// print_2d_massive(data->current_env);
-	// printf("\n\n\n\n");
-	// print_2d_massive(data->current_export);
-	
-	
-	
-	
-	// exit(0);
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);
@@ -49,11 +39,11 @@ int main(int argc, char **argv, char **env)
 		{
 			data->head_command = parser(input, data->current_env);
 			tmp = data->head_command;
-			while (tmp)
-			{
-				tmp->env = env;
-				tmp = tmp->next;
-			}
+			// while (tmp)
+			// {
+			// 	tmp->env = data->current_env;
+			// 	tmp = tmp->next;
+			// }
 
 			ft_print_all(data);
 

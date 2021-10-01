@@ -85,6 +85,7 @@ int		both_are_sys(t_data *shell, int i);
 void	list_to_2D_massive_env(t_data *shell);
 void	list_to_2D_massive_export(t_data *shell);
 void	ft_free_for_export(t_data *shell);
+void	ft_free_for_env(t_data *shell);
 void	list_to_2D_massive_export_sort_sys(t_data *shell);
 void	print_list_env1(t_env *head);
 void	print_2d_massive(char **mass);
