@@ -8,6 +8,7 @@ int	check_name_unset(char *str)
 	if (!isalpha(str[i]))
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", str);
+		code_exit = 1;
 		return (1);
 	}
 	while (isalnum(str[i]))
@@ -15,6 +16,7 @@ int	check_name_unset(char *str)
 	if (str[i] != '\0')
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", str);
+		code_exit = 1;
 		return (1);
 	}
 	return (0);

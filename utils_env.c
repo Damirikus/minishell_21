@@ -8,7 +8,7 @@ char	*add_quotes(char *str)
 
 	i = 0;
 	j = 0;
-	result = malloc(sizeof(char) * (ft_strlen_g(str) + 2));
+	result = malloc(sizeof(char) * (ft_strlen_g(str) + 3));
 	while (str[i] != '\0' && str[i] != '=')
 	{
 		result[j] = str[i];
