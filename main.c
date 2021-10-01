@@ -11,13 +11,23 @@ int main(int argc, char **argv, char **env)
 	data->len = 0;
 	data->current_env = NULL;
 	data->current_export = NULL;
-	data->original_env = NULL;
+	data->original_env = env;
 	data->head_env = NULL;
 	t_list *current;
 	data->path = ft_path(getenv("PATH"));
 
 	t_list *tmp;
-
+	env_to_list(data);
+	// print_list_env1(data->head_env);
+	// printf("\n\n\n\n");
+	// print_2d_massive(data->current_env);
+	// printf("\n\n\n\n");
+	// print_2d_massive(data->current_export);
+	
+	
+	
+	
+	// exit(0);
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);

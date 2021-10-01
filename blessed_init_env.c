@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+void	print_list_env1(t_env *head)
+{
+	t_env *tmp;
+	
+	tmp = head;
+	while (tmp)
+	{
+		printf("%s\n", tmp->content);
+		tmp = tmp->next;
+	}
+}
+
+void	print_2d_massive(char **mass)
+{
+	int i = -1;
+	while (mass[++i])
+		printf("%s\n", mass[i]);
+}
+
 void	env_to_list(t_data *shell) //  Оригинальные переменные окружения в листы и обратно
 {
 	int	i;
