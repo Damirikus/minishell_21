@@ -63,6 +63,7 @@ void	list_to_2D_massive_env(t_data *shell) // Листы в двойной ча�
 
 	if (shell->current_env)
 		free(shell->current_env);
+	// 	ft_free_for_env(shell);
 	shell->current_env = malloc(sizeof(char *) * (ft_lstsize_env(shell->head_env) + 1));
 	i = -1;
 	tmp = shell->head_env;
@@ -80,6 +81,7 @@ void	list_to_2D_massive_export(t_data *shell)
 	int		i;
 	int		j;
 	t_env	*tmp;
+	char	*str;
 
 	if (shell->current_export)
 		ft_free_for_export(shell);
@@ -91,23 +93,42 @@ void	list_to_2D_massive_export(t_data *shell)
 	{
 		if (!(tmp->content[0] == '_' && tmp->content[1] == '='))
 		{
-			shell->current_export[j] = ft_strjoin_export("declare -x ", add_quotes(tmp->content));
+			str = add_quotes(tmp->content);
+			shell->current_export[j] = ft_strjoin_export("declare -x ", str);
+			// shell->current_export[j] = ft_strjoin_export("declare -x ", tmp->content);
+			free(str);
 			j++;
 		}
 		tmp = tmp->next;
 	}
 	shell->current_export[j] = NULL;
-	list_to_2D_massive_export_sort_sys(shell);
+	// list_to_2D_massive_export_sort_sys(shell);
 }
 
 void	ft_free_for_export(t_data *shell)
 {
 	int	i;
 
-	i = -1;
-	while (shell->current_export[++i])
+	i = 0;
+	while (shell->current_export[i])
+	{
 		free(shell->current_export[i]);
+		i++;
+	}
 	free(shell->current_export);
+}
+
+void	ft_free_for_env(t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->current_env[i])
+	{
+		free(shell->current_env[i]);
+		i++;
+	}
+	free(shell->current_env);
 }
 
 void	list_to_2D_massive_export_sort_sys(t_data *shell)

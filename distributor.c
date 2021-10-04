@@ -21,6 +21,24 @@ int ft_realization(t_list *list, t_data *data)
 //		ft_exit(list);
 	else if (!strcmp(list->cmd[0], "unset"))
 		ft_unset(data, list);
+	else if (!strcmp(list->cmd[0], "print_env_mass"))
+	{
+		printf("\n\n\n\n");
+		print_2d_massive(data->current_env);
+		printf("\n\n\n\n");
+	}
+	else if (!strcmp(list->cmd[0], "print_env_list"))
+	{
+		printf("\n\n\n\n");
+		print_list_env1(data->head_env);
+		printf("\n\n\n\n");
+	}
+	else if (!strcmp(list->cmd[0], "print_export_mass"))
+	{
+		printf("\n\n\n\n");
+		print_2d_massive(data->current_export);
+		printf("\n\n\n\n");
+	}
 	else
 	{
 //		printf("cheeettttttt\n");
@@ -68,17 +86,25 @@ int ft_distributor(t_list *list, t_data *data)
 		
 }
 
-void	ft_unset(t_data *data, t_list *list)
+void	ft_unset(t_data *data, t_list *list) // проверить возвращаемый код ошибки code_exit
 {
 	int	i;
+	int	code;
+	int	flag;
 
 	i = 1;
+	code = 0;
+	flag = 0;
 	while (list->cmd[i])
 	{
-		if (!check_name_unset(list->cmd[i]))
+		code = check_name_unset(list->cmd[i]);
+		if (code && !flag)
+			flag = 1;
+		if (!code && data->head_command->next == NULL)
 			unset_env(data, list->cmd[i]);
 		i++;
 	}
+	code_exit = flag;
 }
 
 void ft_pwd(char *full_path, t_list *list)
