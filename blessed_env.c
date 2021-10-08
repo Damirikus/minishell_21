@@ -22,6 +22,28 @@ int	check_name_unset(char *str)
 	return (0);
 }
 
+int	check_name_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!isalpha(str[i]))
+	{
+		printf("bash: unset: `%s': not a valid identifier\n", str);
+		code_exit = 1;
+		return (1);
+	}
+	while (isalnum(str[i]))
+		i++;
+	if (str[i] != '=' && str[i] != '\0')
+	{
+		printf("bash: export: `%s': not a valid identifier\n", str);
+		code_exit = 1;
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_strlen_key(char *str)
 {
 	int	i;
@@ -49,7 +71,7 @@ void	unset_env(t_data *shell, char *key)
 	tmp = shell->head_env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0)
+		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0 && ft_strlen_key(tmp->content) == strlen(key))
 		{
 			if (ft_strcmp(tmp->content, shell->head_env->content) == 0) // Условие для самого первого элемента
 			{
@@ -69,8 +91,38 @@ void	unset_env(t_data *shell, char *key)
 	renew_env_export_massive(shell);
 }
 
+int	export_env_variable_present(t_data *shell, char *str)
+{
+	t_env	*tmp;
+
+	tmp = shell->head_env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->content, str, ft_strlen_key(tmp->content)) == 0) // ????
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	export_env_variable_strong(char *string)
+{
+	int	i;
+
+	i = 0;
+	while (isalnum(string[i]))
+		i++;
+	if (string[i] == '=')
+		return (1);
+	return (0);
+}
+
 void	export_env(t_data *shell, char *string) // Скетч, нужно доработать
 {
+	if (export_env_variable_present(shell, string) && !export_env_variable_strong(string))
+		return ;
+	if (export_env_variable_present(shell, string) && export_env_variable_strong(string))
+		unset_env(shell, string);
 	ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(string));
 	renew_env_export_massive(shell);
 }
