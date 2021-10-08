@@ -2,6 +2,10 @@
 
 // тут происходит распределение по командам на исполнение
 
+void	printjkee(t_data *data)
+{
+	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
+}
 
 int ft_realization(t_list *list, t_data *data)
 {
@@ -15,8 +19,12 @@ int ft_realization(t_list *list, t_data *data)
 	}
 	if (!strcmp(list->cmd[0], "exit"))
 		ft_exit(list, data->len);
-	if (!strcmp(list->cmd[0], "cd"))
+	else if (!strcmp(list->cmd[0], "cd"))
 		ft_cd(list, data);
+	else if (!strcmp(list->cmd[0], "printjkee"))
+		printjkee(data);
+	else if (!strcmp(list->cmd[0], "printlist"))
+		print_list_env1(data->head_env);
 	else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
 		ft_export(data, list);
 	else if (!strcmp(list->cmd[0], "unset"))
@@ -47,11 +55,6 @@ int ft_realization(t_list *list, t_data *data)
 			close(list->fd1);
 	}
 	return (0);
-}
-
-void	change_pwd_oldpwd(t_data *data)
-{
-	
 }
 
 int ft_distributor(t_list *list, t_data *data)
@@ -236,6 +239,7 @@ void ft_cd(t_list *list, t_data *data)
         code_exit = 1;
 		return ;
 	}
+	// renew_pwd_oldpwd(data);
 	code_exit = 0;
 }
 

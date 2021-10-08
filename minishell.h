@@ -99,6 +99,8 @@ void	ft_unset(t_data *data, t_list *list);
 void	ft_export(t_data *data, t_list *list);
 int		check_name_unset(char *str);
 int		check_name_export(char *str);
+void	pwd_oldpwd_remaker(t_data *data);
+void	renew_pwd_oldpwd(t_data *data);
 // void	set_current_dir_name(t_data *data);
 
 /* prepars && pars */
