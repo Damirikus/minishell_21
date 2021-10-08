@@ -48,6 +48,9 @@ typedef struct s_data
 } t_data;
 
 
+/* SIGNAL */
+void ft_ctrlc(int signal);
+
 char **ft_path(char *str);
 void ft_echo(char *full_path, t_list *list);
 int ft_pipe(char **path, t_list *list);

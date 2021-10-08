@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **env)
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);
-//		signal(SIGQUIT, ft_ctrlq);
+		signal(SIGQUIT, SIG_IGN);
 //		signal(SIGQUIT, ft_ctrld);
 
 
@@ -47,12 +47,6 @@ int main(int argc, char **argv, char **env)
 		{
 			data->head_command = parser(input, data->current_env);
 			tmp = data->head_command;
-			// while (tmp)
-			// {
-			// 	tmp->env = data->current_env;
-			// 	tmp = tmp->next;
-			// }
-
 			ft_print_all(data);
 
 			//на этом тапе происходит проверка всех файлов и их создание, если листов несколько, то есть пайпы
@@ -112,3 +106,12 @@ void ft_print_all(t_data *data)
 		tmp = tmp->next;
 	}
 }
+
+//void ft_ctrlc(int signal)
+//{
+//	printf("\n");
+//	rl_on_new_line();
+//	rl_replace_line("", 0);
+//	rl_redisplay();
+//
+//}
