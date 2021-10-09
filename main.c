@@ -26,8 +26,8 @@ int main(int argc, char **argv, char **env)
 	data->path = ft_path(getenv("PATH"));
 
 	t_list *tmp;
-	// while(1)
-	for (int k = 0; k < 1; k++)
+	while(1)
+	// for (int k = 0; k < 1; k++)
 	{
 //		signal(SIGINT, ft_ctrlc);
 		// signal(SIGQUIT, SIG_IGN);
@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **env)
 	}
 	free_whole_project(data);
 	free(data);
-	while (1);
+	// while (1);
 }
 
 void ft_print_all(t_data *data)
