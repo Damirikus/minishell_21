@@ -81,7 +81,6 @@ void	list_free_command(t_list **head)
 		pre->next = NULL;
 		i++;
 	}
-	// free(*head);
 	*head = NULL;
 }
 
