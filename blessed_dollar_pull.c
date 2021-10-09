@@ -133,7 +133,7 @@ void	dollar_pull_special_skip(char **pipe_mass, int i, int *j, char **env)
 	*j = *j + 1;
 	while (pipe_mass[i][*j] != '\"' && pipe_mass[i][*j] != '\0')
 	{
-		if (pipe_mass[i][*j] == '$')
+		if (pipe_mass[i][*j] == '$' && pipe_mass[i][*j + 1] > 32 && pipe_mass[i][*j + 1] != '\"')
 		{
 			dollar_pull_helper(pipe_mass, i, *j, env);
 			*j = -1;
@@ -160,7 +160,7 @@ void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, рас
 				dollar_pull_special_skip(pipe_mass, i, &j, env);
 			if (j != -1 && pipe_mass[i][j] == '\'')
 				ft_skip_quotes(pipe_mass[i], &j);
-			if (j != -1 && pipe_mass[i][j] == '$')
+			if (j != -1 && pipe_mass[i][j] == '$' && pipe_mass[i][j + 1] > 32)
 			{
 				dollar_pull_helper(pipe_mass, i, j, env);
 				j = -1;

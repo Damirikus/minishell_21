@@ -7,7 +7,7 @@ int	check_name_unset(char *str)
 	i = 0;
 	if (!isalpha(str[i]) && str[i] != '_')
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", str);
+		printf("minishell: unset: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
@@ -15,7 +15,7 @@ int	check_name_unset(char *str)
 		i++;
 	if (str[i] != '\0')
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", str);
+		printf("minishell: unset: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
@@ -29,7 +29,7 @@ int	check_name_export(char *str)
 	i = 0;
 	if (!isalpha(str[i]) && str[i] != '_')
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", str);
+		printf("minishell: export: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
@@ -37,7 +37,7 @@ int	check_name_export(char *str)
 		i++;
 	if (str[i] != '=' && str[i] != '\0')
 	{
-		printf("bash: export: `%s': not a valid identifier\n", str);
+		printf("minishell: export: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
@@ -71,7 +71,7 @@ void	unset_env(t_data *shell, char *key)
 	tmp = shell->head_env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0 && ft_strlen_key(tmp->content) == strlen(key))
+		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0 && ft_strlen_key(tmp->content) == ft_strlen_key(key))
 		{
 			if (ft_strcmp(tmp->content, shell->head_env->content) == 0) // Условие для самого первого элемента
 			{
