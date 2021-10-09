@@ -235,7 +235,7 @@ void ft_cd(t_list *list, t_data *data)
         code_exit = 1;
 		return ;
 	}
-	// renew_pwd_oldpwd(data);
+	renew_pwd_oldpwd(data);
 	code_exit = 0;
 }
 
