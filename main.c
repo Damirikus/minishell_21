@@ -109,9 +109,9 @@ void ft_print_all(t_data *data)
 
 //void ft_ctrlc(int signal)
 //{
+//	(void)signal;
 //	printf("\n");
 //	rl_on_new_line();
 //	rl_replace_line("", 0);
 //	rl_redisplay();
-//
 //}
