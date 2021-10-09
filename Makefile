@@ -19,7 +19,7 @@ SRCS	= main.c pipex.c redirect.c distributor.c get_next_line.c get_next_line_uti
 $(NAME):	$(SRCS) $(HEADER)
 			$(MAKE) all -C ./libft
 			cp libft/libft.a ./$(NAME)
-			$(CC) $(SRCS) ./libft/libft.a -lreadline  -o ${NAME}
+			$(CC) $(SRCS) ./libft/libft.a -lreadline -o ${NAME}
 	
 all: $(NAME)
 	
@@ -35,3 +35,4 @@ re:		fclean all
 .PHONY: all clean fclean re
 
 # -L .brew/opt/readline/lib -I .brew/opt/readline/include
+#-L/Users/$(USER)/.brew/Cellar/readline/8.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1/include
