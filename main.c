@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+void	initial_env_maker(t_data *data, char **env)
+{
+	data->head_command = NULL;
+	data->current_env = NULL;
+	data->current_export = NULL;
+	data->original_env = env;
+	data->head_env = NULL;
+	data->current_pwd = NULL;
+	data->current_oldpwd = NULL;
+	env_to_list(data);
+	// pwd_oldpwd_remaker(data);
+}
+
 int main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -7,17 +20,12 @@ int main(int argc, char **argv, char **env)
 	char* input;
 	t_data *data;
 	data = malloc(sizeof(t_data));
-	data->head_command = NULL;
-	data->len = 0;
-	data->current_env = NULL;
-	data->current_export = NULL;
-	data->original_env = env;
-	data->head_env = NULL;
+	initial_env_maker(data, env);
 	t_list *current;
+	data->len = 0;
 	data->path = ft_path(getenv("PATH"));
 
 	t_list *tmp;
-	env_to_list(data);
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);

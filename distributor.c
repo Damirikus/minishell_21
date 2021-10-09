@@ -2,6 +2,10 @@
 
 // тут происходит распределение по командам на исполнение
 
+void	printjkee(t_data *data)
+{
+	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
+}
 
 int ft_realization(t_list *list, t_data *data)
 {
@@ -15,30 +19,20 @@ int ft_realization(t_list *list, t_data *data)
 	}
 	if (!strcmp(list->cmd[0], "exit"))
 		ft_exit(list, data->len);
-	if (!strcmp(list->cmd[0], "cd"))
+	else if (!strcmp(list->cmd[0], "cd"))
 		ft_cd(list, data);
-	// else if (!strcmp(list->cmd[0], "export") && data->head_command->next == NULL)
-//		ft_exit(list);
+	else if (!strcmp(list->cmd[0], "printjkee"))
+		printjkee(data);
+	else if (!strcmp(list->cmd[0], "printlist"))
+		print_list_env1(data->head_env);
+	else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
+		ft_export(data, list);
 	else if (!strcmp(list->cmd[0], "unset"))
 		ft_unset(data, list);
-	else if (!strcmp(list->cmd[0], "print_env_mass"))
-	{
-		printf("\n\n\n\n");
+	else if (!strcmp(list->cmd[0], "env"))
 		print_2d_massive(data->current_env);
-		printf("\n\n\n\n");
-	}
-	else if (!strcmp(list->cmd[0], "print_env_list"))
-	{
-		printf("\n\n\n\n");
-		print_list_env1(data->head_env);
-		printf("\n\n\n\n");
-	}
-	else if (!strcmp(list->cmd[0], "print_export_mass"))
-	{
-		printf("\n\n\n\n");
+	else if (!strcmp(list->cmd[0], "export"))
 		print_2d_massive(data->current_export);
-		printf("\n\n\n\n");
-	}
 	else
 	{
 //		printf("cheeettttttt\n");
@@ -102,6 +96,27 @@ void	ft_unset(t_data *data, t_list *list) // проверить возвраща
 			flag = 1;
 		if (!code && data->head_command->next == NULL)
 			unset_env(data, list->cmd[i]);
+		i++;
+	}
+	code_exit = flag;
+}
+
+void	ft_export(t_data *data, t_list *list) // Если приходит аргумент без '=', и до этого эта переменная существовала => не делать ничего
+{
+	int	i;
+	int	code;
+	int	flag;
+
+	i = 1;
+	code = 0;
+	flag = 0;
+	while (list->cmd[i])
+	{
+		code = check_name_export(list->cmd[i]);
+		if (code && !flag)
+			flag = 1;
+		if (!code && data->head_command->next == NULL)
+			export_env(data, list->cmd[i]);
 		i++;
 	}
 	code_exit = flag;
@@ -220,6 +235,7 @@ void ft_cd(t_list *list, t_data *data)
         code_exit = 1;
 		return ;
 	}
+	// renew_pwd_oldpwd(data);
 	code_exit = 0;
 }
 

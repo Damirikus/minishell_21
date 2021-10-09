@@ -102,7 +102,7 @@ void	list_to_2D_massive_export(t_data *shell)
 		tmp = tmp->next;
 	}
 	shell->current_export[j] = NULL;
-	// list_to_2D_massive_export_sort_sys(shell);
+	list_to_2D_massive_export_sort_sys(shell);
 }
 
 void	ft_free_for_export(t_data *shell)
@@ -136,9 +136,12 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell)
 	int	i;
 	char *tmp;
 
-	i = -1;
-	while (++i < ft_lstsize_env(shell->head_env) - 2)
+	// i = -1;
+	i = 0;
+	// while (i < ft_lstsize_env(shell->head_env) - 2)
+	while (shell->current_export[i])
 	{
+		if (shell->current_export[i + 1] != NULL) {
 		if (ft_strcmp(shell->current_export[i], shell->current_export[i + 1]) == 1)
 		{
 			tmp = shell->current_export[i];
@@ -146,5 +149,7 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell)
 			shell->current_export[i + 1] = tmp;
 			i = -1;
 		}
+		}
+		i++;
 	}
 }
