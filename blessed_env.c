@@ -71,7 +71,7 @@ void	unset_env(t_data *shell, char *key)
 	tmp = shell->head_env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0 && ft_strlen_key(tmp->content) == strlen(key))
+		if (ft_strncmp(tmp->content, key, ft_strlen_key(tmp->content)) == 0 && ft_strlen_key(tmp->content) == ft_strlen_key(key))
 		{
 			if (ft_strcmp(tmp->content, shell->head_env->content) == 0) // Условие для самого первого элемента
 			{
