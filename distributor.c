@@ -35,7 +35,6 @@ int ft_realization(t_list *list, t_data *data)
 		print_2d_massive(data->current_export);
 	else
 	{
-//		printf("cheeettttttt\n");
 		pid = fork();
 		if (pid == 0)
 		{
@@ -272,8 +271,11 @@ void ft_exit(t_list *list, int len)
 {
 	int i;
 	long code;
+
 	if (len == 1)
 		printf("exit\n");
+	if (list->fd1 != -1 && len > 1)
+		close(list->fd1);
 	i = 0;
 	if (list->cmd[1])
 	{
@@ -285,9 +287,9 @@ void ft_exit(t_list *list, int len)
 			{
 				printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
 				if (len == 1)
-				exit(255);
+					exit(255);
 				else
-				return;
+					return;
 			}
 			i++;
 		}
@@ -295,7 +297,7 @@ void ft_exit(t_list *list, int len)
 		{
 			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
 				if (len == 1)
-			exit(255);
+					exit(255);
 				else
 					return;
 		}
