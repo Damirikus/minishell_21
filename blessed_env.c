@@ -5,13 +5,13 @@ int	check_name_unset(char *str)
 	int	i;
 
 	i = 0;
-	if (!isalpha(str[i]))
+	if (!isalpha(str[i]) && str[i] != '_')
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
-	while (isalnum(str[i]))
+	while (isalnum(str[i]) || str[i] == '_')
 		i++;
 	if (str[i] != '\0')
 	{
@@ -27,13 +27,13 @@ int	check_name_export(char *str)
 	int	i;
 
 	i = 0;
-	if (!isalpha(str[i]))
+	if (!isalpha(str[i]) && str[i] != '_')
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", str);
 		code_exit = 1;
 		return (1);
 	}
-	while (isalnum(str[i]))
+	while (isalnum(str[i]) || str[i] == '_')
 		i++;
 	if (str[i] != '=' && str[i] != '\0')
 	{
@@ -98,7 +98,7 @@ int	export_env_variable_present(t_data *shell, char *str)
 	tmp = shell->head_env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, str, ft_strlen_key(tmp->content)) == 0) // ????
+		if (ft_strncmp(tmp->content, str, ft_strlen_key(str)) == 0) // ????
 			return (1);
 		tmp = tmp->next;
 	}
@@ -110,7 +110,7 @@ int	export_env_variable_strong(char *string)
 	int	i;
 
 	i = 0;
-	while (isalnum(string[i]))
+	while (isalnum(string[i]) || string[i] == '_')
 		i++;
 	if (string[i] == '=')
 		return (1);
