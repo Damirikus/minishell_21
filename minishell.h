@@ -38,9 +38,11 @@ typedef struct s_data
 
 	/* Env && export */
 	t_env	*head_env;
-	char **original_env;
-	char **current_env;
-	char **current_export;
+	char	*current_pwd;
+	char	*current_oldpwd;
+	char	**original_env;
+	char	**current_env;
+	char	**current_export;
 
 
 } t_data;
@@ -93,10 +95,16 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell);
 void	print_list_env1(t_env *head);
 void	print_2d_massive(char **mass);
 void	unset_env(t_data *shell, char *key);
+void	export_env(t_data *shell, char *string);
 void	renew_env_export_massive(t_data *shell);
 int		ft_strlen_key(char *str);
 void	ft_unset(t_data *data, t_list *list);
+void	ft_export(t_data *data, t_list *list);
 int		check_name_unset(char *str);
+int		check_name_export(char *str);
+void	pwd_oldpwd_remaker(t_data *data);
+void	renew_pwd_oldpwd(t_data *data);
+// void	set_current_dir_name(t_data *data);
 
 /* prepars && pars */
 int		ft_error(int code);
