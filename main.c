@@ -10,7 +10,7 @@ void	initial_env_maker(t_data *data, char **env)
 	data->current_pwd = NULL;
 	data->current_oldpwd = NULL;
 	env_to_list(data);
-	// pwd_oldpwd_remaker(data);
+	pwd_oldpwd_remaker(data);
 }
 
 int main(int argc, char **argv, char **env)
@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **env)
 	while(1)
 	{
 //		signal(SIGINT, ft_ctrlc);
-		signal(SIGQUIT, SIG_IGN);
+		// signal(SIGQUIT, SIG_IGN);
 //		signal(SIGQUIT, ft_ctrld);
 
 
