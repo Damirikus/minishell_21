@@ -64,9 +64,9 @@ int ft_distributor(t_list *list, t_data *data)
 	full_path = ft_make_path(data->path, list);
 
 	if (!strcmp(list->cmd[0], "echo"))
-		ft_echo(full_path, list);
+		ft_echo(list);
 	else if (!strcmp(list->cmd[0], "pwd"))
-		ft_pwd(full_path, list);
+		ft_pwd();
 	else
 	{
 		if (execve(full_path, list->cmd, data->current_env) == -1)
@@ -122,7 +122,7 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 	code_exit = flag;
 }
 
-void ft_pwd(char *full_path, t_list *list)
+void ft_pwd(void)
 {
 	char *str;
 	int i;
@@ -147,7 +147,7 @@ void ft_pwd(char *full_path, t_list *list)
 	exit(0);
 }
 
-void ft_echo(char *full_path, t_list *list)
+void ft_echo(t_list *list)
 {
 	int i;
 	int count;

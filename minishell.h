@@ -49,14 +49,20 @@ typedef struct s_data
 
 
 /* SIGNAL */
+char    *readline(const char *line);
+int     add_history(const char *line);
+int     rl_on_new_line(void);
+void    rl_redisplay(void);
+void    rl_replace_line(const char *buffer, int val);
+
 void ft_ctrlc(int signal);
 
 char **ft_path(char *str);
-void ft_echo(char *full_path, t_list *list);
+void ft_echo(t_list *list);
 int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
 //int ft_distributor(char **path, t_list *list, int len);
-void ft_pwd(char *full_path, t_list *list);
+void ft_pwd(void);
 int ft_distributor(t_list *list, t_data *data);
 
 void ft_cd(t_list *list, t_data *data);
