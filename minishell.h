@@ -49,33 +49,34 @@ typedef struct s_data
 
 
 /* SIGNAL */
-char    *readline(const char *line);
-int     add_history(const char *line);
-int     rl_on_new_line(void);
-void    rl_redisplay(void);
 void    rl_replace_line(const char *buffer, int val);
-
 void ft_ctrlc(int signal);
 
+
+
 char **ft_path(char *str);
-void ft_echo(t_list *list);
+
 int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
-//int ft_distributor(char **path, t_list *list, int len);
-void ft_pwd(void);
 int ft_distributor(t_list *list, t_data *data);
-
-void ft_cd(t_list *list, t_data *data);
-void ft_exit(t_list *list, int len);
-t_redirect *ft_chek_files_fifth(t_list *list, char **path);
 int ft_chek_all_files(t_list *list);
-int	ft_check_max_min(char *str);
 int ft_open_pipe(t_list *list);
 int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
-//int ft_realization(t_list *list, char **path, int len);
 int ft_realization(t_list *list, t_data *data);
 int ft_find_home(t_list *list, t_data *data);
+
+
+/* build commands */
+void ft_echo(t_list *list);
+void ft_pwd(void);
+void ft_cd(t_list *list, t_data *data);
+/* exit */
+void ft_exit(t_list *list, int len);
+int	ft_check_max_min(char *str);
+
+
+
 
 
 /* Aslan utils */
