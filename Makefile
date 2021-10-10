@@ -20,7 +20,7 @@ SRCS	= main.c pipex.c redirect.c distributor.c get_next_line.c get_next_line_uti
 $(NAME):	$(SRCS) $(HEADER)
 			$(MAKE) all -C ./libft
 			cp libft/libft.a ./$(NAME)
-			$(CC) $(SRCS) ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME}
+			$(CC) $(SRCS) ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME} -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include
 	
 all: $(NAME)
 	
