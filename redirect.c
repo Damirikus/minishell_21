@@ -25,7 +25,6 @@ int ft_chek_all_files(t_list *list)
 		}
 		current = current->next;
 	}
-	//	printf("HERE\n");
 	return (len);
 }
 
@@ -113,7 +112,7 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 	char *str;
 	int pid;
 	pipe(td);
-	//	printf("IAM HEERE\n");
+
 	if (redirect->flag == 0)
 	{
 		while (1)
@@ -157,33 +156,3 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 	}
 	return (0);
 }
-
-
-
-//		printf("YOu HERE\n");
-//		pid = fork();
-//		if (pid == 0)
-//		{
-//			close(td[0]);
-//			dup2(td[1], 1);
-//			while(1)
-//			{
-////				readline("< ");
-//				get_next_line(0, &str);
-//				if (!strcmp(str, redirect->filename))
-//				{
-//					free(str);
-//					close(td[1]);
-////					break ;
-//					exit(0);
-//				}
-//				printf("%s\n", str);
-//				free(str);
-//			}
-//		}
-//		if (pid != 0)
-//		{
-//			close(td[1]);
-//			list->fd0 = td[0];
-//			wait(NULL);
-//		}
