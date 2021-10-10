@@ -10,7 +10,7 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
-
+	int status;
 	if (list->flag_for_job == 1)
 	{
 		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
@@ -46,8 +46,17 @@ int ft_realization(t_list *list, t_data *data)
 		}
 		if (pid != 0)
 		{
-			wait(NULL);
+
+			if (waitpid(pid, &status, 0) != pid)
+				status = -1;
+//			wait(NULL);
 		}
+		if (status == 32512)
+			code_exit = 127;
+		else
+			code_exit = 0;
+//		printf("status = %d\n", status);
+//		printf("exit = %d\n", code_exit);
 		if (list->fd0 != -1)
 			close(list->fd0);
 		if (list->fd1 != -1)
@@ -70,8 +79,9 @@ int ft_distributor(t_list *list, t_data *data)
 	{
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
+//			if (full_path[0] == '/')
+//				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
-			code_exit = 127;
 			exit (127);
 		}
 	}
@@ -130,7 +140,6 @@ void ft_pwd(void)
     if (!str)
     {
         printf("memory allocation error\n");
-        code_exit = 2;
         exit(1);
     }
 	getcwd(str, 200);
@@ -142,69 +151,64 @@ void ft_pwd(void)
 	}
 	write(1, "\n", 1);
 	free(str);
-    code_exit = 0;
 	exit(0);
 }
 
 void ft_echo(t_list *list)
 {
-	int i;
-	int count;
 	int qw;
 
-	count = 0;
 	qw = 0;
 	while (list->cmd[qw])
 		qw++;
     if (qw == 1)
     {
         write(1, "\n", 1);
-        code_exit = 0;
         exit(0);
     }
 	if (strcmp(list->cmd[1], "-n"))
-	{
-		
-		i = 1;
-		while (list->cmd[i])
-		{
-			count = 0;
-			while (list->cmd[i][count])
-			{
-				write(1, &list->cmd[i][count], 1);
-				count++;
-			}
-			if (i != qw - 1)
-			{
-				write(1, " ", 1);
-			}
-			i++;
-		}
-		write(1, "\n", 1);
-	}
+		ft_echo_part(list, 1, qw);
 	else
-	{
-		i = 2;
-		while (list->cmd[i])
-		{
-			count = 0;
-			while (list->cmd[i][count])
-			{
-				write(1, &list->cmd[i][count], 1);
-				count++;
-			}
-			if (i != qw - 1)
-			{
-				write(1, " ", 1);
-			}
-			i++;
-		}
-	}
-    code_exit = 0;
+		ft_echo_part2(list, 2, qw);
 	exit(0);
 }
 
-void ft_cd(t_list *list, t_data *data)
+void ft_echo_part(t_list *list, int i, int qw)
+{
+	int count;
+	while (list->cmd[i])
+	{
+		count = 0;
+		while (list->cmd[i][count])
+		{
+			write(1, &list->cmd[i][count], 1);
+			count++;
+		}
+		if (i != qw - 1)
+			write(1, " ", 1);
+		i++;
+	}
+	write(1, "\n", 1);
+}
+
+void ft_echo_part2(t_list *list, int i, int qw)
+{
+	int count;
+	while (list->cmd[i])
+	{
+		count = 0;
+		while (list->cmd[i][count])
+		{
+			write(1, &list->cmd[i][count], 1);
+			count++;
+		}
+		if (i != qw - 1)
+			write(1, " ", 1);
+		i++;
+	}
+}
+
+int ft_cd(t_list *list, t_data *data)
 {
 	int i;
 	DIR *str;
@@ -220,22 +224,22 @@ void ft_cd(t_list *list, t_data *data)
 			close(list->fd1);
 		str = opendir(list->cmd[1]);
 		if (!str)
-		{
-			printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
-			code_exit = 1;
-			return;
-		}
+			return (ft_cd_part(list));
 		closedir(str);
-		return;
+		return (1);
 	}
 	if (chdir(list->cmd[1]) != 0)
-	{
-		printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
-        code_exit = 1;
-		return ;
-	}
+        return (ft_cd_part(list));
 	renew_pwd_oldpwd(data);
 	code_exit = 0;
+	return (0);
+}
+
+int ft_cd_part(t_list *list)
+{
+	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
+	code_exit = 127;
+	return (0);
 }
 
 int ft_find_home(t_list *list, t_data *data)
@@ -259,7 +263,7 @@ int ft_find_home(t_list *list, t_data *data)
 
 			}
 			else if (list->cmd[1][0] == '~')
-				list->cmd[1] = ft_strjoin_cd(list->env[i] + 5, list->cmd[1] + 1);
+				list->cmd[1] = ft_strjoin_cd(data->current_env[i] + 5, list->cmd[1] + 1);
 		}
 		i++;
 	}
@@ -272,6 +276,7 @@ void ft_exit(t_list *list, int len)
 	int i;
 	long code;
 
+	code = 0;
 	if (len == 1)
 		printf("exit\n");
 	if (list->fd1 != -1 && len > 1)
@@ -279,20 +284,8 @@ void ft_exit(t_list *list, int len)
 	i = 0;
 	if (list->cmd[1])
 	{
-		if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
-			i++;
-		while (list->cmd[1][i])
-		{
-			if (!ft_isdigit(list->cmd[1][i]))
-			{
-				printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
-				if (len == 1)
-					exit(255);
-				else
-					return;
-			}
-			i++;
-		}
+		if (ft_exit_inner_part(list, i, len) == 1)
+			return;
 		if (!ft_check_max_min(list->cmd[1]))
 		{
 			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
@@ -303,6 +296,31 @@ void ft_exit(t_list *list, int len)
 		}
 		code = ft_atoi(list->cmd[1]);
 	}
+	ft_exit_part(code, list, len);
+}
+
+int ft_exit_inner_part( t_list *list, int i, int len)
+{
+	if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
+		i++;
+	while (list->cmd[1][i])
+	{
+		if (!ft_isdigit(list->cmd[1][i]))
+		{
+			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
+			if (len == 1)
+				exit(255);
+			else
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void ft_exit_part(long code, t_list *list, int len)
+{
+	int i;
 	i = 0;
 	while (list->cmd[i])
 		i++;
@@ -327,6 +345,7 @@ void ft_exit(t_list *list, int len)
 	else
 		return;
 }
+
 
 int	ft_check_max_min(char *str)
 {
