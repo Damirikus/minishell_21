@@ -55,6 +55,12 @@ int main(int argc, char **argv, char **env)
 					ft_realization(current, data);
 				current = current->next;
 			}
+			int i = 0;//количество fork
+			while(i < data->len)
+			{
+				wait(0);
+				i++;
+			}
 		}
 		list_free(&data->head_command);
 		free(input);

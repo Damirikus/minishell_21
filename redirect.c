@@ -10,10 +10,10 @@ int ft_chek_all_files(t_list *list)
 	while (current)
 	{
 		len++;
-		if (current->flag_for_pipe == 1)
-		{
-			ft_open_pipe(current);
-		}
+//		if (current->flag_for_pipe == 1)
+//		{
+//			ft_open_pipe(current);
+//		}
 		if (current->head_redirect)
 		{
 			redent = current->head_redirect;
@@ -55,8 +55,8 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect)
 		}
 		if (redirect->flag == 1)
 		{
-			if (list->fd1 != -1)
-				close(list->fd1);
+//			if (list->fd1 != -1)
+//				close(list->fd1);
 			list->fd1 = fd;
 		}
 		else
@@ -73,8 +73,8 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect)
 		}
 		if (redirect->flag == 1)
 		{
-			if (list->fd1 != -1)
-				close(list->fd1);
+//			if (list->fd1 != -1)
+//				close(list->fd1);
 			list->fd1 = fd;
 		}
 		else
@@ -91,8 +91,8 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect)
 		}
 		if (redirect->flag == 1)
 		{
-			if (list->fd0 != -1)
-				close(list->fd0);
+//			if (list->fd0 != -1)
+//				close(list->fd0);
 			list->fd0 = fd;
 		}
 		else
@@ -124,8 +124,8 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 	}
 	else if (redirect->flag == 1)
 	{
-		if (list->fd0 != -1)
-			close(list->fd0);
+//		if (list->fd0 != -1)
+//			close(list->fd0);
 		list->fd0 = td[0];
 		while (1)
 		{
@@ -148,8 +148,8 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 			}
 			if (pid != 0)
 			{
-				free(str);
 				wait(NULL);
+				free(str);
 			}
 		}
 

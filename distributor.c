@@ -10,6 +10,10 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
+	int a[2];
+	int b[2];
+	static int flag = 0;
+
 	int status;
 	if (list->flag_for_job == 1)
 	{
@@ -35,32 +39,84 @@ int ft_realization(t_list *list, t_data *data)
 		print_2d_massive(data->current_export);
 	else
 	{
+		if (!flag%2 && list->flag_for_pipe == 1)
+			pipe(a);
+		if (flag%2 && list->flag_for_pipe == 1)
+			pipe(b);
 		pid = fork();
 		if (pid == 0)
 		{
 			if (list->fd0 != -1)
+			{
 				dup2(list->fd0, 0);
+//				close(list->fd0);
+			}
 			if (list->fd1 != -1)
+			{
 				dup2(list->fd1, 1);
+//				close(list->fd1);
+			}
+			if (list->fd1 == -1 && !flag%2 && list->flag_for_pipe == 1)
+			{
+				close(a[0]);
+				dup2(a[1], 1);
+				close(a[1]);
+			}
+			else if (list->fd1 != -1 && !flag%2 && list->flag_for_pipe == 1)
+			{
+				close(a[0]);
+				close(a[1]);
+			}
+			if (flag%2 && list->fd1 == -1 && list->flag_for_pipe == 1)
+			{
+				close(b[0]);
+				dup2(b[1], 1);
+				close(b[1]);
+			}
+			else if (list->fd1 != -1 && flag%2 && list->flag_for_pipe == 1)
+			{
+				close(b[0]);
+				close(b[1]);
+			}
 			ft_distributor(list, data);
 		}
 		if (pid != 0)
 		{
-
-			if (waitpid(pid, &status, 0) != pid)
-				status = -1;
+			if (!flag%2 && list->flag_for_pipe == 1)
+			{
+				close(a[1]);
+				if (list->next->fd0 == -1)
+				{
+					list->next->fd0 = a[0];
+				}
+			}
+			else if (flag%2 && list->flag_for_pipe == 1)
+			{
+				close(b[1]);
+				if (list->next->fd0 == -1)
+				{
+					list->next->fd0 = b[0];
+				}
+			}
+			if (list->next)
+				flag++;
+			else
+				flag = 0;
+//			if (waitpid(pid, &status, 0) != pid)
+//				status = -1;
 //			wait(NULL);
 		}
-		if (status == 32512)
-			code_exit = 127;
-		else
-			code_exit = 0;
+//		if (status == 32512)
+//			code_exit = 127;
+//		else
+//			code_exit = 0;
 //		printf("status = %d\n", status);
 //		printf("exit = %d\n", code_exit);
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
+
+//		if (list->fd0 != -1)
+//			close(list->fd0);
+//		if (list->fd1 != -1)
+//			close(list->fd1);
 	}
 	return (0);
 }
