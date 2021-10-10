@@ -23,7 +23,9 @@ char *ft_make_path(char **path, t_list *list)
 	int i;
 	int fd;
 	char *tmp;
-	
+
+	if (list->cmd[0][0] == '/')
+		return (list->cmd[0]);
 	i = 0;
 	while (path[i])
 	{

@@ -17,6 +17,7 @@ int main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
+
 	char* input;
 	t_data *data;
 	data = malloc(sizeof(t_data));
@@ -26,7 +27,7 @@ int main(int argc, char **argv, char **env)
 	data->path = ft_path(getenv("PATH"));
 
 	t_list *tmp;
-	while(1)
+	while (1)
 	// for (int k = 0; k < 1; k++)
 	{
 		signal(SIGINT, ft_ctrlc);
@@ -41,15 +42,11 @@ int main(int argc, char **argv, char **env)
 		add_history(input);
 
 
-        //на этом этапе происходит парс, на выходе лист со всеми командами
-		//  list = ft_pars(input);
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
-			tmp = data->head_command;
-			ft_print_all(data);
+//			ft_print_all(data);
 
-			//на этом тапе происходит проверка всех файлов и их создание, если листов несколько, то есть пайпы
 			data->len = ft_chek_all_files(data->head_command);
 			current = data->head_command;
 			while (current)
@@ -59,13 +56,8 @@ int main(int argc, char **argv, char **env)
 				current = current->next;
 			}
 		}
-
-		/* do stuff */
-
-		// Т. к. вызов readline() выделяет память, но не освобождает (а возвращает), то эту память нужно вернуть (освободить).
 		list_free(&data->head_command);
 		free(input);
-
 	}
 	free_whole_project(data);
 	free(data);
