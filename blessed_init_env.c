@@ -17,6 +17,7 @@ void	print_2d_massive(char **mass)
 	int i = -1;
 	while (mass[++i])
 		printf("%s\n", mass[i]);
+	code_exit = 0;
 }
 
 void	env_to_list(t_data *shell) //  Оригинальные переменные окружения в листы и обратно
