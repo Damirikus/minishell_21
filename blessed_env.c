@@ -35,6 +35,8 @@ int	check_name_export(char *str)
 	}
 	while (isalnum(str[i]) || str[i] == '_')
 		i++;
+	if (str[i] == '+')
+		i++;
 	if (str[i] != '=' && str[i] != '\0')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", str);
@@ -112,13 +114,113 @@ int	export_env_variable_strong(char *string)
 	i = 0;
 	while (isalnum(string[i]) || string[i] == '_')
 		i++;
+	if (string[i] == '+')
+		i++;
 	if (string[i] == '=')
 		return (1);
 	return (0);
 }
 
+// char	*clean_string_export(char *string)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		flag;
+// 	char	*result;
+
+// 	i = 0;
+// 	j = 0;
+// 	flag = 0;
+// 	result = malloc(sizeof(char) * ft_strlen(string));
+// 	while (string[i])
+// 	{
+// 		if (string[i] != '+' || flag)
+// 		{
+// 			result[j] = string[i];
+// 			j++;
+// 		}
+// 		if (string[i] == '+')
+// 			flag = 1;
+// 		i++;
+// 	}
+// 	result[j] = 0;
+// 	return (result);
+// }
+
+char	*clean_string_export(char *string)
+{
+	int		i;
+	int		j;
+	int		flag;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	flag = 0;
+	result = malloc(sizeof(char) * ft_strlen(string));
+	while (string[i] != '\0' && string[i] != '+')
+	{
+		result[j] = string[i];
+		i++;
+		j++;
+	}
+	i++;
+	while (string[i])
+	{
+		result[j] = string[i];
+		i++;
+		j++;
+	}
+	result[j] = 0;
+	return (result);
+}
+
+void	export_env_append(t_data *shell, char *string)
+{
+	char	*clean_string;
+	t_env	*tmp;
+
+	clean_string = clean_string_export(string);
+	if (!export_env_variable_present(shell, clean_string))
+	{
+		ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(clean_string));
+		free(clean_string);
+		return ;
+	}
+	tmp = shell->head_env;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->content, clean_string, ft_strlen_key(clean_string)) == 0)
+			break ;
+		tmp = tmp->next;
+	}
+	if (tmp)
+	{
+		if (!export_env_variable_strong(tmp->content))
+			tmp->content = ft_strjoin_pars(tmp->content, "=");
+	}
+	tmp->content = ft_strjoin_pars(tmp->content, clean_string + ft_strlen_key(clean_string) + 1);
+	free(clean_string);
+	renew_env_export_massive(shell);
+}
+
 void	export_env(t_data *shell, char *string) // Скетч, нужно доработать
 {
+	int	i;
+	int len;
+
+	i = 0;
+	len = ft_strlen_key(string);
+	while (i < len)
+	{
+		if (string[i] == '+')
+		{
+			export_env_append(shell, string);
+			renew_env_export_massive(shell);
+			return ;
+		}
+		i++;
+	}
 	if (export_env_variable_present(shell, string) && !export_env_variable_strong(string))
 		return ;
 	if (export_env_variable_present(shell, string) && export_env_variable_strong(string))
