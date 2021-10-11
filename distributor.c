@@ -10,10 +10,7 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
-	int a[2];
-	int b[2];
-	static int flag = 0;
-
+	printf("___________________________________________________________________________________\n");
 	int status;
 	if (list->flag_for_job == 1)
 	{
@@ -39,10 +36,12 @@ int ft_realization(t_list *list, t_data *data)
 		print_2d_massive(data->current_export);
 	else
 	{
-		if (!flag%2 && list->flag_for_pipe == 1)
-			pipe(a);
-		if (flag%2 && list->flag_for_pipe == 1)
-			pipe(b);
+		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+			pipe(data->a);
+		if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+			pipe(data->b);
+		printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
+		printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 		pid = fork();
 		if (pid == 0)
 		{
@@ -56,52 +55,90 @@ int ft_realization(t_list *list, t_data *data)
 				dup2(list->fd1, 1);
 //				close(list->fd1);
 			}
-			if (list->fd1 == -1 && !flag%2 && list->flag_for_pipe == 1)
+			if (!list->next && data->len > 1)
 			{
-				close(a[0]);
-				dup2(a[1], 1);
-				close(a[1]);
+				printf("LAST------------------------\n");
+				if (data->flat % 2 == 0)
+				{
+					if (list->fd0 == -1)
+						dup2(data->b[0], 0);
+					close(data->b[0]);
+				}
+				else
+				{
+					if (list->fd0 == -1)
+						dup2(data->a[0], 0);
+					close(data->a[0]);
+				}
 			}
-			else if (list->fd1 != -1 && !flag%2 && list->flag_for_pipe == 1)
+			else if (data->flat == 0 && list->flag_for_pipe == 1)
 			{
-				close(a[0]);
-				close(a[1]);
+				printf("A1 ----------------------\n");
+				close(data->a[0]);
+				if (list->fd1 == -1)
+					dup2(data->a[1], 1);
+				close(data->a[1]);
 			}
-			if (flag%2 && list->fd1 == -1 && list->flag_for_pipe == 1)
+			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			{
-				close(b[0]);
-				dup2(b[1], 1);
-				close(b[1]);
+				printf("B1 ----------------------\n");
+				if (list->fd0 == -1)
+					dup2(data->a[0], 0);
+				close(data->a[0]);
+				close(data->b[0]);
+				if (list->fd1 == -1)
+					dup2(data->b[1], 1);
+				close(data->b[1]);
 			}
-			else if (list->fd1 != -1 && flag%2 && list->flag_for_pipe == 1)
+			else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			{
-				close(b[0]);
-				close(b[1]);
+				printf("A2 ----------------------\n");
+				if (list->fd0 == -1)
+					dup2(data->b[0], 0);
+				close(data->b[0]);
+				close(data->a[0]);
+				if (list->fd1 == -1)
+					dup2(data->a[1], 1);
+				close(data->a[1]);
 			}
 			ft_distributor(list, data);
 		}
 		if (pid != 0)
 		{
-			if (!flag%2 && list->flag_for_pipe == 1)
+//			usleep(1000);
+			if (data->len > 1 && !list->next && data->flat % 2 == 0)
 			{
-				close(a[1]);
-				if (list->next->fd0 == -1)
-				{
-					list->next->fd0 = a[0];
-				}
+				printf("----------------------lastA\n");
+//				close(data->a[0]);
+				close(data->b[0]);
 			}
-			else if (flag%2 && list->flag_for_pipe == 1)
+			else if (data->len > 1 && !list->next && data->flat % 2 == 1)
 			{
-				close(b[1]);
-				if (list->next->fd0 == -1)
-				{
-					list->next->fd0 = b[0];
-				}
+				printf("----------------------lastB\n");
+				close(data->a[0]);
+				if (data->b[0])
+					close(data->b[0]);
 			}
-			if (list->next)
-				flag++;
-			else
-				flag = 0;
+			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+			{
+				printf("----------------------A\n");
+				if (data->b[0])
+					close(data->b[0]);
+				close(data->a[1]);
+			}
+			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+			{
+				printf("----------------------B\n");
+				if (data->a[0])
+					close(data->a[0]);
+				close(data->b[1]);
+			}
+			close(list->fd0);
+			close(list->fd1);
+			printf("%d\n", data->flat);
+			data->flat++;
+			printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
+			printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 //			if (waitpid(pid, &status, 0) != pid)
 //				status = -1;
 //			wait(NULL);
@@ -138,9 +175,13 @@ int ft_distributor(t_list *list, t_data *data)
 //			if (full_path[0] == '/')
 //				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
+			close(list->fd0);
+			close(list->fd1);
 			exit (127);
 		}
 	}
+	close(list->fd0);
+	close(list->fd1);
 	exit(0);
 		
 }

@@ -48,6 +48,11 @@ int main(int argc, char **argv, char **env)
 //			ft_print_all(data);
 
 			data->len = ft_chek_all_files(data->head_command);
+			data->flat = 0;
+			data->a[0] = 0;
+			data->b[0] = 0;
+			data->a[1] = 0;
+			data->b[1] = 0;
 			current = data->head_command;
 			while (current)
 			{
