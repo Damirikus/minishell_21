@@ -42,7 +42,7 @@ int main(int argc, char **argv, char **env)
 		if (*input)
 			add_history(input);
 
-
+		signal(SIGINT, ft_ctrl);
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
@@ -135,4 +135,10 @@ void ft_ctrlc(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void ft_ctrl(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
 }

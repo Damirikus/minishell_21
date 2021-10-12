@@ -54,6 +54,7 @@ typedef struct s_data
 /* SIGNAL */
 void    rl_replace_line(const char *buffer, int val);
 void ft_ctrlc(int signal);
+void ft_ctrl(int signal);
 
 
 
