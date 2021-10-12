@@ -36,6 +36,9 @@ char *ft_make_path(char **path, t_list *list)
 			close(fd);
 			return (tmp);
 		}
+		if (fd)
+			close(fd);
+		free(tmp);
 		i++;
 	}
 	return (NULL);

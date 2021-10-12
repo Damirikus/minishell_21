@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-
+	int pid;
 	char* input;
 	t_data *data;
 	data = malloc(sizeof(t_data));
@@ -26,7 +26,6 @@ int main(int argc, char **argv, char **env)
 	data->len = 0;
 	data->path = ft_path(getenv("PATH"));
 
-	t_list *tmp;
 	while (1)
 	// for (int k = 0; k < 1; k++)
 	{
@@ -59,13 +58,25 @@ int main(int argc, char **argv, char **env)
 			while (current)
 			{
 				if (current->cmd[0])
-					ft_realization(current, data);
+					pid = ft_realization(current, data);
 				current = current->next;
 			}
 			int i = 0;//количество fork
+			int status;
 			while(i < data->len)
 			{
-				wait(0);
+				if (waitpid(pid, &status, 0) != pid)
+					status = -1;
+//				printf("STATUS = %d\n", status);
+				if (status == 32512)
+					code_exit = 127;
+				else if (status == 256)
+				{
+					printf("miniHELL: cd: no such file or directory\n");
+					code_exit = 1;
+				}
+				else
+					code_exit = 0;
 				i++;
 			}
 		}

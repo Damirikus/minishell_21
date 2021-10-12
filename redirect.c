@@ -95,6 +95,11 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect)
 	return (0);
 }
 
+void ft_emp(int sig)
+{
+	(void)sig;
+
+}
 
 int ft_key_handler(t_list *list, t_redirect *redirect)
 {
@@ -102,14 +107,23 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 	char *str;
 	int pid;
 
-
+	void *sg;
+	signal(SIGINT, ft_emp), signal(SIGQUIT, SIG_IGN);
+	(sg = rl_getc_function);
+	rl_getc_function = getc;
 	if (redirect->flag == 0)
 	{
 		while (1)
 		{
 			str = readline("> ");
+			if (!str)
+				break;
 			if (!strcmp(str, redirect->filename))
+			{
+				(rl_getc_function = sg), signal(SIGINT, ft_ctrlc);
+				signal(SIGQUIT, SIG_IGN);
 				return (0);
+			}
 		}
 	}
 	else if (redirect->flag == 1)
@@ -121,10 +135,14 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 		while (1)
 		{
 			str = readline("> ");
+			if (!str)
+				break;
 			if (!strcmp(str, redirect->filename))
 			{
 				free(str);
 				close(td[1]);
+				(rl_getc_function = sg), signal(SIGINT, ft_ctrlc);
+				signal(SIGQUIT, SIG_IGN);
 				return (0);
 			}
 			pid = fork();
@@ -145,5 +163,7 @@ int ft_key_handler(t_list *list, t_redirect *redirect)
 		}
 
 	}
+	(rl_getc_function = sg), signal(SIGINT, ft_ctrlc);
+	signal(SIGQUIT, SIG_IGN);
 	return (0);
 }

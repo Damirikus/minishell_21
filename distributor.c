@@ -10,8 +10,8 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
-	printf("___________________________________________________________________________________\n");
-	int status;
+	pid = 0;
+//	printf("___________________________________________________________________________________\n");
 	if (list->flag_for_job == 1)
 	{
 		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
@@ -139,23 +139,9 @@ int ft_realization(t_list *list, t_data *data)
 			data->flat++;
 //			printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
 //			printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
-//			if (waitpid(pid, &status, 0) != pid)
-//				status = -1;
-//			wait(NULL);
 		}
-//		if (status == 32512)
-//			code_exit = 127;
-//		else
-//			code_exit = 0;
-//		printf("status = %d\n", status);
-//		printf("exit = %d\n", code_exit);
-
-//		if (list->fd0 != -1)
-//			close(list->fd0);
-//		if (list->fd1 != -1)
-//			close(list->fd1);
 	}
-	return (0);
+	return (pid);
 }
 
 int ft_distributor(t_list *list, t_data *data)
@@ -173,7 +159,10 @@ int ft_distributor(t_list *list, t_data *data)
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 //			if (full_path[0] == '/')
+//			{
 //				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
+//				exit(127);
+//			}
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
 			if (list->fd0 != -1)
 				close(list->fd0);
@@ -260,6 +249,8 @@ void ft_echo(t_list *list)
 	int qw;
 	int k;
 	int i;
+	int flag;
+
 	qw = 0;
 	while (list->cmd[qw])
 		qw++;
@@ -267,22 +258,33 @@ void ft_echo(t_list *list)
     {
         write(1, "\n", 1);
         exit(0);
+
     }
-//    k = 1;
-//    while (k < qw)
-//    {
-//    	i = 0;
-//    	while (list->cmd[k][i])
-//    	{
-//    		if ()
-//    		i++;
-//    	}
-//    	k++;
-//    }
-	if (strcmp(list->cmd[1], "-n"))
+    k = 1;
+    if (list->cmd[1])
+    while (k < qw)
+    {
+    	if (list->cmd[k][0] != '-')
+			break;
+    	i = 1;
+    	flag = 0;
+    	while (list->cmd[k][i])
+    	{
+    		if (list->cmd[k][i] != 'n')
+    		{
+    			flag = 1;
+    			break ;
+    		}
+    		i++;
+    	}
+    	if (flag == 1)
+			break;
+    	k++;
+    }
+	if (k == 1)
 		ft_echo_part(list, 1, qw);
 	else
-		ft_echo_part2(list, 2, qw);
+		ft_echo_part2(list, k, qw);
 	exit(0);
 }
 
@@ -351,7 +353,7 @@ int ft_cd(t_list *list, t_data *data)
 int ft_cd_part(t_list *list)
 {
 	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
-	code_exit = 127;
+	code_exit = 1;
 	return (0);
 }
 
