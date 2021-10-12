@@ -12,7 +12,7 @@ t_list	*ft_lstnew(char **content, char **envpe)
 	begin->fd0 = -1;
 	begin->fd1 = -1;
 	begin->flag_for_job = 0;
-	begin->pid_mother = dup(0);
+//	begin->pid_mother = dup(0);
 	begin->env = envpe;
 	begin->next = NULL;
 	begin->head_redirect = NULL;
