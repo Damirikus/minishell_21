@@ -33,13 +33,15 @@ int main(int argc, char **argv, char **env)
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
 
-
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
+		{
+			printf("exit\n");
 			break;
-//		rl_bind_key('\t', rl_complete);
-		add_history(input);
+		}
+		if (*input)
+			add_history(input);
 
 
 		if (!preparser(input))

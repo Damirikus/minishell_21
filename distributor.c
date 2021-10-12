@@ -38,10 +38,10 @@ int ft_realization(t_list *list, t_data *data)
 	{
 		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			pipe(data->a);
-		if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+		else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			pipe(data->b);
-		printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
-		printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
+//		printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
+//		printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 		pid = fork();
 		if (pid == 0)
 		{
@@ -57,7 +57,7 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			if (!list->next && data->len > 1)
 			{
-				printf("LAST------------------------\n");
+//				printf("LAST------------------------\n");
 				if (data->flat % 2 == 0)
 				{
 					if (list->fd0 == -1)
@@ -73,7 +73,7 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat == 0 && list->flag_for_pipe == 1)
 			{
-				printf("A1 ----------------------\n");
+//				printf("A1 ----------------------\n");
 				close(data->a[0]);
 				if (list->fd1 == -1)
 					dup2(data->a[1], 1);
@@ -81,7 +81,7 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			{
-				printf("B1 ----------------------\n");
+//				printf("B1 ----------------------\n");
 				if (list->fd0 == -1)
 					dup2(data->a[0], 0);
 				close(data->a[0]);
@@ -92,7 +92,7 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			{
-				printf("A2 ----------------------\n");
+//				printf("A2 ----------------------\n");
 				if (list->fd0 == -1)
 					dup2(data->b[0], 0);
 				close(data->b[0]);
@@ -108,37 +108,37 @@ int ft_realization(t_list *list, t_data *data)
 //			usleep(1000);
 			if (data->len > 1 && !list->next && data->flat % 2 == 0)
 			{
-				printf("----------------------lastA\n");
-//				close(data->a[0]);
+//				printf("----------------------lastA\n");
 				close(data->b[0]);
+				// close(data->b[1]);
 			}
 			else if (data->len > 1 && !list->next && data->flat % 2 == 1)
 			{
-				printf("----------------------lastB\n");
+//				printf("----------------------lastB\n");
 				close(data->a[0]);
-				if (data->b[0])
-					close(data->b[0]);
+				// close(data->a[1]);
 			}
 			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			{
-				printf("----------------------A\n");
+//				printf("----------------------A\n");
 				if (data->b[0])
 					close(data->b[0]);
 				close(data->a[1]);
 			}
 			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			{
-				printf("----------------------B\n");
-				if (data->a[0])
+//				printf("----------------------B\n");
+				 if (data->a[0])
 					close(data->a[0]);
 				close(data->b[1]);
 			}
-			close(list->fd0);
-			close(list->fd1);
-			printf("%d\n", data->flat);
+			if (list->fd0 != -1)
+				close(list->fd0);
+			if (list->fd1 != -1)
+				close(list->fd1);
 			data->flat++;
-			printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
-			printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
+//			printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
+//			printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 //			if (waitpid(pid, &status, 0) != pid)
 //				status = -1;
 //			wait(NULL);
@@ -175,13 +175,17 @@ int ft_distributor(t_list *list, t_data *data)
 //			if (full_path[0] == '/')
 //				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
-			close(list->fd0);
-			close(list->fd1);
+			if (list->fd0 != -1)
+				close(list->fd0);
+			if (list->fd1 != -1)
+				close(list->fd1);
 			exit (127);
 		}
 	}
-	close(list->fd0);
-	close(list->fd1);
+	if (list->fd0 != -1)
+		close(list->fd0);
+	if (list->fd1 != -1)
+		close(list->fd1);
 	exit(0);
 		
 }
@@ -254,7 +258,8 @@ void ft_pwd(void)
 void ft_echo(t_list *list)
 {
 	int qw;
-
+	int k;
+	int i;
 	qw = 0;
 	while (list->cmd[qw])
 		qw++;
@@ -263,6 +268,17 @@ void ft_echo(t_list *list)
         write(1, "\n", 1);
         exit(0);
     }
+//    k = 1;
+//    while (k < qw)
+//    {
+//    	i = 0;
+//    	while (list->cmd[k][i])
+//    	{
+//    		if ()
+//    		i++;
+//    	}
+//    	k++;
+//    }
 	if (strcmp(list->cmd[1], "-n"))
 		ft_echo_part(list, 1, qw);
 	else
