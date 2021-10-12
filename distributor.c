@@ -30,9 +30,9 @@ int ft_realization(t_list *list, t_data *data)
 	else if (!strcmp(list->cmd[0], "unset"))
 		ft_unset(data, list);
 	else if (!strcmp(list->cmd[0], "env"))
-		print_2d_massive(data->current_env);
+		print_2d_massive(data->current_env, list);
 	else if (!strcmp(list->cmd[0], "export"))
-		print_2d_massive(data->current_export);
+		print_2d_massive(data->current_export, list);
 	else
 	{
 		pid = fork();
@@ -67,7 +67,7 @@ int ft_realization(t_list *list, t_data *data)
 
 int ft_distributor(t_list *list, t_data *data)
 {
-	char *full_path;
+	char	*full_path;
 
 	full_path = ft_make_path(data->path, list);
 
@@ -77,6 +77,8 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_pwd();
 	else
 	{
+		if (!ft_strncmp("minishell", list->cmd[0], ft_strlen("minishell")) || !ft_strncmp("./minishell", list->cmd[0], ft_strlen("./minishell")))
+			shlvl_plus(data);
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 //			if (full_path[0] == '/')
@@ -84,6 +86,7 @@ int ft_distributor(t_list *list, t_data *data)
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
 			exit (127);
 		}
+		// Поднять shlvl
 	}
 	exit(0);
 		

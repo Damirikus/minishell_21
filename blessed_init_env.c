@@ -12,9 +12,14 @@ void	print_list_env1(t_env *head)
 	}
 }
 
-void	print_2d_massive(char **mass)
+void	print_2d_massive(char **mass, t_list *list)
 {
 	int i = -1;
+
+	// if (list->fd0 != -1)
+	// 	dup2(list->fd0, 0);
+	// if (list->fd1 != -1)
+	// 	dup2(list->fd1, 1);
 	while (mass[++i])
 		printf("%s\n", mass[i]);
 	code_exit = 0;

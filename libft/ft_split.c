@@ -12,7 +12,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	n = ft_slova((char *)s, c);
-	arr = malloc((n + 1) * sizeof(char *));
+	arr = malloc((n + 2) * sizeof(char *));
 	if (!arr)
 		return (NULL);
 	arr[n] = 0;
