@@ -10,9 +10,7 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
-	pid = 0;
-	int flag;
-	flag = 0;
+	int status;
 	if (list->flag_for_job == 1)
 	{
 		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
@@ -37,91 +35,34 @@ int ft_realization(t_list *list, t_data *data)
 		print_2d_massive(data->current_export, list);
 	else
 	{
-		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-			pipe(data->a);
-		else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-			pipe(data->b);
 		pid = fork();
-		flag = 1;
 		if (pid == 0)
 		{
 			if (list->fd0 != -1)
 				dup2(list->fd0, 0);
 			if (list->fd1 != -1)
 				dup2(list->fd1, 1);
-			if (!list->next && data->len > 1)
-			{
-				if (data->flat % 2 == 0)
-				{
-					if (list->fd0 == -1)
-						dup2(data->b[0], 0);
-					close(data->b[0]);
-				}
-				else
-				{
-					if (list->fd0 == -1)
-						dup2(data->a[0], 0);
-					close(data->a[0]);
-				}
-			}
-			else if (data->flat == 0 && list->flag_for_pipe == 1)
-			{
-				close(data->a[0]);
-				if (list->fd1 == -1)
-					dup2(data->a[1], 1);
-				close(data->a[1]);
-			}
-			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-			{
-				if (list->fd0 == -1)
-					dup2(data->a[0], 0);
-				close(data->a[0]);
-				close(data->b[0]);
-				if (list->fd1 == -1)
-					dup2(data->b[1], 1);
-				close(data->b[1]);
-			}
-			else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-			{
-				if (list->fd0 == -1)
-					dup2(data->b[0], 0);
-				close(data->b[0]);
-				close(data->a[0]);
-				if (list->fd1 == -1)
-					dup2(data->a[1], 1);
-				close(data->a[1]);
-			}
 			ft_distributor(list, data);
 		}
 		if (pid != 0)
 		{
-			if (data->len > 1 && !list->next && data->flat % 2 == 0)
-				close(data->b[0]);
-			else if (data->len > 1 && !list->next && data->flat % 2 == 1)
-				close(data->a[0]);
-			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-			{
-				if (data->b[0])
-					close(data->b[0]);
-				close(data->a[1]);
-			}
-			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-			{
-				 if (data->a[0])
-					close(data->a[0]);
-				close(data->b[1]);
-			}
-			if (list->fd0 != -1)
-				close(list->fd0);
-			if (list->fd1 != -1)
-				close(list->fd1);
-			data->flat++;
+
+			if (waitpid(pid, &status, 0) != pid)
+				status = -1;
+//			wait(NULL);
 		}
+		if (status == 32512)
+			code_exit = 127;
+		else
+			code_exit = 0;
+//		printf("status = %d\n", status);
+//		printf("exit = %d\n", code_exit);
+		if (list->fd0 != -1)
+			close(list->fd0);
+		if (list->fd1 != -1)
+			close(list->fd1);
 	}
-	if (flag == 1)
-		return (pid);
-	else
-		return (-99);
+	return (0);
 }
 
 int ft_distributor(t_list *list, t_data *data)
@@ -141,23 +82,12 @@ int ft_distributor(t_list *list, t_data *data)
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 //			if (full_path[0] == '/')
-//			{
-////				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
-//				exit(1);
-//			}
+//				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
-			if (list->fd0 != -1)
-				close(list->fd0);
-			if (list->fd1 != -1)
-				close(list->fd1);
 			exit (127);
 		}
 		// Поднять shlvl
 	}
-	if (list->fd0 != -1)
-		close(list->fd0);
-	if (list->fd1 != -1)
-		close(list->fd1);
 	exit(0);
 		
 }
@@ -201,6 +131,7 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 			export_env(data, list->cmd[i]);
 		i++;
 	}
+	printf("CODE_EXIT: %d\n", code_exit);
 	code_exit = flag;
 }
 
@@ -230,9 +161,6 @@ void ft_pwd(void)
 void ft_echo(t_list *list)
 {
 	int qw;
-	int k;
-	int i;
-	int flag;
 
 	qw = 0;
 	while (list->cmd[qw])
@@ -241,33 +169,11 @@ void ft_echo(t_list *list)
     {
         write(1, "\n", 1);
         exit(0);
-
     }
-    k = 1;
-    if (list->cmd[1])
-    while (k < qw)
-    {
-    	if (list->cmd[k][0] != '-')
-			break;
-    	i = 1;
-    	flag = 0;
-    	while (list->cmd[k][i])
-    	{
-    		if (list->cmd[k][i] != 'n')
-    		{
-    			flag = 1;
-    			break ;
-    		}
-    		i++;
-    	}
-    	if (flag == 1)
-			break;
-    	k++;
-    }
-	if (k == 1)
+	if (strcmp(list->cmd[1], "-n"))
 		ft_echo_part(list, 1, qw);
 	else
-		ft_echo_part2(list, k, qw);
+		ft_echo_part2(list, 2, qw);
 	exit(0);
 }
 
@@ -335,9 +241,8 @@ int ft_cd(t_list *list, t_data *data)
 
 int ft_cd_part(t_list *list)
 {
-	printf("i am here\n");
 	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
-	code_exit = 1;
+	code_exit = 127;
 	return (0);
 }
 

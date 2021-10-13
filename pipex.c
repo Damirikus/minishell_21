@@ -16,6 +16,31 @@
 // 	return (tmp);
 // }
 
+char	**ft_path_2(char **tmp, int size)
+{
+	char	**result;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	result = malloc(sizeof(char *) * (size + 1));
+	result[i] = malloc(305);
+	getcwd(result[i], 305);
+	result[i] = ft_strjoin(result[i], "/");
+	i++;
+	while (tmp[j])
+	{
+		result[i] = ft_strdup(tmp[j]);
+		free(tmp[j]);
+		i++;
+		j++;
+	}
+	free(tmp);
+	result[i] = NULL;
+	return (result);
+}
+
 char **ft_path(char *str)
 {
 	char **tmp;
@@ -33,7 +58,29 @@ char **ft_path(char *str)
 	tmp[i] = ft_strjoin(tmp[i], "/");
 	i++;
 	tmp[i] = NULL;
+	// return (ft_path_2(tmp, i));
 	return (tmp);
+}
+
+char	*try_current_dir(char *filename)
+{
+	char	*dir;
+	int		fd;
+
+	dir = malloc(305);
+	getcwd(dir, 305);
+	dir = ft_strjoin(dir, "/");
+	dir = ft_strjoin(dir, filename);
+	fd = open(dir, O_RDONLY);
+	if (fd > 0)
+	{
+		close(fd);
+		return (dir);
+	}
+	if (fd)
+		close(fd);
+	free(dir);
+	return (NULL);
 }
 
 //создаем полный путь исполняемого файлы для execve
@@ -60,7 +107,7 @@ char *ft_make_path(char **path, t_list *list)
 		free(tmp);
 		i++;
 	}
-	return (NULL);
+	return (try_current_dir(list->cmd[0]));
 }
 
 

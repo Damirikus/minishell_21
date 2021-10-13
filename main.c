@@ -42,8 +42,6 @@ int main(int argc, char **argv, char **env)
 		}
 		if (*input)
 			add_history(input);
-
-		signal(SIGINT, ft_ctrl);
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
@@ -64,16 +62,16 @@ int main(int argc, char **argv, char **env)
 			}
 			int i = 0;//количество fork
 			int status;
-			if (pid != -99)
 			while(i < data->len)
 			{
 				if (waitpid(pid, &status, 0) != pid)
 					status = -1;
-				printf("STATUS = %d\n", status);
+//				printf("STATUS = %d\n", status);
 				if (status == 32512)
 					code_exit = 127;
 				else if (status == 256)
 				{
+					printf("miniHELL: cd: no such file or directory\n");
 					code_exit = 1;
 				}
 				else
