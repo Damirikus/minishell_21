@@ -1,4 +1,4 @@
-#include "minishell.h" //jiest
+#include "minishell.h" //jiestjkeeeeeeeeee
 
 // тут происходит распределение по командам на исполнение
 
@@ -9,7 +9,119 @@ void	printjkee(t_data *data)
 
 int ft_realization(t_list *list, t_data *data)
 {
-	return (0);
+	int pid;
+	pid = 0;
+	int flag;
+	flag = 0;
+	if (list->flag_for_job == 1)
+	{
+		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
+		code_exit = 1;
+		return (0);
+	}
+	if (!strcmp(list->cmd[0], "exit")) ///
+		ft_exit(list, data->len); //
+	else if (!strcmp(list->cmd[0], "cd"))
+		ft_cd(list, data);
+	else if (!strcmp(list->cmd[0], "printjkee"))
+		printjkee(data);
+	else if (!strcmp(list->cmd[0], "printlist"))
+		print_list_env1(data->head_env);
+	else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
+		ft_export(data, list);
+	else if (!strcmp(list->cmd[0], "unset"))
+		ft_unset(data, list);
+	else if (!strcmp(list->cmd[0], "env"))
+		print_2d_massive(data->current_env, list);
+	else if (!strcmp(list->cmd[0], "export"))
+		print_2d_massive(data->current_export, list);
+	else
+	{
+		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+			pipe(data->a);
+		else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+			pipe(data->b);
+		pid = fork();
+		flag = 1;
+		if (pid == 0)
+		{
+			if (list->fd0 != -1)
+				dup2(list->fd0, 0);
+			if (list->fd1 != -1)
+				dup2(list->fd1, 1);
+			if (!list->next && data->len > 1)
+			{
+				if (data->flat % 2 == 0)
+				{
+					if (list->fd0 == -1)
+						dup2(data->b[0], 0);
+					close(data->b[0]);
+				}
+				else
+				{
+					if (list->fd0 == -1)
+						dup2(data->a[0], 0);
+					close(data->a[0]);
+				}
+			}
+			else if (data->flat == 0 && list->flag_for_pipe == 1)
+			{
+				close(data->a[0]);
+				if (list->fd1 == -1)
+					dup2(data->a[1], 1);
+				close(data->a[1]);
+			}
+			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+			{
+				if (list->fd0 == -1)
+					dup2(data->a[0], 0);
+				close(data->a[0]);
+				close(data->b[0]);
+				if (list->fd1 == -1)
+					dup2(data->b[1], 1);
+				close(data->b[1]);
+			}
+			else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+			{
+				if (list->fd0 == -1)
+					dup2(data->b[0], 0);
+				close(data->b[0]);
+				close(data->a[0]);
+				if (list->fd1 == -1)
+					dup2(data->a[1], 1);
+				close(data->a[1]);
+			}
+			ft_distributor(list, data);
+		}
+		if (pid != 0)
+		{
+			if (data->len > 1 && !list->next && data->flat % 2 == 0)
+				close(data->b[0]);
+			else if (data->len > 1 && !list->next && data->flat % 2 == 1)
+				close(data->a[0]);
+			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+			{
+				if (data->b[0])
+					close(data->b[0]);
+				close(data->a[1]);
+			}
+			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+			{
+				 if (data->a[0])
+					close(data->a[0]);
+				close(data->b[1]);
+			}
+			if (list->fd0 != -1)
+				close(list->fd0);
+			if (list->fd1 != -1)
+				close(list->fd1);
+			data->flat++;
+		}
+	}
+	if (flag == 1)
+		return (pid);
+	else
+		return (-99);
 }
 
 int ft_distributor(t_list *list, t_data *data)
