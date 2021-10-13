@@ -1,6 +1,21 @@
 #include "minishell.h"
 
 //функция получает path из окржуения и сплитом делит все пути и заполняет двумерный массив
+// char **ft_path(char *str)
+// {
+// 	char **tmp;
+
+// 	int i;
+// 	tmp = ft_split(str, ':');
+// 	i = 0;
+// 	while (tmp[i])
+// 	{
+// 		tmp[i] = ft_strjoin(tmp[i], "/");
+// 		i++;
+// 	}
+// 	return (tmp);
+// }
+
 char **ft_path(char *str)
 {
 	char **tmp;
@@ -13,9 +28,13 @@ char **ft_path(char *str)
 		tmp[i] = ft_strjoin(tmp[i], "/");
 		i++;
 	}
+	tmp[i] = malloc(305);
+	getcwd(tmp[i], 305);
+	tmp[i] = ft_strjoin(tmp[i], "/");
+	i++;
+	tmp[i] = NULL;
 	return (tmp);
 }
-
 
 //создаем полный путь исполняемого файлы для execve
 char *ft_make_path(char **path, t_list *list)
