@@ -64,19 +64,22 @@ int main(int argc, char **argv, char **env)
 			}
 			int i = 0;//количество fork
 			int status;
+			t_list *tmp;
+			tmp = ft_lstlast(data->head_command);
 			while(i < data->len)
 			{
 				if (waitpid(pid, &status, 0) != pid)
 					status = -1;
-//				printf("STATUS = %d\n", status);
+				printf("STATUS = %d\n", status);
 				if (status == 32512)
 					code_exit = 127;
 				else if (status == 256)
 				{
-					printf("miniHELL: cd: no such file or directory\n");
 					code_exit = 1;
 				}
-				else
+				else if (strcmp(tmp->cmd[0], "cd") && strcmp(tmp->cmd[0], "exit") && strcmp(tmp->cmd[0], "printjkee")
+				&& strcmp(tmp->cmd[0], "printlist") && strcmp(tmp->cmd[0], "export") && strcmp(tmp->cmd[0], "unset")
+				&& strcmp(tmp->cmd[0], "env") && strcmp(tmp->cmd[0], "export"))
 					code_exit = 0;
 				i++;
 			}
