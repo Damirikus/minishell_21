@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-
+	int pid;
 	char* input;
 	t_data *data;
 	data = malloc(sizeof(t_data));
@@ -26,34 +26,58 @@ int main(int argc, char **argv, char **env)
 	data->len = 0;
 	data->path = ft_path(getenv("PATH"));
 
-	t_list *tmp;
 	while (1)
 	// for (int k = 0; k < 1; k++)
 	{
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
 
-
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
+		{
+			printf("exit\n");
 			break;
-//		rl_bind_key('\t', rl_complete);
-		add_history(input);
+		}
+		if (*input)
+			add_history(input);
 
-
+		signal(SIGINT, ft_ctrl);
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
 //			ft_print_all(data);
 
 			data->len = ft_chek_all_files(data->head_command);
+			data->flat = 0;
+			data->a[0] = 0;
+			data->b[0] = 0;
+			data->a[1] = 0;
+			data->b[1] = 0;
 			current = data->head_command;
 			while (current)
 			{
 				if (current->cmd[0])
-					ft_realization(current, data);
+					pid = ft_realization(current, data);
 				current = current->next;
+			}
+			int i = 0;//количество fork
+			int status;
+			while(i < data->len)
+			{
+				if (waitpid(pid, &status, 0) != pid)
+					status = -1;
+//				printf("STATUS = %d\n", status);
+				if (status == 32512)
+					code_exit = 127;
+				else if (status == 256)
+				{
+					printf("miniHELL: cd: no such file or directory\n");
+					code_exit = 1;
+				}
+				else
+					code_exit = 0;
+				i++;
 			}
 		}
 		list_free(&data->head_command);
@@ -111,4 +135,10 @@ void ft_ctrlc(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void ft_ctrl(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
 }

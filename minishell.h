@@ -35,6 +35,9 @@ typedef struct s_data
 	t_list *head_command;
 	int len;
 	char **path;
+	int flat;
+	int a[2];
+	int b[2];
 
 	/* Env && export */
 	t_env	*head_env;
@@ -51,6 +54,7 @@ typedef struct s_data
 /* SIGNAL */
 void    rl_replace_line(const char *buffer, int val);
 void ft_ctrlc(int signal);
+void ft_ctrl(int signal);
 
 
 
