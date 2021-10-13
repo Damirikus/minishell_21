@@ -84,7 +84,7 @@ char	*try_current_dir(char *filename)
 }
 
 //создаем полный путь исполняемого файлы для execve
-char *ft_make_path(char **path, t_list *list)
+char *ft_make_path(char **path, t_list *list) //jiest
 {
 	int i;
 	int fd;
