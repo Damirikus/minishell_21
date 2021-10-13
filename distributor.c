@@ -11,7 +11,8 @@ int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
 	pid = 0;
-//	printf("___________________________________________________________________________________\n");
+	int flag;
+	flag = 0;
 	if (list->flag_for_job == 1)
 	{
 		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
@@ -41,6 +42,7 @@ int ft_realization(t_list *list, t_data *data)
 		else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			pipe(data->b);
 		pid = fork();
+		flag = 1;
 		if (pid == 0)
 		{
 			if (list->fd0 != -1)
@@ -116,7 +118,10 @@ int ft_realization(t_list *list, t_data *data)
 			data->flat++;
 		}
 	}
-	return (pid);
+	if (flag == 1)
+		return (pid);
+	else
+		return (-99);
 }
 
 int ft_distributor(t_list *list, t_data *data)

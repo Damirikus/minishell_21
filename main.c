@@ -64,8 +64,7 @@ int main(int argc, char **argv, char **env)
 			}
 			int i = 0;//количество fork
 			int status;
-			t_list *tmp;
-			tmp = ft_lstlast(data->head_command);
+			if (pid != -99)
 			while(i < data->len)
 			{
 				if (waitpid(pid, &status, 0) != pid)
@@ -77,9 +76,7 @@ int main(int argc, char **argv, char **env)
 				{
 					code_exit = 1;
 				}
-				else if (strcmp(tmp->cmd[0], "cd") && strcmp(tmp->cmd[0], "exit") && strcmp(tmp->cmd[0], "printjkee")
-				&& strcmp(tmp->cmd[0], "printlist") && strcmp(tmp->cmd[0], "export") && strcmp(tmp->cmd[0], "unset")
-				&& strcmp(tmp->cmd[0], "env") && strcmp(tmp->cmd[0], "export"))
+				else
 					code_exit = 0;
 				i++;
 			}
