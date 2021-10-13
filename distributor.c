@@ -9,59 +9,6 @@ void	printjkee(t_data *data)
 
 int ft_realization(t_list *list, t_data *data)
 {
-	int pid;
-	int status;
-	if (list->flag_for_job == 1)
-	{
-		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
-		code_exit = 1;
-		return (0);
-	}
-	if (!strcmp(list->cmd[0], "exit"))
-		ft_exit(list, data->len);
-	else if (!strcmp(list->cmd[0], "cd"))
-		ft_cd(list, data);
-	else if (!strcmp(list->cmd[0], "printjkee"))
-		printjkee(data);
-	else if (!strcmp(list->cmd[0], "printlist"))
-		print_list_env1(data->head_env);
-	else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
-		ft_export(data, list);
-	else if (!strcmp(list->cmd[0], "unset"))
-		ft_unset(data, list);
-	else if (!strcmp(list->cmd[0], "env"))
-		print_2d_massive(data->current_env, list);
-	else if (!strcmp(list->cmd[0], "export"))
-		print_2d_massive(data->current_export, list);
-	else
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			if (list->fd0 != -1)
-				dup2(list->fd0, 0);
-			if (list->fd1 != -1)
-				dup2(list->fd1, 1);
-			ft_distributor(list, data);
-		}
-		if (pid != 0)
-		{
-
-			if (waitpid(pid, &status, 0) != pid)
-				status = -1;
-//			wait(NULL);
-		}
-		if (status == 32512)
-			code_exit = 127;
-		else
-			code_exit = 0;
-//		printf("status = %d\n", status);
-//		printf("exit = %d\n", code_exit);
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
-	}
 	return (0);
 }
 
