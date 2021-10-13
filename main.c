@@ -11,6 +11,7 @@ void	initial_env_maker(t_data *data, char **env)
 	data->current_oldpwd = NULL;
 	env_to_list(data);
 	pwd_oldpwd_remaker(data);
+	shlvl_plus(data);
 }
 
 int main(int argc, char **argv, char **env)
