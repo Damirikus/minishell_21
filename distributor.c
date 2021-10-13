@@ -40,24 +40,15 @@ int ft_realization(t_list *list, t_data *data)
 			pipe(data->a);
 		else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			pipe(data->b);
-//		printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
-//		printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 		pid = fork();
 		if (pid == 0)
 		{
 			if (list->fd0 != -1)
-			{
 				dup2(list->fd0, 0);
-//				close(list->fd0);
-			}
 			if (list->fd1 != -1)
-			{
 				dup2(list->fd1, 1);
-//				close(list->fd1);
-			}
 			if (!list->next && data->len > 1)
 			{
-//				printf("LAST------------------------\n");
 				if (data->flat % 2 == 0)
 				{
 					if (list->fd0 == -1)
@@ -73,7 +64,6 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat == 0 && list->flag_for_pipe == 1)
 			{
-//				printf("A1 ----------------------\n");
 				close(data->a[0]);
 				if (list->fd1 == -1)
 					dup2(data->a[1], 1);
@@ -81,7 +71,6 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			{
-//				printf("B1 ----------------------\n");
 				if (list->fd0 == -1)
 					dup2(data->a[0], 0);
 				close(data->a[0]);
@@ -92,7 +81,6 @@ int ft_realization(t_list *list, t_data *data)
 			}
 			else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			{
-//				printf("A2 ----------------------\n");
 				if (list->fd0 == -1)
 					dup2(data->b[0], 0);
 				close(data->b[0]);
@@ -105,29 +93,18 @@ int ft_realization(t_list *list, t_data *data)
 		}
 		if (pid != 0)
 		{
-//			usleep(1000);
 			if (data->len > 1 && !list->next && data->flat % 2 == 0)
-			{
-//				printf("----------------------lastA\n");
 				close(data->b[0]);
-				// close(data->b[1]);
-			}
 			else if (data->len > 1 && !list->next && data->flat % 2 == 1)
-			{
-//				printf("----------------------lastB\n");
 				close(data->a[0]);
-				// close(data->a[1]);
-			}
 			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
 			{
-//				printf("----------------------A\n");
 				if (data->b[0])
 					close(data->b[0]);
 				close(data->a[1]);
 			}
 			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
 			{
-//				printf("----------------------B\n");
 				 if (data->a[0])
 					close(data->a[0]);
 				close(data->b[1]);
@@ -137,8 +114,6 @@ int ft_realization(t_list *list, t_data *data)
 			if (list->fd1 != -1)
 				close(list->fd1);
 			data->flat++;
-//			printf("pipe a:    %d, %d\n", data->a[0], data->a[1]);
-//			printf("pipe b:    %d, %d\n", data->b[0], data->b[1]);
 		}
 	}
 	return (pid);
@@ -162,8 +137,8 @@ int ft_distributor(t_list *list, t_data *data)
 		{
 //			if (full_path[0] == '/')
 //			{
-//				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
-//				exit(127);
+////				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
+//				exit(1);
 //			}
 			printf("miniHELL: %s: command not found\n", list->cmd[0]);
 			if (list->fd0 != -1)
@@ -355,6 +330,7 @@ int ft_cd(t_list *list, t_data *data)
 
 int ft_cd_part(t_list *list)
 {
+	printf("i am here\n");
 	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
 	code_exit = 1;
 	return (0);
