@@ -55,6 +55,7 @@ typedef struct s_data
 void    rl_replace_line(const char *buffer, int val);
 void ft_ctrlc(int signal);
 void ft_ctrl(int signal);
+void ft_hz(int sig);
 
 
 
@@ -64,7 +65,6 @@ int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
 int ft_distributor(t_list *list, t_data *data);
 int ft_chek_all_files(t_list *list);
-int ft_open_pipe(t_list *list);
 int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
 int ft_realization(t_list *list, t_data *data);
