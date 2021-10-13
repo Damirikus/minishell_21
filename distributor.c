@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "minishell.h" //jiest
 
 // тут происходит распределение по командам на исполнение
 
