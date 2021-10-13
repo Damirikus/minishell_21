@@ -19,8 +19,8 @@ int ft_realization(t_list *list, t_data *data)
 		code_exit = 1;
 		return (0);
 	}
-	if (!strcmp(list->cmd[0], "exit"))
-		ft_exit(list, data->len);
+	if (!strcmp(list->cmd[0], "exit")) ///
+		ft_exit(list, data->len); //
 	else if (!strcmp(list->cmd[0], "cd"))
 		ft_cd(list, data);
 	else if (!strcmp(list->cmd[0], "printjkee"))
