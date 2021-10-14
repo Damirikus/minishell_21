@@ -44,10 +44,6 @@ int ft_realization(t_list *list, t_data *data)
 		ft_export(data, list);
 	else if (!strcmp(list->cmd[0], "unset"))
 		ft_unset(data, list);
-	else if (!strcmp(list->cmd[0], "env"))
-		print_2d_massive(data->current_env, list);
-	else if (!strcmp(list->cmd[0], "export"))
-		print_2d_massive(data->current_export, list);
 	else
 	{
 		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
@@ -147,10 +143,12 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_echo(list);
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd();
+	else if (!strcmp(list->cmd[0], "env"))
+		print_2d_massive(data->current_env, list);
+	else if (!strcmp(list->cmd[0], "export"))
+		print_2d_massive(data->current_export, list);
 	else
 	{
-		if (!ft_strncmp("minishell", list->cmd[0], ft_strlen("minishell")) || !ft_strncmp("./minishell", list->cmd[0], ft_strlen("./minishell")))
-			shlvl_plus(data);
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
 			dup2(data->fd_mother, 1);
