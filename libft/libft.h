@@ -65,7 +65,7 @@ typedef struct s_list
 	int				flag_for_pipe;
 	int				fd0;
 	int				fd1;
-	int				pid_mother;
+//	int				fd_mother;
 	int				flag_for_job;
 	char			*filename_for_job;
 	struct s_list	*next;
