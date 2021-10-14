@@ -165,6 +165,10 @@ int ft_distributor(t_list *list, t_data *data)
 		}
 		// Поднять shlvl
 	}
+	if (list->fd0 != -1)
+		close(list->fd0);
+	if (list->fd1 != -1)
+		close(list->fd1);
 	exit(0);
 		
 }
@@ -238,20 +242,44 @@ void ft_pwd(void)
 void ft_echo(t_list *list)
 {
 	int qw;
+	int k;
+	int i;
+	int flag;
 
 	qw = 0;
 	while (list->cmd[qw])
 		qw++;
-    if (qw == 1)
-    {
-        write(1, "\n", 1);
-        exit(0);
-    }
-	if (strcmp(list->cmd[1], "-n"))
-		ft_echo_part(list, 1, qw);
-	else
-		ft_echo_part2(list, 2, qw);
-	exit(0);
+	if (qw == 1)
+	{
+		write(1, "\n", 1);
+		exit(0);
+	}
+	k = 1;
+	if (list->cmd[1])
+		while (k < qw)
+		{
+			if (list->cmd[k][0] != '-')
+				break;
+			i = 1;
+			flag = 0;
+			while (list->cmd[k][i])
+			{
+				if (list->cmd[k][i] != 'n')
+				{
+					flag = 1;
+					break ;
+				}
+				i++;
+			}
+			if (flag == 1)
+				break;
+			k++;
+		}
+		if (k == 1)
+			ft_echo_part(list, 1, qw);
+		else
+			ft_echo_part2(list, k, qw);
+		exit(0);
 }
 
 void ft_echo_part(t_list *list, int i, int qw)
