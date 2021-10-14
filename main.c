@@ -72,16 +72,17 @@ int main(int argc, char **argv, char **env)
 			{
 				if (waitpid(pid, &status, 0) != pid)
 					status = -1;
-//				printf("STATUS = %d\n", status);
-				if (status == 32512)
-					code_exit = 127;
-				else if (status == 256)
-				{
-					printf("miniHELL: cd: no such file or directory\n");
-					code_exit = 1;
-				}
-				else
-					code_exit = 0;
+				printf("STATUS = %d\n", status);
+				code_exit = status / 256;
+//				if (status == 32512)
+//					code_exit = 127;
+//				else if (status == 256)
+//				{
+//					code_exit = 1;
+//				}
+//				else
+//					code_exit = 0;
+
 				i++;
 			}
 		}
