@@ -1,6 +1,6 @@
 #include "minishell.h" //jiestjkeeeeeeeeee
 
-// тут происходит распределение по командам на исполнение cat << 6 << 7 > 8 >> 2 < 5 | wc -l | cat > 100
+// тут происходит распределение по командам на исполнение
 
 void	printjkee(t_data *data)
 {
@@ -10,24 +10,12 @@ void	printjkee(t_data *data)
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
-	int p[2];
 	pid = 0;
 	int flag;
 	flag = 0;
 	if (list->flag_for_job == 1)
 	{
-		if (data->len > 1 && list->next)
-		{
-			pipe(p);
-			close(p[1]);
-			if (list->next->fd0 == -1)
-				list->next->fd0 = p[0];
-		}
-		printf("minishell: %s: No such file or directory\n", list->filename_for_job);
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
+		printf("miniHELL: %s: No such file or directory\n", list->filename_for_job);
 		code_exit = 1;
 		return (0);
 	}
@@ -43,10 +31,6 @@ int ft_realization(t_list *list, t_data *data)
 		ft_export(data, list);
 	else if (!strcmp(list->cmd[0], "unset"))
 		ft_unset(data, list);
-	else if (!strcmp(list->cmd[0], "env"))
-		print_2d_massive(data->current_env, list);
-	else if (!strcmp(list->cmd[0], "export"))
-		print_2d_massive(data->current_export, list);
 	else
 	{
 		if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
@@ -146,21 +130,19 @@ int ft_distributor(t_list *list, t_data *data)
 		ft_echo(list);
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd();
+	else if (!strcmp(list->cmd[0], "env"))
+		print_2d_massive(data->current_env, list);
+	else if (!strcmp(list->cmd[0], "export"))
+		print_2d_massive(data->current_export, list);
 	else
 	{
-		if (!ft_strncmp("minishell", list->cmd[0], ft_strlen("minishell")) || !ft_strncmp("./minishell", list->cmd[0], ft_strlen("./minishell")))
-			shlvl_plus(data);
+		// if (!ft_strncmp("minishell", list->cmd[0], ft_strlen("minishell")) || !ft_strncmp("./minishell", list->cmd[0], ft_strlen("./minishell")))
+		// 	shlvl_plus(data);
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
-			dup2(data->fd_mother, 1);
-			if (list->cmd[0][0] == '/' || (list->cmd[0][0] == '.' && list->cmd[0][1] == '/'))
-				printf("minishell: %s: no such file or directory\n", list->cmd[0]);
-			else
-				printf("minishell: %s: command not found\n", list->cmd[0]);
-			if (list->fd0 != -1)
-				close(list->fd0);
-			if (list->fd1 != -1)
-				close(list->fd1);
+//			if (full_path[0] == '/')
+//				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
+			printf("miniHELL: %s: command not found\n", list->cmd[0]);
 			exit (127);
 		}
 		// Поднять shlvl
@@ -208,7 +190,6 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 			export_env(data, list->cmd[i]);
 		i++;
 	}
-	printf("CODE_EXIT: %d\n", code_exit);
 	code_exit = flag;
 }
 
@@ -298,13 +279,7 @@ int ft_cd(t_list *list, t_data *data)
 	while (list->cmd[i])
 		i++;
 	if (!list->cmd[1] || list->cmd[1][0] == '~')
-	{
-		if(ft_find_home(list, data))
-		{
-			printf("minishell: cd: HOME not set\n");
-			return (0);
-		}
-	}
+		ft_find_home(list, data);
 	if (data->len > 1)
 	{
 		if (list->fd1 != -1)
@@ -324,23 +299,20 @@ int ft_cd(t_list *list, t_data *data)
 
 int ft_cd_part(t_list *list)
 {
-	printf("minishell: cd: %s: no such file or directory\n", list->cmd[1]);
-	code_exit = 1;
+	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
+	code_exit = 127;
 	return (0);
 }
 
 int ft_find_home(t_list *list, t_data *data)
 {
 	int i;
-	int f;
-	f = 0;
 	i = 0;
 	while (data->current_env[i])
 	{
 		if (data->current_env[i][0] == 'H' && data->current_env[i][1] == 'O' && data->current_env[i][2] == 'M'
 		&& data->current_env[i][3] == 'E' && data->current_env[i][4] == '=')
 		{
-			f = 1;
 			if (!list->cmd[1])
 			{
 				free(list->cmd[0]);
@@ -357,8 +329,6 @@ int ft_find_home(t_list *list, t_data *data)
 		}
 		i++;
 	}
-	if (f == 0)
-		return (1);
 	return (0);
 }
 
@@ -380,7 +350,7 @@ void ft_exit(t_list *list, int len)
 			return;
 		if (!ft_check_max_min(list->cmd[1]))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", list->cmd[1]);
+			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
 				if (len == 1)
 					exit(255);
 				else
@@ -391,7 +361,7 @@ void ft_exit(t_list *list, int len)
 	ft_exit_part(code, list, len);
 }
 
-int ft_exit_inner_part(t_list *list, int i, int len)
+int ft_exit_inner_part( t_list *list, int i, int len)
 {
 	if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
 		i++;
@@ -399,7 +369,7 @@ int ft_exit_inner_part(t_list *list, int i, int len)
 	{
 		if (!ft_isdigit(list->cmd[1][i]))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", list->cmd[1]);
+			printf("miniHELL: exit: %s: numeric argument required\n", list->cmd[1]);
 			if (len == 1)
 				exit(255);
 			else
@@ -418,7 +388,7 @@ void ft_exit_part(long code, t_list *list, int len)
 		i++;
 	if (i > 2)
 	{
-		printf("minishell: exit: too many arguments\n");
+		printf("miniHELL: exit: too many arguments\n");
 		code_exit = 1;
 		return ;
 	}
