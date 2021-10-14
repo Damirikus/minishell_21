@@ -1,11 +1,14 @@
 // #include "minishell.h" //jiestjkeeeeeeeeee
 
+
 // // тут происходит распределение по командам на исполнение cat << 6 << 7 > 8 >> 2 < 5 | wc -l | cat > 100
+
 
 // void	printjkee(t_data *data)
 // {
 // 	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
 // }
+
 
 // int ft_realization(t_list *list, t_data *data)
 // {
@@ -142,6 +145,7 @@
 
 // 	full_path = ft_make_path(data->path, list);
 
+
 // 	if (!strcmp(list->cmd[0], "echo"))
 // 		ft_echo(list);
 // 	else if (!strcmp(list->cmd[0], "pwd"))
@@ -199,6 +203,7 @@
 // 	int	i;
 // 	int	code;
 // 	int	flag;
+
 
 // 	i = 1;
 // 	code = 0;
@@ -322,6 +327,7 @@
 // 	int i;
 // 	DIR *str;
 
+
 // 	i = 0;
 // 	while (list->cmd[i])
 // 		i++;
@@ -395,6 +401,7 @@
 // {
 // 	int i;
 // 	long code;
+
 
 // 	code = 0;
 // 	if (len == 1)
