@@ -140,9 +140,15 @@ int ft_distributor(t_list *list, t_data *data)
 			shlvl_plus(data);
 		if (execve(full_path, list->cmd, data->current_env) == -1)
 		{
-//			if (full_path[0] == '/')
-//				printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[0]);
-			printf("miniHELL: %s: command not found\n", list->cmd[0]);
+			if (list->cmd[0][0] == '/' || (list->cmd[0][0] == '.' && list->cmd[0][1] == '/'))
+				printf("miniHELL: %s: no such file or directory\n", list->cmd[0]);
+			else
+				printf("miniHELL: %s: command not found\n", list->cmd[0]);
+			if (list->fd0 != -1)
+				close(list->fd0);
+			if (list->fd1 != -1)
+				close(list->fd1);
+
 			exit (127);
 		}
 		// Поднять shlvl
@@ -362,7 +368,7 @@ void ft_exit(t_list *list, int len)
 	ft_exit_part(code, list, len);
 }
 
-int ft_exit_inner_part( t_list *list, int i, int len)
+int ft_exit_inner_part(t_list *list, int i, int len)
 {
 	if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
 		i++;
