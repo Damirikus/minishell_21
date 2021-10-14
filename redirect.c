@@ -34,38 +34,16 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect)
 	}
 	else if (redirect->flag_for_stdout == 2 && list->flag_for_job == 0)
 	{
-		list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (list->fd1 == -1)
-		{
-			printf("Error: file not open\n");
-			code_exit = 2;
+		if(ft_stdoutout(list, redirect))
 			return (1);
-		}
-		if (redirect->flag != 1)
-		{
-			close(list->fd1);
-			list->fd1 = -1;
-		}
 	}
 	else if (redirect->flag_for_stdin == 1 && list->flag_for_job == 0)
 	{
-		list->fd0 = open(redirect->filename, O_RDONLY, 0644);
-		if (list->fd0 == -1)
-		{
-			list->flag_for_job = 1;
-			list->filename_for_job = redirect->filename;
-			return (0);
-		}
-		if (redirect->flag != 1)
-		{
-			close(list->fd0);
-			list->fd0 = -1;
-		}
+		if(!ft_stdin(list, redirect))
+			return (1);
 	}
 	else if (redirect->flag_for_stdin == 2)
-	{
 		ft_key_handler(list, redirect);
-	}
 	return (0);
 }
 
@@ -86,6 +64,39 @@ int ft_stdout(t_list *list, t_redirect *redirect)
 	return (0);
 }
 
+int ft_stdoutout(t_list *list, t_redirect *redirect)
+{
+	list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (list->fd1 == -1)
+	{
+		printf("Error: file not open\n");
+		code_exit = 2;
+		return (1);
+	}
+	if (redirect->flag != 1)
+	{
+		close(list->fd1);
+		list->fd1 = -1;
+	}
+	return (0);
+}
+
+int ft_stdin(t_list *list, t_redirect *redirect)
+{
+	list->fd0 = open(redirect->filename, O_RDONLY, 0644);
+	if (list->fd0 == -1)
+	{
+		list->flag_for_job = 1;
+		list->filename_for_job = redirect->filename;
+		return (0);
+	}
+	if (redirect->flag != 1)
+	{
+		close(list->fd0);
+		list->fd0 = -1;
+	}
+	return (1);
+}
 
 void ft_emp(int sig)
 {

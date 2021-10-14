@@ -9,6 +9,7 @@ void	initial_env_maker(t_data *data, char **env)
 	data->head_env = NULL;
 	data->current_pwd = NULL;
 	data->current_oldpwd = NULL;
+	data->fd_mother = dup(1);
 	env_to_list(data);
 	pwd_oldpwd_remaker(data);
 	shlvl_plus(data);
@@ -55,10 +56,6 @@ int main(int argc, char **argv, char **env)
 
 			data->len = ft_chek_all_files(data->head_command);
 			data->flat = 0;
-			data->a[0] = 0;
-			data->b[0] = 0;
-			data->a[1] = 0;
-			data->b[1] = 0;
 			current = data->head_command;
 			while (current)
 			{
@@ -72,18 +69,9 @@ int main(int argc, char **argv, char **env)
 			{
 				if (waitpid(pid, &status, 0) != pid)
 					status = -1;
-				printf("STATUS = %d\n", status);
+//				printf("STATUS = %d\n", status);
 				if (status != -1)
 					code_exit = status / 256;
-//				if (status == 32512)
-//					code_exit = 127;
-//				else if (status == 256)
-//				{
-//					code_exit = 1;
-//				}
-//				else
-//					code_exit = 0;
-
 				i++;
 			}
 		}
