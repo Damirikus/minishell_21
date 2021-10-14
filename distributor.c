@@ -1,4 +1,4 @@
-// #include "minishell.h" //jiestjkeeeeeeeeee
+#include "minishell.h" //jiestjkeeeeeeeeee
 
 // // тут происходит распределение по командам на исполнение cat << 6 << 7 > 8 >> 2 < 5 | wc -l | cat > 100
 
