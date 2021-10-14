@@ -1,4 +1,4 @@
-#include "minishell.h" //jiest
+#include "minishell.h" //comment for merge
 
 void	initial_env_maker(t_data *data, char **env)
 {
