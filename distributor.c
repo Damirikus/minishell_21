@@ -307,7 +307,7 @@ int ft_cd(t_list *list, t_data *data)
 int ft_cd_part(t_list *list)
 {
 	printf("miniHELL: cd: %s: no such file or directory\n", list->cmd[1]);
-	code_exit = 127;
+	code_exit = 1;
 	return (0);
 }
 

@@ -73,7 +73,8 @@ int main(int argc, char **argv, char **env)
 				if (waitpid(pid, &status, 0) != pid)
 					status = -1;
 				printf("STATUS = %d\n", status);
-				code_exit = status / 256;
+				if (status != -1)
+					code_exit = status / 256;
 //				if (status == 32512)
 //					code_exit = 127;
 //				else if (status == 256)
