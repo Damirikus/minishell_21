@@ -38,7 +38,7 @@ typedef struct s_data
 	int flat;
 	int a[2];
 	int b[2];
-
+	int fd_mother;
 	/* Env && export */
 	t_env	*head_env;
 	char	*current_pwd;
@@ -71,6 +71,8 @@ int ft_chek_all_files(t_list *list);
 int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
 int ft_stdout(t_list *list, t_redirect *redirect);
+int ft_stdoutout(t_list *list, t_redirect *redirect);
+int ft_stdin(t_list *list, t_redirect *redirect);
 
 
 /* build commands */
