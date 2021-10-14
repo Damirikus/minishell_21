@@ -7,6 +7,7 @@
 // 	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
 // }
 
+
 // int ft_realization(t_list *list, t_data *data)
 // {
 // 	int pid;
