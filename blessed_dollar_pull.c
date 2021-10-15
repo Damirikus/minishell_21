@@ -32,7 +32,6 @@ void	dollar_pull_swaper(char **pipe_mass, int number, char *value, int start)
 
 	start--;
 	finish = start + 1;
-	// while (isalnum(pipe_mass[number][finish]))
 	while (isalnum(pipe_mass[number][finish]) || pipe_mass[number][finish] == '_')
 		finish++;
 	result = malloc(sizeof(char) * (strlen(pipe_mass[number]) - (finish - start) + strlen(value) + 1));
@@ -93,6 +92,8 @@ void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
 	result[i] = 0;
 	free(pipe_mass[number]);
 	pipe_mass[number] = result;
+	free(exit_code_str);
+	// while (1);
 }
 
 void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Встретили знак даллара в строке, пробуем менять
@@ -110,6 +111,7 @@ void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Вс
 		dollar_pull_exit_code(pipe_mass, number, j - 1);
 		return ;
 	}
+	// while (1);
 	// while (isalnum(pipe_mass[number][j]) && pipe_mass[number][j] != 0)
 	while (isalnum(pipe_mass[number][j]) || pipe_mass[number][j] == '_')
 		j++;
@@ -174,6 +176,7 @@ void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, рас
 		}
 		i++;
 	}
+	// while (1);
 }
 
 

@@ -160,4 +160,5 @@ t_list	*parser(char *str, char **env)
 	free(pipe_mass);
 	// while (1);
 	return (head_command);
+	
 }
