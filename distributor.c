@@ -140,7 +140,10 @@ int ft_distributor(t_list *list, t_data *data)
 	full_path = ft_make_path(data->path, list);
 
 	if (!strcmp(list->cmd[0], "echo"))
+	{
+		// while (1);
 		ft_echo(list);
+	}
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd();
 	else if (!strcmp(list->cmd[0], "env"))
