@@ -62,6 +62,7 @@ char **ft_path(char *str);
 int ft_pipe(char **path, t_list *list);
 char *ft_make_path(char **path, t_list *list);
 int ft_distributor(t_list *list, t_data *data);
+void ft_distributor_part(t_list *list, t_data *data, char *full_path);
 int ft_realization(t_list *list, t_data *data);
 
 
@@ -87,10 +88,10 @@ int ft_cd(t_list *list, t_data *data);
 int ft_cd_part(t_list *list);
 int ft_find_home(t_list *list, t_data *data);
 /* exit */
-void ft_exit_part(long code, t_list *list, int len);
-void ft_exit(t_list *list, int len);
+void ft_exit_part(long code, t_list *list, int len, t_data *data);
+void ft_exit(t_list *list, int len, t_data *data);
 int	ft_check_max_min(char *str);
-int ft_exit_inner_part( t_list *list, int i, int len);
+int ft_exit_inner_part( t_list *list, int i, int len, t_data *data);
 
 
 
