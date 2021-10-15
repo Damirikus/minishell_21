@@ -73,5 +73,6 @@ void	free_whole_project(t_data *data) // data->path?
 	free(data->current_oldpwd);
 	while (data->path[++i])
 		free(data->path[i]);
+	close(data->fd_mother);
 	free(data->path);
 }
