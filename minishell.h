@@ -117,10 +117,10 @@ void	ft_free_for_export(t_data *shell);
 void	ft_free_for_env(t_data *shell);
 void	list_to_2D_massive_export_sort_sys(t_data *shell);
 void	print_list_env1(t_env *head);
-// void	print_2d_massive(char **mass);
 void	print_2d_massive(char **mass, t_list *list);
 void	unset_env(t_data *shell, char *key);
 void	export_env(t_data *shell, char *string);
+int		export_env_variable_strong(char *string);
 void	renew_env_export_massive(t_data *shell);
 int		ft_strlen_key(char *str);
 void	ft_unset(t_data *data, t_list *list);
@@ -130,7 +130,7 @@ int		check_name_export(char *str);
 void	pwd_oldpwd_remaker(t_data *data);
 void	renew_pwd_oldpwd(t_data *data);
 void	shlvl_plus(t_data *data);
-// void	set_current_dir_name(t_data *data);
+
 
 /* prepars && pars */
 int		ft_error(int code);
@@ -152,6 +152,7 @@ void	ft_skip_quotes(char *str, int *i);
 
 /* DOLLAR PULL  */
 void	dollar_pull(char **pipe_mass, char **env);
+void	dollar_pull_for_redirect(t_list *head_command, char **env);
 
 /*	REDIRECT CUTTER	*/
 void	redirect_parser(char **pipe_mass, t_list **head_command);

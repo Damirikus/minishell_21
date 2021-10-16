@@ -60,21 +60,39 @@ int	both_are_sys(t_data *shell, int i)
 	return (0);
 }
 
+int	list_to_2D_massive_env_len(t_data *shell)
+{
+	int	len;
+	t_env	*tmp;
 
-void	list_to_2D_massive_env(t_data *shell) // Листы в двойной чар-массив для execve
+	len = 0;
+	tmp = shell->head_env;
+	while (tmp)
+	{
+		if (export_env_variable_strong(tmp->content))
+			len++;
+		tmp = tmp->next;
+	}
+	return (len);
+}
+
+void	list_to_2D_massive_env(t_data *shell) // Листы в двойной чар-массив для execve // ПЕРЕДЕЛАНО ПРОВЕРИТЬ 10 РАЗ
 {
 	int		i;
 	t_env	*tmp;
 
 	if (shell->current_env)
 		free(shell->current_env);
-	// 	ft_free_for_env(shell);
-	shell->current_env = malloc(sizeof(char *) * (ft_lstsize_env(shell->head_env) + 1));
-	i = -1;
+	shell->current_env = malloc(sizeof(char *) * (list_to_2D_massive_env_len(shell) + 1));
+	i = 0;
 	tmp = shell->head_env;
-	while (++i < ft_lstsize_env(shell->head_env))
+	while (tmp)
 	{
-		shell->current_env[i] = tmp->content;
+		if (export_env_variable_strong(tmp->content))
+		{
+			shell->current_env[i] = tmp->content;
+			i++;
+		}
 		tmp = tmp->next;
 	}
 	shell->current_env[i] = NULL;

@@ -1,5 +1,10 @@
 #include "minishell.h" //comment for merge
 
+/*	1) Поменять местами доллар пулл и редирект парсер  
+	2) Добавлять в энв только сильные переменные окружения √
+	3) Научиться добавлять олдпвд если он слаб
+*/
+
 void	initial_env_maker(t_data *data, char **env)
 {
 	data->head_command = NULL;
@@ -37,8 +42,8 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	// for (int k = 0; k < 1; k++)
 	{
-		signal(SIGINT, ft_ctrlc);
-		signal(SIGQUIT, SIG_IGN);
+		// signal(SIGINT, ft_ctrlc);
+		// signal(SIGQUIT, SIG_IGN);
 
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
@@ -49,8 +54,8 @@ int main(int argc, char **argv, char **env)
 		}
 		if (*input)
 			add_history(input);
-		signal(SIGINT, ft_ctrl);
-		signal(SIGQUIT, ft_hz);
+		// signal(SIGINT, ft_ctrl);
+		// signal(SIGQUIT, ft_hz);
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
