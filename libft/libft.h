@@ -50,11 +50,11 @@ int		ft_strcmp(const char *ss1, const char *ss2);
 
 typedef struct s_redirect
 {
-	int flag;
-	char *filename;
+	int		flag;
+	char	*filename;
 	int		flag_for_stdout;
 	int		flag_for_stdin;
-	struct s_redirect *next;
+	struct	s_redirect *next;
 } t_redirect;
 
 typedef struct s_list
