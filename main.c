@@ -14,6 +14,7 @@ void	initial_env_maker(t_data *data, char **env)
 	data->head_env = NULL;
 	data->current_pwd = NULL;
 	data->current_oldpwd = NULL;
+	data->path = NULL;
 	data->fd_mother = dup(1);
 	env_to_list(data);
 	pwd_oldpwd_remaker(data);
@@ -37,7 +38,8 @@ int main(int argc, char **argv, char **env)
 	initial_env_maker(data, env);
 	t_list *current;
 	data->len = 0;
-	data->path = ft_path(getenv("PATH"));
+	if (export_env_variable_strong("PATH"))
+		data->path = ft_path(getenv("PATH"));
 
 	while (1)
 	// for (int k = 0; k < 1; k++)

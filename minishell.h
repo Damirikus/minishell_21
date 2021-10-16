@@ -121,6 +121,7 @@ void	print_2d_massive(char **mass, t_list *list);
 void	unset_env(t_data *shell, char *key);
 void	export_env(t_data *shell, char *string);
 int		export_env_variable_strong(char *string);
+int		export_env_variable_present(t_data *shell, char *str);
 void	renew_env_export_massive(t_data *shell);
 int		ft_strlen_key(char *str);
 void	ft_unset(t_data *data, t_list *list);
