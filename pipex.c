@@ -93,6 +93,7 @@ char *ft_make_path(char **path, t_list *list) //jiest
 	if (list->cmd[0][0] == '/')
 		return (list->cmd[0]);
 	i = 0;
+	if (path) {
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], list->cmd[0]);
@@ -107,6 +108,8 @@ char *ft_make_path(char **path, t_list *list) //jiest
 		free(tmp);
 		i++;
 	}
+	}
+	// printf("%s")
 	return (try_current_dir(list->cmd[0]));
 }
 

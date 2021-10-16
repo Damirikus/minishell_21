@@ -7,6 +7,15 @@ void	printjkee(t_data *data)
 	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
 }
 
+void	printpath(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (data->path[++i])
+		printf("%d: %s\n", i, data->path[i]);
+}
+
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
@@ -39,6 +48,8 @@ int ft_realization(t_list *list, t_data *data)
 				ft_cd(list, data);
 			else if (!strcmp(list->cmd[0], "printjkee"))
 				printjkee(data);
+			else if (!strcmp(list->cmd[0], "printpath"))
+				printpath(data);
 			else if (!strcmp(list->cmd[0], "printlist"))
 				print_list_env1(data->head_env);
 			else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
@@ -140,6 +151,7 @@ int ft_distributor(t_list *list, t_data *data)
 {
 	char	*full_path;
 
+
 	full_path = ft_make_path(data->path, list);
 	if (!strcmp(list->cmd[0], "echo"))
 		ft_echo(list);
@@ -160,6 +172,7 @@ int ft_distributor(t_list *list, t_data *data)
 
 void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 {
+	printf("PATH: %s\n", full_path);
 	if (execve(full_path, list->cmd, data->current_env) == -1)
 	{
 		dup2(data->fd_mother, 1);
@@ -194,6 +207,8 @@ void	ft_unset(t_data *data, t_list *list) // проверить возвраща
 			flag = 1;
 		if (!code && data->head_command->next == NULL)
 			unset_env(data, list->cmd[i]);
+		if (!ft_strcmp("PATH", list->cmd[i]))
+			ft_free_path(data);
 		i++;
 	}
 	code_exit = flag;
@@ -217,7 +232,6 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 			export_env(data, list->cmd[i]);
 		i++;
 	}
-	printf("CODE_EXIT: %d\n", code_exit);
 	code_exit = flag;
 }
 
