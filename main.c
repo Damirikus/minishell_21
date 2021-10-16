@@ -66,7 +66,7 @@ int main(int argc, char **argv, char **env)
 			current = data->head_command;
 			while (current)
 			{
-				if (current->cmd[0])
+
 					pid = ft_realization(current, data);
 				current = current->next;
 			}
