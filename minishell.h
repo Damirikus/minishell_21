@@ -183,6 +183,7 @@ void	ft_print_list(t_list *head_command);
 
 /*	FREE WHOLE PROJECT	*/
 void	free_whole_project(t_data *data);
+void	ft_free_path(t_data *data);
 
 void ft_print_all(t_data *data);
 #endif

@@ -28,20 +28,6 @@ t_env	*ft_lstprelast_env(t_env *lst)
 	return (pre);
 }
 
-// t_env	*ft_lstlast_env(t_env *lst)
-// {
-// 	t_env	*tmp;
-
-// 	tmp = lst;
-// 	while (tmp)
-// 	{
-// 		if (tmp->next == NULL)
-// 			return (tmp);
-// 		tmp = tmp->next;
-// 	}
-// 	return (tmp);
-// }
-
 void	list_free_env(t_env **env)
 {
 	t_env	*last;
@@ -61,6 +47,18 @@ void	list_free_env(t_env **env)
 	}
 }
 
+void	ft_free_path(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (data->path[++i])
+		free(data->path[i]);
+	if (data->path)
+		free(data->path);
+	data->path = NULL;
+}
+
 void	free_whole_project(t_data *data) // data->path?
 {
 	int	i;
@@ -71,8 +69,11 @@ void	free_whole_project(t_data *data) // data->path?
 	list_free_env(&data->head_env);
 	free(data->current_pwd);
 	free(data->current_oldpwd);
-	while (data->path[++i])
-		free(data->path[i]);
+	if (data->path)
+	{
+		while (data->path[++i])
+			free(data->path[i]);
+		free(data->path);
+	}
 	close(data->fd_mother);
-	free(data->path);
 }
