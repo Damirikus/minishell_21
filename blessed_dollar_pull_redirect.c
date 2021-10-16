@@ -158,7 +158,7 @@ void	dollar_pull_special_skip_redirect(char **str, int *j, char **env)
 	*j = *j + 1;
 }
 
-void	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй пункт, раскрываем даллары
+int	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй пункт, раскрываем даллары
 {
 	int		j;
 	t_redirect	*tmp;
@@ -184,6 +184,7 @@ void	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй 
 		}
 		tmp = tmp->next;
 	}
+	return (0);
 }
 
 void	dollar_pull_for_redirect(t_list *head_command, char **env)
@@ -193,7 +194,7 @@ void	dollar_pull_for_redirect(t_list *head_command, char **env)
 	tmp = head_command;
 	while (tmp)
 	{
-		dollar_pull_redirect(tmp->head_redirect, env);
-		tmp = tmp->next;
+		if (!dollar_pull_redirect(tmp->head_redirect, env))
+			tmp = tmp->next;
 	}
 }

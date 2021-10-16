@@ -54,6 +54,7 @@ typedef struct s_redirect
 	char	*filename;
 	int		flag_for_stdout;
 	int		flag_for_stdin;
+	int		flag_for_strange;
 	struct	s_redirect *next;
 } t_redirect;
 
