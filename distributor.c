@@ -172,7 +172,8 @@ int ft_distributor(t_list *list, t_data *data)
 
 void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 {
-	if (execve(full_path, list->cmd, data->original_env) == -1)
+	// if (execve(full_path, list->cmd, data->original_env) == -1)
+	if (execve(full_path, list->cmd, data->execve_env) == -1)
 	{
 		dup2(data->fd_mother, 1);
 		close(data->fd_mother);
