@@ -33,6 +33,7 @@ void	env_to_list(t_data *shell) //  Оригинальные переменны
 		ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(shell->original_env[i]));
 	list_to_2D_massive_env(shell);
 	list_to_2D_massive_export(shell);
+	list_to_2D_massive_env_execve(shell);
 }
 
 int	both_are_sys(t_data *shell, int i)
