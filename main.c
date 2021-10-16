@@ -1,5 +1,10 @@
 #include "minishell.h" //comment for merge
 
+/*	1) Поменять местами доллар пулл и редирект парсер  
+	2) Добавлять в энв только сильные переменные окружения √
+	3) Научиться добавлять олдпвд если он слаб
+*/
+
 void	initial_env_maker(t_data *data, char **env)
 {
 	data->head_command = NULL;

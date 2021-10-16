@@ -183,7 +183,6 @@ void	export_env_append(t_data *shell, char *string)
 	clean_string = clean_string_export(string);
 	if (!export_env_variable_present(shell, clean_string))
 	{
-		printf("yes4\n");
 		ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(clean_string));
 		free(clean_string);
 		return ;
@@ -192,15 +191,11 @@ void	export_env_append(t_data *shell, char *string)
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, clean_string, ft_strlen_key(clean_string)) == 0)
-		{
-			printf("yes5\n");
 			break ;
-		}
 		tmp = tmp->next;
 	}
 	if (tmp)
 	{
-		printf("yes6\n");
 		if (!export_env_variable_strong(tmp->content))
 			tmp->content = ft_strjoin_pars(tmp->content, "=");
 	}
@@ -216,12 +211,10 @@ void	export_env(t_data *shell, char *string) // Скетч, нужно дора
 
 	i = 0;
 	len = ft_strlen_key(string);
-	printf("yes0\n");
 	while (i < len)
 	{
 		if (string[i] == '+')
 		{
-			printf("yes1\n");
 			export_env_append(shell, string);
 			renew_env_export_massive(shell);
 			return ;
@@ -229,15 +222,9 @@ void	export_env(t_data *shell, char *string) // Скетч, нужно дора
 		i++;
 	}
 	if (export_env_variable_present(shell, string) && !export_env_variable_strong(string))
-	{
-		printf("yes2\n");
 		return ;
-	}
 	if (export_env_variable_present(shell, string) && export_env_variable_strong(string))
-	{
-		printf("yes3\n");
 		unset_env(shell, string);
-	}
 	ft_lstadd_back_env(&shell->head_env, ft_lstnew_initial_env(string));
 	renew_env_export_massive(shell);
 }

@@ -43,8 +43,6 @@ void	ft_print_list(t_list *head_command)
 	}
 }
 
-////////			bash"erino"asdbashjkee		bash
-
 void	list_free_redirect(t_redirect **redirect)
 {
 	t_redirect	*last;
@@ -117,48 +115,18 @@ t_list	*parser(char *str, char **env)
 {
 	char	**pipe_mass;
 	t_list	*head_command;
+	int		i;
 
 	head_command = NULL;
 	pipe_mass = ft_split_by_pipe(str);
-	int i = -1;
-
-//	while (pipe_mass[++i])
-//		printf("%d: |%s|\n", i, pipe_mass[i]);
-//////////////////////////////////////////////
 	dollar_pull(pipe_mass, env);
 	redirect_parser(pipe_mass, &head_command);
+	// dollar_pull_for_redirect(head_command, env);
 	cmd_maker(pipe_mass, &head_command);
 	quotes_killer(&head_command);
-//////////////////////////////////////////////
-//	ft_print_list(head_command);
-	i = 0;
 	i = -1;
-//	while (pipe_mass[++i])
-//		printf("%d: |%s|\n", i, pipe_mass[i]);
-	i = -1;
-//	printf("\nComands: \n");
-	t_list *tmp;
-	tmp = head_command;
-	int j = 0;
-//	while (tmp)
-//	{
-//		j = 0;
-//		while (tmp->cmd[j])
-//		{
-//			printf("%s ", tmp->cmd[j]);
-//			j++;
-//		}
-//		printf("\n");
-//		tmp = tmp->next;
-//	}
-	
-//	list_free(&head_command);
-	// list_free_redirect(&head_command->head_redirect);
-	// ft_lstclear_redirect(&head_command->next->head_redirect, &free);
 	while (pipe_mass[++i])
 		free(pipe_mass[i]);
 	free(pipe_mass);
-	// while (1);
 	return (head_command);
-	
 }

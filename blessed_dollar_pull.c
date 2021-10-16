@@ -68,7 +68,7 @@ void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
 	int		j;
 
 	exit_code_str = ft_itoa(code_exit);
-	result = malloc(sizeof(char) * ( ft_strlen(pipe_mass[number]) - 2 + ft_strlen(exit_code_str) + 1));
+	result = malloc(sizeof(char) * (ft_strlen(pipe_mass[number]) - 2 + ft_strlen(exit_code_str) + 1));
 	i = 0;
 	j = 0;
 	while (i < start)
@@ -93,7 +93,6 @@ void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
 	free(pipe_mass[number]);
 	pipe_mass[number] = result;
 	free(exit_code_str);
-	// while (1);
 }
 
 void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Встретили знак даллара в строке, пробуем менять
@@ -111,8 +110,6 @@ void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Вс
 		dollar_pull_exit_code(pipe_mass, number, j - 1);
 		return ;
 	}
-	// while (1);
-	// while (isalnum(pipe_mass[number][j]) && pipe_mass[number][j] != 0)
 	while (isalnum(pipe_mass[number][j]) || pipe_mass[number][j] == '_')
 		j++;
 	key = ft_cutstr(pipe_mass[number], start, j);
@@ -137,7 +134,6 @@ void	dollar_pull_special_skip(char **pipe_mass, int i, int *j, char **env)
 	*j = *j + 1;
 	while (pipe_mass[i][*j] != '\"' && pipe_mass[i][*j] != '\0')
 	{
-		// if (pipe_mass[i][*j] == '$' && pipe_mass[i][*j + 1] > 32 && pipe_mass[i][*j + 1] != '\"')
 		if (pipe_mass[i][*j] == '$' && (isalnum(pipe_mass[i][*j + 1]) || pipe_mass[i][*j + 1] == '_' || pipe_mass[i][*j + 1] == '?'))
 		{
 			dollar_pull_helper(pipe_mass, i, *j, env);
@@ -165,7 +161,6 @@ void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, рас
 				dollar_pull_special_skip(pipe_mass, i, &j, env);
 			if (j != -1 && pipe_mass[i][j] == '\'')
 				ft_skip_quotes(pipe_mass[i], &j);
-			// if (j != -1 && pipe_mass[i][j] == '$' && pipe_mass[i][j + 1] > 32)
 			if (j != -1 && pipe_mass[i][j] == '$' && (isalnum(pipe_mass[i][j + 1]) || pipe_mass[i][j + 1] == '_' || pipe_mass[i][j + 1] == '"' || pipe_mass[i][j + 1] == '?'))
 			{
 				dollar_pull_helper(pipe_mass, i, j, env);
@@ -176,7 +171,6 @@ void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, рас
 		}
 		i++;
 	}
-	// while (1);
 }
 
 
