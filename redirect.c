@@ -108,28 +108,29 @@ void	ft_emp(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	write(1, "  ", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
 
 int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 {
-	char *tmp;
-
-	tmp = *str;
+	char	*tmp;
 
 	while (1)
 	{
-		*str = readline("> ");
+		tmp = readline("> ");
 		if (!tmp)
 			break ;
-		if (!strcmp(*str, redirect->filename))
+		if (!strcmp(tmp, redirect->filename))
 		{
 			rl_getc_function = sg;
 			signal(SIGINT, ft_ctrl);
 			signal(SIGQUIT, ft_hz);
+			free(tmp);
 			return (1);
 		}
+		free(tmp);
 	}
 	return (0);
 }
@@ -145,8 +146,9 @@ int	ft_key_handler(t_list *list, t_redirect *redirect)
 	signal(SIGQUIT, SIG_IGN);
 	(sg = rl_getc_function);
 	rl_getc_function = getc;
+
 	if (redirect->flag == 0)
-		return (ft_key_handler_2(&str, sg, redirect));
+		return (ft_key_handler_2(NULL, sg, redirect));
 	else if (redirect->flag == 1)
 	{
 		pipe(td);

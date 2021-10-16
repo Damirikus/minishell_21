@@ -45,6 +45,7 @@ typedef struct s_data
 	char	*current_oldpwd;
 	char	**original_env;
 	char	**current_env;
+	char	**execve_env;
 	char	**current_export;
 
 
@@ -113,6 +114,7 @@ void	env_to_list(t_data *shell);
 int		both_are_sys(t_data *shell, int i);
 void	list_to_2D_massive_env(t_data *shell);
 void	list_to_2D_massive_export(t_data *shell);
+void	list_to_2D_massive_env_execve(t_data *shell);
 void	ft_free_for_export(t_data *shell);
 void	ft_free_for_env(t_data *shell);
 void	list_to_2D_massive_export_sort_sys(t_data *shell);
