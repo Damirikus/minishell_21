@@ -119,9 +119,9 @@ t_list	*parser(char *str, char **env)
 
 	head_command = NULL;
 	pipe_mass = ft_split_by_pipe(str);
-	dollar_pull(pipe_mass, env);
 	redirect_parser(pipe_mass, &head_command);
-	// dollar_pull_for_redirect(head_command, env);
+	dollar_pull(pipe_mass, env);
+	dollar_pull_for_redirect(head_command, env);
 	cmd_maker(pipe_mass, &head_command);
 	quotes_killer(&head_command);
 	i = -1;

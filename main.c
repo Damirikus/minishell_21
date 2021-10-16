@@ -59,7 +59,7 @@ int main(int argc, char **argv, char **env)
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
-//			ft_print_all(data);
+			ft_print_all(data);
 
 			data->len = ft_chek_all_files(data->head_command);
 			data->flat = 0;

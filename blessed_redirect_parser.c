@@ -31,7 +31,8 @@ void	redirect_flag_putter(t_list *list)
 			if (prev_out)
 				prev_out->flag = 0;
 			prev_out = tmp;
-			prev_out->flag = 1;
+			if (tmp->flag_for_strange == 0)
+				prev_out->flag = 1;
 		}
 		tmp = tmp->next;
 	}
@@ -106,7 +107,12 @@ void	add_redirect(char *str, t_list *tmp, int *i) // Листы не зафри�
 	int	start;
 	
 	j = *i + 1;
-	if (str[j] == '>')
+	if (str[j - 1] == '<' && str[j] == '>')
+	{
+		flag = 5;
+		j++;
+	}
+	else if (str[j] == '>')
 	{
 		flag = 2;
 		j++;

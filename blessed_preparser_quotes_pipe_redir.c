@@ -63,12 +63,13 @@ int	check_pipe(char *str, int *i)
 int	check_redir(char *str, int *i)
 {
 	int	j;
-	
+
 	if (str[*i] == '>' && str[*i + 1] == '<')
 		return (ft_error(4));
-	if ((str[*i] == '<' && str[*i + 1] == '>' ) || (str[*i] == '>' && str[*i + 1] == '|'))
+	if ((str[*i] == '>' && str[*i + 1] == '|'))
 		return (ft_error(5));
-	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && str[*i + 1] == '>'))
+	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && \
+	 str[*i + 1] == '>') || (str[*i] == '<' && str[*i + 1] == '>'))
 		j = *i + 2;
 	else
 		j = *i + 1;
