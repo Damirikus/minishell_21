@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	check_name_unset(char *str)
+int	check_name_unset(char *str) // ji estJkeexD
 {
 	int	i;
 
