@@ -77,6 +77,7 @@ int main(int argc, char **argv, char **env)
 					code_exit = status / 256;
 				i++;
 			}
+			usleep(10000);
 		}
 		list_free(&data->head_command);
 		free(input);

@@ -7,7 +7,6 @@ void	printjkee(t_data *data)
 	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
 }
 
-
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
@@ -160,6 +159,7 @@ void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 	if (execve(full_path, list->cmd, data->current_env) == -1)
 	{
 		dup2(data->fd_mother, 1);
+		close(data->fd_mother);
 		if (list->cmd[0][0] == '/' || (list->cmd[0][0] == '.' && list->cmd[0][1] == '/'))
 			printf("minishell: %s: no such file or directory\n", list->cmd[0]);
 		else
@@ -322,7 +322,10 @@ int ft_cd(t_list *list, t_data *data)
 {
 	int i;
 	DIR *str;
-
+	if (data->a[0])
+		close(data->a[0]);
+	if (data->b[0])
+		close(data->b[0]);
 	i = 0;
 	while (list->cmd[i])
 		i++;
