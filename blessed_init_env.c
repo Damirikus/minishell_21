@@ -76,6 +76,28 @@ int	list_to_2D_massive_env_len(t_data *shell)
 	return (len);
 }
 
+void	list_to_2D_massive_env_execve(t_data *shell) // Листы в двойной чар-массив для execve // ПЕРЕДЕЛАНО ПРОВЕРИТЬ 10 РАЗ
+{
+	int		i;
+	t_env	*tmp;
+
+	if (shell->execve_env)
+		free(shell->execve_env);
+	shell->execve_env = malloc(sizeof(char *) * (list_to_2D_massive_env_len(shell) + 1));
+	i = 0;
+	tmp = shell->head_env;
+	while (tmp)
+	{
+		if (export_env_variable_strong(tmp->content))
+		{
+			shell->execve_env[i] = tmp->content;
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	shell->execve_env[i] = NULL;
+}
+
 void	list_to_2D_massive_env(t_data *shell) // Листы в двойной чар-массив для execve // ПЕРЕДЕЛАНО ПРОВЕРИТЬ 10 РАЗ
 {
 	int		i;

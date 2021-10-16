@@ -128,8 +128,10 @@ int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 			rl_getc_function = sg;
 			signal(SIGINT, ft_ctrl);
 			signal(SIGQUIT, ft_hz);
+			free(*str);
 			return (1);
 		}
+		free(*str);
 	}
 	return (0);
 }

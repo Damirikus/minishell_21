@@ -38,9 +38,8 @@ int main(int argc, char **argv, char **env)
 	initial_env_maker(data, env);
 	t_list *current;
 	data->len = 0;
-	if (export_env_variable_strong("PATH"))
+	if (export_env_variable_present(data, "PATH"))
 		data->path = ft_path(getenv("PATH"));
-
 	while (1)
 	// for (int k = 0; k < 1; k++)
 	{

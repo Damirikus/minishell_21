@@ -45,6 +45,7 @@ typedef struct s_data
 	char	*current_oldpwd;
 	char	**original_env;
 	char	**current_env;
+	char	**execve_env;
 	char	**current_export;
 
 
