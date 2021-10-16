@@ -52,8 +52,10 @@ int	ft_stdout(t_list *list, t_redirect *redirect)
 	list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (list->fd1 == -1)
 	{
-		printf("minishell: : No such file or directory\n");
-		code_exit = 2;
+		list->flag_for_job = 1;
+		list->filename_for_job = redirect->filename;
+//		printf("minishell: : No such file or directory\n");
+//		code_exit = 1;
 		return (1);
 	}
 	if (redirect->flag != 1)
@@ -69,8 +71,10 @@ int	ft_stdoutout(t_list *list, t_redirect *redirect)
 	list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (list->fd1 == -1)
 	{
-		printf("minishell: : No such file or directory\n");
-		code_exit = 2;
+		list->flag_for_job = 1;
+		list->filename_for_job = redirect->filename;
+//		printf("minishell: : No such file or directory\n");
+//		code_exit = 1;
 		return (1);
 	}
 	if (redirect->flag != 1)
