@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:36:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 21:48:05 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 21:48:51 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_list	*parser(char *str, t_data *data)
 
 	head_command = NULL;
 	pipe_mass = ft_split_by_pipe(str);
-	int j = -1;
 	redirect_parser(pipe_mass, &head_command);
 	dollar_pull(pipe_mass, data);
 	dollar_pull_for_redirect(head_command, data);

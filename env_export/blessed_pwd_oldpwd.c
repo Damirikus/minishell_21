@@ -6,38 +6,21 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:08 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:42:21 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 23:20:40 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	pwd_remaker(t_data *data)
+void	oldpwd_remaker(t_data *data)
 {
 	t_env	*tmp_pwd;
 
 	tmp_pwd = data->head_env;
 	while (tmp_pwd)
 	{
-		if (ft_strncmp(tmp_pwd->content, "PWD", ft_strlen_key("PWD")) == 0 && \
-		 ft_strlen_key(tmp_pwd->content) == strlen("PWD"))
-		{
-			data->current_pwd = ft_cutstr(tmp_pwd->content, 0, -1);
-			break ;
-		}
-		tmp_pwd = tmp_pwd->next;
-	}
-}
-
-void	oldpwd_remaker(t_data *data) // !!!!!!!!!!!!!!! CHECK EMPTY PWD_OLDPWD
-{
-	t_env	*tmp_pwd;
-
-	tmp_pwd = data->head_env;
-	while (tmp_pwd)
-	{
-		if (ft_strncmp(tmp_pwd->content, "OLDPWD", ft_strlen_key("OLDPWD")) == 0 \
-		&& ft_strlen_key(tmp_pwd->content) == strlen("OLDPWD"))
+		if (ft_strncmp(tmp_pwd->content, "OLDPWD", ft_strlen_key("OLDPWD")) \
+		== 0 && ft_strlen_key(tmp_pwd->content) == strlen("OLDPWD"))
 		{
 			data->current_oldpwd = ft_cutstr(tmp_pwd->content, 0, -1);
 			break ;
@@ -60,8 +43,8 @@ void	renew_oldpwd(t_data *data)
 	tmp_pwd = data->head_env;
 	while (tmp_pwd)
 	{
-		if (ft_strncmp(tmp_pwd->content, "OLDPWD", ft_strlen_key("OLDPWD")) == 0 \
-		&& ft_strlen_key(tmp_pwd->content) == strlen("OLDPWD"))
+		if (ft_strncmp(tmp_pwd->content, "OLDPWD", ft_strlen_key("OLDPWD")) \
+		== 0 && ft_strlen_key(tmp_pwd->content) == strlen("OLDPWD"))
 		{
 			free(tmp_pwd->content);
 			tmp_pwd->content = ft_strjoin_export("OLD", data->current_pwd);
@@ -77,6 +60,8 @@ void	renew_pwd(t_data *data)
 	t_env	*tmp_pwd;
 
 	newpwd = malloc(405);
+	if (!newpwd)
+		ft_error(8, NULL);
 	getcwd(newpwd, 405);
 	free(data->current_pwd);
 	data->current_pwd = ft_strjoin_export("PWD=", newpwd);

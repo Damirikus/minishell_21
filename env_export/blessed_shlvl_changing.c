@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:11 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:42:15 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 22:58:46 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	shlvl_plus(t_data *data)
 	tmp = data->head_env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, "SHLVL", ft_strlen_key(tmp->content)) && ft_strlen_key("SHLVL") == ft_strlen_key(tmp->content))
+		if (!ft_strncmp(tmp->content, "SHLVL", ft_strlen_key(tmp->content)) \
+		&& ft_strlen_key("SHLVL") == ft_strlen_key(tmp->content))
 			break ;
 		tmp = tmp->next;
 	}
