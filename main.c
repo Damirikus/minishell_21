@@ -38,6 +38,7 @@ int main(int argc, char **argv, char **env)
 	initial_env_maker(data, env);
 	t_list *current;
 	data->len = 0;
+	data->code_exit = 0;
 	if (export_env_variable_present(data, "PATH"))
 		data->path = ft_path(getenv("PATH"));
 	while (1)
@@ -57,9 +58,9 @@ int main(int argc, char **argv, char **env)
 			add_history(input);
 		signal(SIGINT, ft_ctrl);
 		signal(SIGQUIT, ft_hz);
-		if (!preparser(input))
+		if (!preparser(input, data))
 		{
-			data->head_command = parser(input, data->current_env);
+			data->head_command = parser(input, data);
 			// ft_print_all(data);
 			data->len = ft_chek_all_files(data->head_command);
 			data->flat = 0;
@@ -79,7 +80,7 @@ int main(int argc, char **argv, char **env)
 					status = -1;
 //				printf("STATUS = %d\n", status);
 				if (status != -1)
-					code_exit = status / 256;
+					data->code_exit = status / 256;
 				i++;
 			}
 			usleep(10000);

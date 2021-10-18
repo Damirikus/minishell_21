@@ -16,11 +16,6 @@ void	printpath(t_data *data)
 		printf("%d: %s\n", i, data->path[i]);
 }
 
-// void	vse_budet_rabotat(t_data *data, t_list *list)
-// {
-
-// }
-
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
@@ -42,7 +37,7 @@ int ft_realization(t_list *list, t_data *data)
 			close(list->fd0);
 		if (list->fd1 != -1)
 			close(list->fd1);
-		code_exit = 1;
+		data->code_exit = 1;
 		return (0);
 	}
 	if (list->cmd[0])
@@ -156,9 +151,9 @@ int ft_distributor(t_list *list, t_data *data)
 	else if (!strcmp(list->cmd[0], "pwd"))
 		ft_pwd();
 	else if (!strcmp(list->cmd[0], "env"))
-		print_2d_massive(data->current_env, list);
+		print_2d_massive(data->current_env, list, data);
 	else if (!strcmp(list->cmd[0], "export"))
-		print_2d_massive(data->current_export, list);
+		print_2d_massive(data->current_export, list, data);
 	else
 		ft_distributor_part(list, data, full_path);
 	if (list->fd0 != -1)
@@ -197,7 +192,7 @@ void	ft_unset(t_data *data, t_list *list) // проверить возвраща
 	flag = 0;
 	while (list->cmd[i])
 	{
-		code = check_name_unset(list->cmd[i]);
+		code = check_name_unset(list->cmd[i], data);
 		if (code && !flag)
 			flag = 1;
 		if (!code && data->head_command->next == NULL)
@@ -206,7 +201,7 @@ void	ft_unset(t_data *data, t_list *list) // проверить возвраща
 			ft_free_path(data);
 		i++;
 	}
-	code_exit = flag;
+	data->code_exit = flag;
 }
 
 void	ft_export(t_data *data, t_list *list) // Если приходит аргумент без '=', и до этого эта переменная существовала => не делать ничего
@@ -220,14 +215,14 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 	flag = 0;
 	while (list->cmd[i])
 	{
-		code = check_name_export(list->cmd[i]);
+		code = check_name_export(list->cmd[i], data);
 		if (code && !flag)
 			flag = 1;
 		if (!code && data->head_command->next == NULL)
 			export_env(data, list->cmd[i]);
 		i++;
 	}
-	code_exit = flag;
+	data->code_exit = flag;
 }
 
 void ft_pwd(void)
@@ -356,21 +351,21 @@ int ft_cd(t_list *list, t_data *data)
 			close(list->fd1);
 		str = opendir(list->cmd[1]);
 		if (!str)
-			return (ft_cd_part(list));
+			return (ft_cd_part(list, data));
 		closedir(str);
 		return (1);
 	}
 	if (chdir(list->cmd[1]) != 0)
-        return (ft_cd_part(list));
+        return (ft_cd_part(list, data));
 	renew_pwd_oldpwd(data);
-	code_exit = 0;
+	data->code_exit = 0;
 	return (0);
 }
 
-int ft_cd_part(t_list *list)
+int ft_cd_part(t_list *list, t_data *data)
 {
 	printf("minishell: cd: %s: no such file or directory\n", list->cmd[1]);
-	code_exit = 1;
+	data->code_exit = 1;
 	return (0);
 }
 
@@ -470,7 +465,7 @@ void ft_exit_part(long code, t_list *list, int len, t_data *data)
 	if (i > 2)
 	{
 		printf("minishell: exit: too many arguments\n");
-		code_exit = 1;
+		data->code_exit = 1;
 		return ;
 	}
 	if (code < 0)

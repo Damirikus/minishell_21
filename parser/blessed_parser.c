@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:36:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:39:25 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 13:57:12 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	redirect_check(t_list *head_command)
 	}
 }
 
-t_list	*parser(char *str, char **env)
+// t_list	*parser(char *str, char **env)
+t_list	*parser(char *str, t_data *data)
 {
 	char	**pipe_mass;
 	t_list	*head_command;
@@ -40,8 +41,8 @@ t_list	*parser(char *str, char **env)
 	head_command = NULL;
 	pipe_mass = ft_split_by_pipe(str);
 	redirect_parser(pipe_mass, &head_command);
-	dollar_pull(pipe_mass, env);
-	dollar_pull_for_redirect(head_command, env);
+	dollar_pull(pipe_mass, data);
+	dollar_pull_for_redirect(head_command, data);
 	cmd_maker(pipe_mass, &head_command);
 	quotes_killer(&head_command);
 	redirect_check(head_command);

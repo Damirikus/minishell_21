@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:55:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/17 00:06:02 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 14:04:04 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell)
 	}
 }
 
-void	print_2d_massive(char **mass, t_list *list)
+void	print_2d_massive(char **mass, t_list *list, t_data *data)
 {
 	int	i;
 
@@ -45,7 +45,7 @@ void	print_2d_massive(char **mass, t_list *list)
 		ft_putstr_fd(mass[i], 1);
 		write(1, "\n", 1);
 	}
-	code_exit = 0;
+	data->code_exit = 0;
 }
 
 int	list_to_2D_massive_env_len(t_data *shell)

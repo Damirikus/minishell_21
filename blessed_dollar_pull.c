@@ -60,14 +60,14 @@ void	dollar_pull_swaper(char **pipe_mass, int number, char *value, int start)
 	pipe_mass[number] = result;
 }
 
-void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
+void	dollar_pull_exit_code(char **pipe_mass, int number, int start, t_data *data)
 {
 	char	*result;
 	char	*exit_code_str;
 	int		i;
 	int		j;
 
-	exit_code_str = ft_itoa(code_exit);
+	exit_code_str = ft_itoa(data->code_exit);
 	result = malloc(sizeof(char) * (ft_strlen(pipe_mass[number]) - 2 + ft_strlen(exit_code_str) + 1));
 	i = 0;
 	j = 0;
@@ -95,7 +95,7 @@ void	dollar_pull_exit_code(char **pipe_mass, int number, int start)
 	free(exit_code_str);
 }
 
-void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Встретили знак даллара в строке, пробуем менять
+void	dollar_pull_helper(char **pipe_mass, int number, int j, t_data *data) // Встретили знак даллара в строке, пробуем менять
 {
 	int		start;
 	int		i;
@@ -107,18 +107,18 @@ void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Вс
 	j++;
 	if (pipe_mass[number][start] == '?')
 	{
-		dollar_pull_exit_code(pipe_mass, number, j - 1);
+		dollar_pull_exit_code(pipe_mass, number, j - 1, data);
 		return ;
 	}
 	while (isalnum(pipe_mass[number][j]) || pipe_mass[number][j] == '_')
 		j++;
 	key = ft_cutstr(pipe_mass[number], start, j);
 	i = -1;
-	while (env[++i])
+	while (data->current_env[++i])
 	{
-		if (!strncmp(env[i], key, strlen(key)) && env[i][strlen(key)] == '=')
+		if (!strncmp(data->current_env[i], key, strlen(key)) && data->current_env[i][strlen(key)] == '=')
 		{
-			value = strdup(env[i] + strlen(key) + 1);
+			value = strdup(data->current_env[i] + strlen(key) + 1);
 			break ;
 		}
 	}
@@ -129,14 +129,14 @@ void	dollar_pull_helper(char **pipe_mass, int number, int j, char **env) // Вс
 		dollar_cut_from_str(pipe_mass, number, start - 1, j - 1);
 }
 
-void	dollar_pull_special_skip(char **pipe_mass, int i, int *j, char **env)
+void	dollar_pull_special_skip(char **pipe_mass, int i, int *j, t_data *data)
 {
 	*j = *j + 1;
 	while (pipe_mass[i][*j] != '\"' && pipe_mass[i][*j] != '\0')
 	{
 		if (pipe_mass[i][*j] == '$' && (isalnum(pipe_mass[i][*j + 1]) || pipe_mass[i][*j + 1] == '_' || pipe_mass[i][*j + 1] == '?'))
 		{
-			dollar_pull_helper(pipe_mass, i, *j, env);
+			dollar_pull_helper(pipe_mass, i, *j, data);
 			*j = -1;
 			return ;
 		}
@@ -145,7 +145,7 @@ void	dollar_pull_special_skip(char **pipe_mass, int i, int *j, char **env)
 	*j = *j + 1;
 }
 
-void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, раскрываем даллары
+void	dollar_pull(char **pipe_mass, t_data *data) //Второй пункт, раскрываем даллары
 {
 	int	i;
 	int	j;
@@ -158,12 +158,12 @@ void	dollar_pull(char **pipe_mass, char **env) //Второй пункт, рас
 		while (pipe_mass[i][j])
 		{
 			if (j != -1 && pipe_mass[i][j] == '\"')
-				dollar_pull_special_skip(pipe_mass, i, &j, env);
+				dollar_pull_special_skip(pipe_mass, i, &j, data);
 			if (j != -1 && pipe_mass[i][j] == '\'')
 				ft_skip_quotes(pipe_mass[i], &j);
 			if (j != -1 && pipe_mass[i][j] == '$' && (isalnum(pipe_mass[i][j + 1]) || pipe_mass[i][j + 1] == '_' || pipe_mass[i][j + 1] == '"' || pipe_mass[i][j + 1] == '?'))
 			{
-				dollar_pull_helper(pipe_mass, i, j, env);
+				dollar_pull_helper(pipe_mass, i, j, data);
 				j = -1;
 			}
 			if (j == -1 || (pipe_mass[i][j] != '\'' && pipe_mass[i][j] != '\0'))
