@@ -77,7 +77,8 @@ int ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data);
 int ft_stdout(t_list *list, t_redirect *redirect);
 int ft_stdoutout(t_list *list, t_redirect *redirect);
 int ft_stdin(t_list *list, t_redirect *redirect);
-int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect);
+int	ft_key_handler_2(void *sg, t_redirect *redirect);
+int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data);
 int ft_key_handler_creat(t_list *list, t_data *data);
 
 /* build commands */
