@@ -133,6 +133,7 @@ int		check_name_export(char *str);
 void	pwd_oldpwd_remaker(t_data *data);
 void	renew_pwd_oldpwd(t_data *data);
 void	shlvl_plus(t_data *data);
+int		list_to_2D_massive_env_len(t_data *shell);
 
 
 /* prepars && pars */
@@ -143,7 +144,6 @@ int		check_pipe_redir(char *str, int *i);
 int		check_quotes_skip(char *str, int *i, int code);
 int		check_pipe(char *str, int *i);
 int		check_redir(char *str, int *i);
-//void	parser(char *str, char **env);
 t_list	*parser(char *str, char **env);
 
 /* SPLIT BY PIPE */
