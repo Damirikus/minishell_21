@@ -1,7 +1,7 @@
 
 NAME	= minishell
 
-#CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror
 
 CC		= gcc
 
@@ -27,15 +27,21 @@ SRCS	=	main.c \
 			./preparser/blessed_preparser.c \
 			./preparser/blessed_preparser_quotes_pipe_redir.c \
 \
+			./parser/split_by_pipe/blessed_split_by_pipe.c \
+            ./parser/redirect_parser/blessed_redirect_parser.c \
+			./parser/redirect_parser/add_redirect.c \
+			./parser/redirect_parser/redirect_cut_from_str.c \
+			./parser/redirect_parser/flag_putter.c \
+\
+			./parser/dollar_pull/blessed_dollar_pull.c \
+			./parser/dollar_pull/blessed_dollar_pull_utils.c \
+			./parser/dollar_pull/dollar_pull_redirect/blessed_dollar_pull_redirect.c \
+\
             ./parser/blessed_cmd_maker.c \
-			./parser/blessed_dollar_pull.c \
-			./parser/blessed_dollar_pull_redirect.c \
             ./parser/blessed_parser.c \
 			./parser/list_free_utils.c \
 			./parser/blessed_quotes_killer_command.c \
 			./parser/blessed_quotes_killer_redirect.c \
-            ./parser/blessed_redirect_parser.c \
-			./parser/blessed_split_by_pipe.c \
 			./parser/blessed_free_whole_project.c \
 
 

@@ -240,7 +240,7 @@ void ft_pwd(void)
 	str = malloc(200);
     if (!str)
     {
-        printf("memory allocation error\n");
+        printf("Memory allocation error\n");
         exit(1);
     }
 	getcwd(str, 200);

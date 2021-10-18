@@ -18,4 +18,3 @@ t_list	*ft_lstnew(char **content, char **envpe)
 	begin->filename_for_job = NULL;
 	return (begin);
 }
-
