@@ -1,4 +1,16 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blessed_cmd_maker.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/18 20:46:36 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/10/18 20:46:37 by rphoebe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell.h"
 
 int	cmd_allocator_helper(char *str)
 {
@@ -15,11 +27,13 @@ int	cmd_allocator_helper(char *str)
 		{
 			if (str[i] == '\'' || str[i] == '\"')
 				ft_skip_quotes(str, &i);
-			if (str[i] > 32 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
+			if (str[i] > 32 && str[i] != '\0' && str[i] \
+			!= '\'' && str[i] != '\"')
 				i++;
 		}
 		result++;
-		while (str[i] < 33 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
+		while (str[i] < 33 && str[i] != '\0' && str[i] \
+		!= '\'' && str[i] != '\"')
 			i++;
 	}
 	return (result + 1);
@@ -35,6 +49,8 @@ void	cmd_allocator(char **pipe_mass, t_list **head_command)
 	while (pipe_mass[i])
 	{
 		tmp->cmd = malloc(sizeof(char *) * cmd_allocator_helper(pipe_mass[i]));
+		if (!tmp->cmd)
+			ft_error(8, NULL);
 		tmp = tmp->next;
 		i++;
 	}
@@ -57,7 +73,8 @@ void	cmd_pull_helper(char *str, t_list *tmp)
 		{
 			if (str[i] == '\'' || str[i] == '\"')
 				ft_skip_quotes(str, &i);
-			if (str[i] > 32 && str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
+			if (str[i] > 32 && str[i] != '\0' && str[i] \
+			!= '\'' && str[i] != '\"')
 				i++;
 		}
 		tmp->cmd[number] = ft_cutstr(str, start, i);

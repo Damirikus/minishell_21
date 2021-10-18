@@ -160,7 +160,10 @@ void	ft_skip_quotes(char *str, int *i);
 void	dollar_pull(char **pipe_mass, t_data *data);
 void	dollar_pull_for_redirect(t_list *head_command, t_data *data);
 void	dollar_pull_swaper(char **pipe_mass, int number, char *value, int start);
+void	dollar_pull_swaper_redirect(char **str, char *value, int start);
 void	dollar_cut_from_str(char **pipe_mass, int number, int start, int finish);
+void	dollar_cut_from_str_redirect(char **str, int start, int finish);
+char	*dollar_pull_helper_value_maker_redirect(char *tmp, int start, int *j, t_data *data);
 int		ft_isalnum_strong(char c, int flag);
 
 /*	REDIRECT CUTTER	*/
