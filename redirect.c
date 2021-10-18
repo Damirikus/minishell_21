@@ -135,20 +135,23 @@ int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 	return (0);
 }
 
-int	ft_key_handler(t_list *list, t_redirect *redirect)
+void	*ft_key_handler(t_list *list, t_redirect *redirect)
 {
 	int		td[2];
 	char	*str;
 	int		pid;
-	void	*sg;
+//	void	*sg;
 
 	signal(SIGINT, ft_emp);
 	signal(SIGQUIT, SIG_IGN);
-	(sg = rl_getc_function);
+//	(sg = rl_getc_function);
 	rl_getc_function = getc;
 
 	if (redirect->flag == 0)
-		return (ft_key_handler_2(NULL, sg, redirect));
+	{
+		(ft_key_handler_2(NULL, sg, redirect));
+		return sg;
+	}
 	else if (redirect->flag == 1)
 	{
 		pipe(td);
@@ -168,7 +171,7 @@ int	ft_key_handler(t_list *list, t_redirect *redirect)
 				rl_getc_function = sg;
 				signal(SIGINT, ft_ctrl);
 				signal(SIGQUIT, ft_hz);
-				return (0);
+				return (sg);
 			}
 			pid = fork();
 			if (pid == 0)
@@ -191,6 +194,6 @@ int	ft_key_handler(t_list *list, t_redirect *redirect)
 	rl_getc_function = sg;
 	signal(SIGINT, ft_ctrl);
 	signal(SIGQUIT, ft_hz);
-	return (0);
+	return (sg);
 }
 

@@ -29,6 +29,7 @@ void ft_hz(int sig)
 
 int main(int argc, char **argv, char **env)
 {
+	(sg = rl_getc_function);
 	(void)argc;
 	(void)argv;
 	int pid;
@@ -46,7 +47,6 @@ int main(int argc, char **argv, char **env)
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
 
-//		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
 		{
@@ -57,6 +57,7 @@ int main(int argc, char **argv, char **env)
 			add_history(input);
 		signal(SIGINT, ft_ctrl);
 		signal(SIGQUIT, ft_hz);
+		rl_getc_function = sg;
 		if (!preparser(input))
 		{
 			data->head_command = parser(input, data->current_env);
@@ -66,7 +67,8 @@ int main(int argc, char **argv, char **env)
 			current = data->head_command;
 			while (current)
 			{
-
+				signal(SIGINT, ft_ctrl);
+				signal(SIGQUIT, ft_hz);
 					pid = ft_realization(current, data);
 				current = current->next;
 			}

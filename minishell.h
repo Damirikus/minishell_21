@@ -20,7 +20,7 @@
 # define WHITE "\x1B[37m"
 
 int code_exit;
-
+void *sg;
 
 typedef struct	s_env
 {
@@ -70,7 +70,7 @@ int ft_realization(t_list *list, t_data *data);
 
 /* REDIRECTS */
 int ft_chek_all_files(t_list *list);
-int ft_key_handler(t_list *list, t_redirect *redirect);
+void *ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
 int ft_stdout(t_list *list, t_redirect *redirect);
 int ft_stdoutout(t_list *list, t_redirect *redirect);
