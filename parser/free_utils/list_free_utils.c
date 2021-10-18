@@ -6,11 +6,11 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:39:20 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:39:35 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 21:11:12 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	list_free_redirect(t_redirect **redirect)
 {

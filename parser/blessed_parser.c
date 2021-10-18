@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:36:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 20:23:36 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 21:46:20 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ t_list	*parser(char *str, t_data *data)
 	cmd_maker(pipe_mass, &head_command);
 	quotes_killer(&head_command);
 	redirect_check(head_command);
+	t_redirect *tmp = head_command->head_redirect;
+	while (tmp)
+	{
+		printf("filename: %s in: %d out: %d flag: %d\n", tmp->filename, tmp->flag_for_stdin, tmp->flag_for_stdout, tmp->flag);
+		tmp = tmp->next;
+	}
+	exit (0);
 	i = -1;
 	while (pipe_mass[++i])
 		free(pipe_mass[i]);

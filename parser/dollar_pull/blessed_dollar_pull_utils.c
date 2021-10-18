@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 20:24:34 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 20:40:23 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	dollar_cut_from_str(char **pipe_mass, int number, int start, int finish)
 	pipe_mass[number] = result;
 }
 
-char	*dollar_pull_swaper_result_maker(char *pipe_mass, char *value, int start, int finish)
+char	*dollar_pull_swaper_result_maker(char *pipe_mass, \
+char *value, int start, int finish)
 {
 	char	*result;
 	int		i;
@@ -85,7 +86,8 @@ int start)
 	while (isalnum(pipe_mass[number][finish]) || \
 	pipe_mass[number][finish] == '_')
 		finish++;
-	result = dollar_pull_swaper_result_maker(pipe_mass[number], value, start, finish);
+	result = dollar_pull_swaper_result_maker(pipe_mass[number], \
+	value, start, finish);
 	free(pipe_mass[number]);
 	free(value);
 	pipe_mass[number] = result;
