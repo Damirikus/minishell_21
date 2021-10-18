@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 19:26:34 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 20:24:34 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ char	*dollar_pull_swaper_result_maker(char *pipe_mass, char *value, int start, i
 	j = -1;
 	while (++j < strlen(value))
 		result[i++] = value[j];
-	while (pipe_mass[finish++])
-		result[i++] = pipe_mass[finish];
+	while (pipe_mass[finish])
+		result[i++] = pipe_mass[finish++];
 	result[i] = 0;
 	return (result);
 }
