@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:53:01 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 16:21:13 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 19:52:02 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ void	add_redirect_flag(char *str, int *j, int *flag)
 	if (str[*j - 1] == '<' && str[*j] == '>')
 	{
 		*flag = 5;
-		j++;
+		*j = *j + 1;
 	}
 	else if (str[*j] == '>')
 	{
 		*flag = 2;
-		j++;
+		*j = *j + 1;
 	}
 	else if (str[*j] == '<')
 	{
 		*flag = 4;
-		j++;
+		*j = *j + 1;
 	}
 	else if (str[*j] != '>' && str[*j] != '<' && str[*j - 1] == '>')
 		*flag = 1;
