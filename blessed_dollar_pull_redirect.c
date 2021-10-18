@@ -66,7 +66,7 @@ void	dollar_pull_swaper_redirect(char **str, char *value, int start)
 	*str = result;
 }
 
-void	dollar_pull_exit_code_redirect(char **str, int start)
+void	dollar_pull_exit_code_redirect(char **str, int start, t_data *data)
 {
 	char	*result;
 	char	*tmp;
@@ -74,7 +74,7 @@ void	dollar_pull_exit_code_redirect(char **str, int start)
 	int		i;
 	int		j;
 
-	exit_code_str = ft_itoa(code_exit);
+	exit_code_str = ft_itoa(data->code_exit);
 	tmp = *str;
 	result = malloc(sizeof(char) * (ft_strlen(tmp) - 2 + ft_strlen(exit_code_str) + 1));
 	i = 0;
@@ -103,7 +103,7 @@ void	dollar_pull_exit_code_redirect(char **str, int start)
 	free(exit_code_str);
 }
 
-void	dollar_pull_helper_redirect(char **str, int j, char **env) // Встретили знак даллара в строке, пробуем менять
+void	dollar_pull_helper_redirect(char **str, int j, t_data *data) // Встретили знак даллара в строке, пробуем менять
 {
 	int		start;
 	int		i;
@@ -117,18 +117,18 @@ void	dollar_pull_helper_redirect(char **str, int j, char **env) // Встрет�
 	tmp = *str;
 	if (tmp[start] == '?')
 	{
-		dollar_pull_exit_code_redirect(str, j - 1);
+		dollar_pull_exit_code_redirect(str, j - 1, data);
 		return ;
 	}
 	while (isalnum(tmp[j]) || tmp[j] == '_')
 		j++;
 	key = ft_cutstr(tmp, start, j);
 	i = -1;
-	while (env[++i])
+	while (data->current_env[++i])
 	{
-		if (!strncmp(env[i], key, strlen(key)) && env[i][strlen(key)] == '=')
+		if (!strncmp(data->current_env[i], key, strlen(key)) && data->current_env[i][strlen(key)] == '=')
 		{
-			value = strdup(env[i] + strlen(key) + 1);
+			value = strdup(data->current_env[i] + strlen(key) + 1);
 			break ;
 		}
 	}
@@ -139,7 +139,7 @@ void	dollar_pull_helper_redirect(char **str, int j, char **env) // Встрет�
 		dollar_cut_from_str_redirect(str, start - 1, j - 1);
 }
 
-void	dollar_pull_special_skip_redirect(char **str, int *j, char **env)
+void	dollar_pull_special_skip_redirect(char **str, int *j, t_data *data)
 {
 	char	*tmp;
 
@@ -149,7 +149,7 @@ void	dollar_pull_special_skip_redirect(char **str, int *j, char **env)
 	{
 		if (tmp[*j] == '$' && (isalnum(tmp[*j + 1]) || tmp[*j + 1] == '_' || tmp[*j + 1] == '?'))
 		{
-			dollar_pull_helper_redirect(str, *j, env);
+			dollar_pull_helper_redirect(str, *j, data);
 			*j = -1;
 			return ;
 		}
@@ -158,7 +158,7 @@ void	dollar_pull_special_skip_redirect(char **str, int *j, char **env)
 	*j = *j + 1;
 }
 
-int	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй пункт, раскрываем даллары
+int	dollar_pull_redirect(t_redirect *head_redirect, t_data *data) //Второй пункт, раскрываем даллары
 {
 	int		j;
 	t_redirect	*tmp;
@@ -171,12 +171,12 @@ int	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй �
 		while (tmp->filename[j])
 		{
 			if (j != -1 && tmp->filename[j] == '\"')
-				dollar_pull_special_skip_redirect(&tmp->filename, &j, env);
+				dollar_pull_special_skip_redirect(&tmp->filename, &j, data);
 			if (j != -1 && tmp->filename[j] == '\'')
 				ft_skip_quotes(tmp->filename, &j);
 			if (j != -1 && tmp->filename[j] == '$' && (isalnum(tmp->filename[j + 1]) || tmp->filename[j + 1] == '_' || tmp->filename[j + 1] == '"' || tmp->filename[j + 1] == '?'))
 			{
-				dollar_pull_helper_redirect(&tmp->filename, j, env);
+				dollar_pull_helper_redirect(&tmp->filename, j, data);
 				j = -1;
 			}
 			if (j == -1 || (tmp->filename[j] != '\'' && tmp->filename[j] != '\0'))
@@ -187,14 +187,14 @@ int	dollar_pull_redirect(t_redirect *head_redirect, char **env) //Второй �
 	return (0);
 }
 
-void	dollar_pull_for_redirect(t_list *head_command, char **env)
+void	dollar_pull_for_redirect(t_list *head_command, t_data *data)
 {
 	t_list	*tmp;
 
 	tmp = head_command;
 	while (tmp)
 	{
-		if (!dollar_pull_redirect(tmp->head_redirect, env))
+		if (!dollar_pull_redirect(tmp->head_redirect, data))
 			tmp = tmp->next;
 	}
 }

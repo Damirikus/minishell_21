@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_error(int code)
+int	ft_error(int code, t_data *data)
 {
 	if (code == 1)
 	{
@@ -10,7 +10,7 @@ int	ft_error(int code)
 	if (code == 2)
 	{
 		printf("Minishell: syntax error near unexpected token `|'\n");
-		code_exit = 258;
+		data->code_exit = 258;
 		return(1);
 	}
 	if (code == 3)
@@ -21,19 +21,19 @@ int	ft_error(int code)
 	if (code == 4)
 	{
 		printf("Minishell: syntax error near unexpected token `<'\n"); //syntax error near unexpected token `<'
-		code_exit = 258;
+		data->code_exit = 258;
 		return(1);
 	}
 	if (code == 5)
 	{
 		printf("Minishell: syntax error near unexpected token `newline'\n"); //syntax error near unexpected token `<'
-		code_exit = 258;
+		data->code_exit = 258;
 		return(1);
 	}
 	if (code == 6)
 	{
 		printf("Minishell: syntax error near unexpected token `>'\n"); //syntax error near unexpected token `<'
-		code_exit = 258;
+		data->code_exit = 258;
 		return(1);
 	}
 	return (0);

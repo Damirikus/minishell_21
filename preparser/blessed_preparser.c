@@ -6,13 +6,13 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:18:36 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:22:58 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 13:50:04 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	preparser(char *str)
+int	preparser(char *str, t_data *data)
 {
 	int	i;
 	int	j;
@@ -23,11 +23,11 @@ int	preparser(char *str)
 	{
 		if (str[i] == '\"' || str[i] == '\'')
 		{
-			if (check_quotes(str, &i))
+			if (check_quotes(str, &i, data))
 				return (1);
 		}
 		if (str[i] == '>' || str[i] == '<' || str[i] == '|')
-			if (check_pipe_redir(str, &i))
+			if (check_pipe_redir(str, &i, data))
 				return (1);
 		if (str[i] != '\0' && str[i] != '\'' && str[i] != '\"')
 			i++;

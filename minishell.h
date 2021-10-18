@@ -19,9 +19,6 @@
 # define RED "\x1B[31m"
 # define WHITE "\x1B[37m"
 
-int code_exit;
-
-
 typedef struct	s_env
 {
 	int				sys;
@@ -48,6 +45,7 @@ typedef struct s_data
 	char	**execve_env;
 	char	**current_export;
 
+	int code_exit;
 
 } t_data;
 
@@ -86,7 +84,7 @@ void ft_echo_part2(t_list *list, int i, int qw);
 void ft_pwd(void);
 /* ft_cd */
 int ft_cd(t_list *list, t_data *data);
-int ft_cd_part(t_list *list);
+int ft_cd_part(t_list *list, t_data *data);
 int ft_find_home(t_list *list, t_data *data);
 /* exit */
 void ft_exit_part(long code, t_list *list, int len, t_data *data);
@@ -119,7 +117,7 @@ void	ft_free_for_export(t_data *shell);
 void	ft_free_for_env(t_data *shell);
 void	list_to_2D_massive_export_sort_sys(t_data *shell);
 void	print_list_env1(t_env *head);
-void	print_2d_massive(char **mass, t_list *list);
+void	print_2d_massive(char **mass, t_list *list, t_data *data);
 void	unset_env(t_data *shell, char *key);
 void	export_env(t_data *shell, char *string);
 int		export_env_variable_strong(char *string);
@@ -128,8 +126,8 @@ void	renew_env_export_massive(t_data *shell);
 int		ft_strlen_key(char *str);
 void	ft_unset(t_data *data, t_list *list);
 void	ft_export(t_data *data, t_list *list);
-int		check_name_unset(char *str);
-int		check_name_export(char *str);
+int		check_name_unset(char *str, t_data *data);
+int		check_name_export(char *str, t_data *data);
 void	pwd_oldpwd_remaker(t_data *data);
 void	renew_pwd_oldpwd(t_data *data);
 void	shlvl_plus(t_data *data);
@@ -137,14 +135,14 @@ int		list_to_2D_massive_env_len(t_data *shell);
 
 
 /* prepars && pars */
-int		ft_error(int code);
-int		preparser(char *str);
-int		check_quotes(char *str, int *i);
-int		check_pipe_redir(char *str, int *i);
-int		check_quotes_skip(char *str, int *i, int code);
-int		check_pipe(char *str, int *i);
-int		check_redir(char *str, int *i);
-t_list	*parser(char *str, char **env);
+int		ft_error(int code, t_data *data);
+int		preparser(char *str, t_data *data);
+int		check_quotes(char *str, int *i, t_data *data);
+int		check_pipe_redir(char *str, int *i, t_data *data);
+int		check_quotes_skip(char *str, int *i, int code, t_data *data);
+int		check_pipe(char *str, int *i, t_data *data);
+int		check_redir(char *str, int *i, t_data *data);
+t_list	*parser(char *str, t_data *data);
 
 /* SPLIT BY PIPE */
 char	**ft_split_by_pipe(char *str);
@@ -154,8 +152,8 @@ void	ft_skip_quotes(char *str, int *i);
 
 
 /* DOLLAR PULL  */
-void	dollar_pull(char **pipe_mass, char **env);
-void	dollar_pull_for_redirect(t_list *head_command, char **env);
+void	dollar_pull(char **pipe_mass, t_data *data);
+void	dollar_pull_for_redirect(t_list *head_command, t_data *data);
 
 /*	REDIRECT CUTTER	*/
 void	redirect_parser(char **pipe_mass, t_list **head_command);

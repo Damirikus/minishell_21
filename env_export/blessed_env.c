@@ -6,13 +6,13 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:41:57 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/17 00:07:43 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 14:02:57 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_name_unset(char *str)
+int	check_name_unset(char *str, t_data *data)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ int	check_name_unset(char *str)
 	if (!isalpha(str[i]) && str[i] != '_')
 	{
 		printf("minishell: unset: `%s': not a valid identifier\n", str);
-		code_exit = 1;
+		data->code_exit = 1;
 		return (1);
 	}
 	while (isalnum(str[i]) || str[i] == '_')
@@ -28,13 +28,13 @@ int	check_name_unset(char *str)
 	if (str[i] != '\0')
 	{
 		printf("minishell: unset: `%s': not a valid identifier\n", str);
-		code_exit = 1;
+		data->code_exit = 1;
 		return (1);
 	}
 	return (0);
 }
 
-int	check_name_export(char *str)
+int	check_name_export(char *str, t_data *data)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ int	check_name_export(char *str)
 	if (!isalpha(str[i]) && str[i] != '_')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", str);
-		code_exit = 1;
+		data->code_exit = 1;
 		return (1);
 	}
 	while (isalnum(str[i]) || str[i] == '_')
@@ -52,7 +52,7 @@ int	check_name_export(char *str)
 	if (str[i] != '=' && str[i] != '\0')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", str);
-		code_exit = 1;
+		data->code_exit = 1;
 		return (1);
 	}
 	return (0);
