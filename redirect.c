@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_chek_all_files(t_list *list)
+int	ft_chek_all_files(t_list *list, t_data *data)
 {
 	t_list		*current;
 	t_redirect	*redent;
@@ -16,16 +16,43 @@ int	ft_chek_all_files(t_list *list)
 			redent = current->head_redirect;
 			while (redent)
 			{
-				ft_creat_chek_files(current, redent);
+				ft_creat_chek_files(current, redent, data);
 				redent = redent->next;
 			}
 		}
 		current = current->next;
 	}
+	ft_key_handler_creat(list, data);
 	return (len);
 }
 
-int	ft_creat_chek_files(t_list *list, t_redirect *redirect)
+int ft_key_handler_creat(t_list *list, t_data *data)
+{
+	t_list		*current;
+	t_redirect	*redent;
+
+	current = list;
+	while (current)
+	{
+		if (current->head_redirect)
+		{
+			redent = current->head_redirect;
+			while (redent)
+			{
+				if (f == 1)
+					return (0);
+				if (redent->flag_for_stdin == 2)
+					ft_key_handler(current, redent, data);
+				redent = redent->next;
+			}
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
+
+int	ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data)
 {
 	if (redirect->flag_for_stdout == 1 && list->flag_for_job == 0)
 	{
@@ -42,8 +69,8 @@ int	ft_creat_chek_files(t_list *list, t_redirect *redirect)
 		if (!ft_stdin(list, redirect))
 			return (1);
 	}
-	else if (redirect->flag_for_stdin == 2)
-		ft_key_handler(list, redirect);
+//	else if (redirect->flag_for_stdin == 2)
+//		ft_key_handler(list, redirect, data);
 	return (0);
 }
 
@@ -105,12 +132,15 @@ int	ft_stdin(t_list *list, t_redirect *redirect)
 void	ft_emp(int sig)
 {
 	(void)sig;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	write(1, "  ", 2);
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	f = 1;
+//	rl_on_new_line();
+//	rl_replace_line("", 0);
+//	rl_redisplay();
+//	write(1, "  ", 2);
+//	rl_on_new_line();
+//	rl_replace_line("", 0);
+//	rl_on_new_line();
+
 }
 
 int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
@@ -135,37 +165,37 @@ int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 	return (0);
 }
 
-int	ft_key_handler(t_list *list, t_redirect *redirect)
+int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
 {
-	int		td[2];
+//	int		td[2];
 	char	*str;
 	int		pid;
-	void	*sg;
+//	void	*sg;
 
 	signal(SIGINT, ft_emp);
 	signal(SIGQUIT, SIG_IGN);
-	(sg = rl_getc_function);
+//	(sg = rl_getc_function);
 	rl_getc_function = getc;
 
 	if (redirect->flag == 0)
-		return (ft_key_handler_2(NULL, sg, redirect));
+		return (ft_key_handler_2(NULL, data->sg, redirect));
 	else if (redirect->flag == 1)
 	{
-		pipe(td);
-		list->fd0 = td[0];
+		pipe(data->td);
+		list->fd0 = data->td[0];
 		while (1)
 		{
 			str = readline("> ");
 			if (!str)
 			{
-				close(td[1]);
+				close(data->td[1]);
 				break ;
 			}
 			if (!strcmp(str, redirect->filename))
 			{
 				free(str);
-				close(td[1]);
-				rl_getc_function = sg;
+				close(data->td[1]);
+				rl_getc_function = data->sg;
 				signal(SIGINT, ft_ctrl);
 				signal(SIGQUIT, ft_hz);
 				return (0);
@@ -173,9 +203,9 @@ int	ft_key_handler(t_list *list, t_redirect *redirect)
 			pid = fork();
 			if (pid == 0)
 			{
-				close(td[0]);
-				dup2(td[1], 1);
-				close(td[1]);
+				close(data->td[0]);
+				dup2(data->td[1], 1);
+				close(data->td[1]);
 				printf("%s\n", str);
 				free(str);
 				exit(0);
@@ -186,9 +216,9 @@ int	ft_key_handler(t_list *list, t_redirect *redirect)
 				free(str);
 			}
 		}
-		close(td[1]);
+		close(data->td[1]);
 	}
-	rl_getc_function = sg;
+	rl_getc_function = data->sg;
 	signal(SIGINT, ft_ctrl);
 	signal(SIGQUIT, ft_hz);
 	return (0);
