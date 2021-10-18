@@ -16,6 +16,7 @@ void	initial_env_maker(t_data *data, char **env)
 	data->current_oldpwd = NULL;
 	data->path = NULL;
 	data->fd_mother = dup(1);
+	data->sg = rl_getc_function;
 	env_to_list(data);
 	pwd_oldpwd_remaker(data);
 	shlvl_plus(data);
@@ -44,9 +45,14 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	// for (int k = 0; k < 1; k++)
 	{
+		f = 0;
+		if (data->td[0])
+			close(data->td[0]);
+		if (data->td[1])
+			close(data->td[1]);
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
-
+		rl_getc_function = data->sg;
 //		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
@@ -58,11 +64,12 @@ int main(int argc, char **argv, char **env)
 			add_history(input);
 		signal(SIGINT, ft_ctrl);
 		signal(SIGQUIT, ft_hz);
+		rl_getc_function = data->sg;
 		if (!preparser(input, data))
 		{
 			data->head_command = parser(input, data);
 			// ft_print_all(data);
-			data->len = ft_chek_all_files(data->head_command);
+			data->len = ft_chek_all_files(data->head_command, data);
 			data->flat = 0;
 			current = data->head_command;
 			while (current)

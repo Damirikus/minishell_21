@@ -44,99 +44,106 @@ int ft_realization(t_list *list, t_data *data)
 	{
 		if (!strcmp(list->cmd[0], "exit"))
 			ft_exit(list, data->len, data);
-			else if (!strcmp(list->cmd[0], "cd"))
-				ft_cd(list, data);
-			else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
-				ft_export(data, list);
-			else if (!strcmp(list->cmd[0], "unset"))
-				ft_unset(data, list);
-			else
+		else if (!strcmp(list->cmd[0], "cd"))
+			ft_cd(list, data);
+		else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
+			ft_export(data, list);
+		else if (!strcmp(list->cmd[0], "unset"))
+			ft_unset(data, list);
+		else
+		{
+			if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+				pipe(data->a);
+			else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+				pipe(data->b);
+			pid = fork();
+			flag = 1;
+			if (pid == 0)
 			{
-				if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-					pipe(data->a);
-				else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-					pipe(data->b);
-				pid = fork();
-				flag = 1;
-				if (pid == 0)
+				if (list->fd0 != -1)
+					dup2(list->fd0, 0);
+				if (list->fd1 != -1)
+					dup2(list->fd1, 1);
+				if (!list->next && data->len > 1)
 				{
-					if (list->fd0 != -1)
-						dup2(list->fd0, 0);
-					if (list->fd1 != -1)
-						dup2(list->fd1, 1);
-					if (!list->next && data->len > 1)
-					{
-						if (data->flat % 2 == 0)
-						{
-							if (list->fd0 == -1)
-								dup2(data->b[0], 0);
-							close(data->b[0]);
-						}
-						else
-						{
-							if (list->fd0 == -1)
-								dup2(data->a[0], 0);
-							close(data->a[0]);
-						}
-					}
-					else if (data->flat == 0 && list->flag_for_pipe == 1)
-					{
-						close(data->a[0]);
-						if (list->fd1 == -1)
-							dup2(data->a[1], 1);
-						close(data->a[1]);
-					}
-					else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-					{
-						if (list->fd0 == -1)
-							dup2(data->a[0], 0);
-						close(data->a[0]);
-						close(data->b[0]);
-						if (list->fd1 == -1)
-							dup2(data->b[1], 1);
-						close(data->b[1]);
-					}
-					else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+					if (data->flat % 2 == 0)
 					{
 						if (list->fd0 == -1)
 							dup2(data->b[0], 0);
 						close(data->b[0]);
-						close(data->a[0]);
-						if (list->fd1 == -1)
-							dup2(data->a[1], 1);
-						close(data->a[1]);
 					}
-					ft_distributor(list, data);
+					else
+					{
+						if (list->fd0 == -1)
+							dup2(data->a[0], 0);
+						close(data->a[0]);
+					}
 				}
-				if (pid != 0)
+				else if (data->flat == 0 && list->flag_for_pipe == 1)
 				{
-					if (data->len > 1 && !list->next && data->flat % 2 == 0)
-						close(data->b[0]);
-					else if (data->len > 1 && !list->next && data->flat % 2 == 1)
-						close(data->a[0]);
-					if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-					{
-						if (data->b[0])
-							close(data->b[0]);
-						close(data->a[1]);
-					}
-					else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-					{
-						if (data->a[0])
-							close(data->a[0]);
-						close(data->b[1]);
-					}
-					if (list->fd0 != -1)
-						close(list->fd0);
-					if (list->fd1 != -1)
-						close(list->fd1);
-					data->flat++;
+					close(data->a[0]);
+					if (list->fd1 == -1)
+						dup2(data->a[1], 1);
+					close(data->a[1]);
 				}
+				else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+				{
+					if (list->fd0 == -1)
+						dup2(data->a[0], 0);
+					close(data->a[0]);
+					close(data->b[0]);
+					if (list->fd1 == -1)
+						dup2(data->b[1], 1);
+					close(data->b[1]);
+				}
+				else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+				{
+					if (list->fd0 == -1)
+						dup2(data->b[0], 0);
+					close(data->b[0]);
+					close(data->a[0]);
+					if (list->fd1 == -1)
+						dup2(data->a[1], 1);
+					close(data->a[1]);
+				}
+				ft_distributor(list, data);
 			}
-			if (flag == 1)
-				return (pid);
-			else
-				return (-99);
+			if (pid != 0)
+			{
+				if (data->len > 1 && !list->next && data->flat % 2 == 0)
+					close(data->b[0]);
+				else if (data->len > 1 && !list->next && data->flat % 2 == 1)
+					close(data->a[0]);
+				if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+				{
+					if (data->b[0])
+						close(data->b[0]);
+					close(data->a[1]);
+				}
+				else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+				{
+					if (data->a[0])
+						close(data->a[0]);
+					close(data->b[1]);
+				}
+				if (list->fd0 != -1)
+					close(list->fd0);
+				if (list->fd1 != -1)
+					close(list->fd1);
+				data->flat++;
+			}
+		}
+		if (flag == 1)
+			return (pid);
+		else
+			return (-99);
+	}
+	else
+	{
+		if (list->fd0 != -1)
+			close(list->fd0);
+		if (list->fd1 != -1)
+			close(list->fd1);
 	}
 	return (0);
 }
