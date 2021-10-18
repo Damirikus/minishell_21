@@ -16,6 +16,11 @@ void	printpath(t_data *data)
 		printf("%d: %s\n", i, data->path[i]);
 }
 
+// void	vse_budet_rabotat(t_data *data, t_list *list)
+// {
+
+// }
+
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
@@ -42,16 +47,10 @@ int ft_realization(t_list *list, t_data *data)
 	}
 	if (list->cmd[0])
 	{
-		if (!strcmp(list->cmd[0], "exit")) ///
-			ft_exit(list, data->len, data); //
+		if (!strcmp(list->cmd[0], "exit"))
+			ft_exit(list, data->len, data);
 			else if (!strcmp(list->cmd[0], "cd"))
 				ft_cd(list, data);
-			else if (!strcmp(list->cmd[0], "printjkee"))
-				printjkee(data);
-			else if (!strcmp(list->cmd[0], "printpath"))
-				printpath(data);
-			else if (!strcmp(list->cmd[0], "printlist"))
-				print_list_env1(data->head_env);
 			else if (!strcmp(list->cmd[0], "export") && list->cmd[1] != NULL)
 				ft_export(data, list);
 			else if (!strcmp(list->cmd[0], "unset"))
@@ -151,7 +150,6 @@ int ft_distributor(t_list *list, t_data *data)
 {
 	char	*full_path;
 
-
 	full_path = ft_make_path(data->path, list);
 	if (!strcmp(list->cmd[0], "echo"))
 		ft_echo(list);
@@ -172,7 +170,6 @@ int ft_distributor(t_list *list, t_data *data)
 
 void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 {
-	// if (execve(full_path, list->cmd, data->original_env) == -1)
 	if (execve(full_path, list->cmd, data->execve_env) == -1)
 	{
 		dup2(data->fd_mother, 1);
@@ -188,8 +185,6 @@ void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 		exit (127);
 	}
 }
-
-
 
 void	ft_unset(t_data *data, t_list *list) // проверить возвращаемый код ошибки code_exit
 {
