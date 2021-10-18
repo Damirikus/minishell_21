@@ -16,30 +16,10 @@ void	printpath(t_data *data)
 		printf("%d: %s\n", i, data->path[i]);
 }
 
-void	vse_budet_rabotat(t_data *data, t_list *list)
-{
-	if (data->len > 1 && !list->next && data->flat % 2 == 0)
-		close(data->b[0]);
-	else if (data->len > 1 && !list->next && data->flat % 2 == 1)
-		close(data->a[0]);
-	if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-	{
-		if (data->b[0])
-			close(data->b[0]);
-		close(data->a[1]);
-	}
-	else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-	{
-		if (data->a[0])
-			close(data->a[0]);
-		close(data->b[1]);
-	}
-	if (list->fd0 != -1)
-		close(list->fd0);
-	if (list->fd1 != -1)
-		close(list->fd1);
-	data->flat++;
-}
+// void	vse_budet_rabotat(t_data *data, t_list *list)
+// {
+
+// }
 
 int ft_realization(t_list *list, t_data *data)
 {
@@ -134,7 +114,29 @@ int ft_realization(t_list *list, t_data *data)
 					ft_distributor(list, data);
 				}
 				if (pid != 0)
-					vse_budet_rabotat(data, list);
+				{
+					if (data->len > 1 && !list->next && data->flat % 2 == 0)
+						close(data->b[0]);
+					else if (data->len > 1 && !list->next && data->flat % 2 == 1)
+						close(data->a[0]);
+					if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+					{
+						if (data->b[0])
+							close(data->b[0]);
+						close(data->a[1]);
+					}
+					else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+					{
+						if (data->a[0])
+							close(data->a[0]);
+						close(data->b[1]);
+					}
+					if (list->fd0 != -1)
+						close(list->fd0);
+					if (list->fd1 != -1)
+						close(list->fd1);
+					data->flat++;
+				}
 			}
 			if (flag == 1)
 				return (pid);
