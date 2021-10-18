@@ -70,7 +70,7 @@ int ft_realization(t_list *list, t_data *data);
 
 /* REDIRECTS */
 int ft_chek_all_files(t_list *list);
-void *ft_key_handler(t_list *list, t_redirect *redirect);
+int ft_key_handler(t_list *list, t_redirect *redirect);
 int ft_creat_chek_files(t_list *list, t_redirect *redirect);
 int ft_stdout(t_list *list, t_redirect *redirect);
 int ft_stdoutout(t_list *list, t_redirect *redirect);

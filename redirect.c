@@ -113,29 +113,15 @@ void	ft_emp(int sig)
 	rl_replace_line("", 0);
 }
 
-int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
-{
-	char	*tmp;
+//int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
+//{
+//	char	*tmp;
+//
+//
+//	return (0);
+//}
 
-	while (1)
-	{
-		tmp = readline("> ");
-		if (!tmp)
-			break ;
-		if (!strcmp(tmp, redirect->filename))
-		{
-			rl_getc_function = sg;
-			signal(SIGINT, ft_ctrl);
-			signal(SIGQUIT, ft_hz);
-			free(tmp);
-			return (1);
-		}
-		free(tmp);
-	}
-	return (0);
-}
-
-void	*ft_key_handler(t_list *list, t_redirect *redirect)
+int ft_key_handler(t_list *list, t_redirect *redirect)
 {
 	int		td[2];
 	char	*str;
@@ -149,8 +135,21 @@ void	*ft_key_handler(t_list *list, t_redirect *redirect)
 
 	if (redirect->flag == 0)
 	{
-		(ft_key_handler_2(NULL, sg, redirect));
-		return sg;
+		while (1)
+		{
+			str = readline("> ");
+			if (!str)
+				break ;
+			if (!strcmp(str, redirect->filename))
+			{
+				rl_getc_function = sg;
+				signal(SIGINT, ft_ctrl);
+				signal(SIGQUIT, ft_hz);
+				free(str);
+				return (1);
+			}
+			free(str);
+		}
 	}
 	else if (redirect->flag == 1)
 	{
@@ -171,7 +170,7 @@ void	*ft_key_handler(t_list *list, t_redirect *redirect)
 				rl_getc_function = sg;
 				signal(SIGINT, ft_ctrl);
 				signal(SIGQUIT, ft_hz);
-				return (sg);
+				return (0);
 			}
 			pid = fork();
 			if (pid == 0)
@@ -194,6 +193,6 @@ void	*ft_key_handler(t_list *list, t_redirect *redirect)
 	rl_getc_function = sg;
 	signal(SIGINT, ft_ctrl);
 	signal(SIGQUIT, ft_hz);
-	return (sg);
+	return (0);
 }
 
