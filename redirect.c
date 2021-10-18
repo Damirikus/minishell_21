@@ -6,6 +6,8 @@ int	ft_chek_all_files(t_list *list, t_data *data)
 	t_redirect	*redent;
 	int			len;
 
+	if (ft_key_handler_creat(list, data))
+		return (-1);
 	len = 0;
 	current = list;
 	while (current)
@@ -22,11 +24,10 @@ int	ft_chek_all_files(t_list *list, t_data *data)
 		}
 		current = current->next;
 	}
-	ft_key_handler_creat(list, data);
 	return (len);
 }
 
-int ft_key_handler_creat(t_list *list, t_data *data)
+int	ft_key_handler_creat(t_list *list, t_data *data)
 {
 	t_list		*current;
 	t_redirect	*redent;
@@ -40,17 +41,18 @@ int ft_key_handler_creat(t_list *list, t_data *data)
 			while (redent)
 			{
 				if (f == 1)
-					return (0);
+					return (1);
 				if (redent->flag_for_stdin == 2)
 					ft_key_handler(current, redent, data);
 				redent = redent->next;
 			}
+			if (f == 2)
+				return (-1);
 		}
 		current = current->next;
 	}
 	return (0);
 }
-
 
 int	ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data)
 {
@@ -69,8 +71,6 @@ int	ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data)
 		if (!ft_stdin(list, redirect))
 			return (1);
 	}
-//	else if (redirect->flag_for_stdin == 2)
-//		ft_key_handler(list, redirect, data);
 	return (0);
 }
 
@@ -81,8 +81,6 @@ int	ft_stdout(t_list *list, t_redirect *redirect)
 	{
 		list->flag_for_job = 1;
 		list->filename_for_job = redirect->filename;
-//		printf("minishell: : No such file or directory\n");
-//		code_exit = 1;
 		return (1);
 	}
 	if (redirect->flag != 1)
@@ -100,8 +98,6 @@ int	ft_stdoutout(t_list *list, t_redirect *redirect)
 	{
 		list->flag_for_job = 1;
 		list->filename_for_job = redirect->filename;
-//		printf("minishell: : No such file or directory\n");
-//		code_exit = 1;
 		return (1);
 	}
 	if (redirect->flag != 1)
@@ -133,17 +129,10 @@ void	ft_emp(int sig)
 {
 	(void)sig;
 	f = 1;
-//	rl_on_new_line();
-//	rl_replace_line("", 0);
-//	rl_redisplay();
-//	write(1, "  ", 2);
-//	rl_on_new_line();
-//	rl_replace_line("", 0);
-//	rl_on_new_line();
-
+	write(1, "\e[C", 3);
 }
 
-int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
+int	ft_key_handler_2(void *sg, t_redirect *redirect)
 {
 	char	*tmp;
 
@@ -154,10 +143,8 @@ int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 			break ;
 		if (!strcmp(tmp, redirect->filename))
 		{
-			rl_getc_function = sg;
-			signal(SIGINT, ft_ctrl);
-			signal(SIGQUIT, ft_hz);
 			free(tmp);
+			f = 0;
 			return (1);
 		}
 		free(tmp);
@@ -165,62 +152,65 @@ int	ft_key_handler_2(char **str, void *sg, t_redirect *redirect)
 	return (0);
 }
 
-int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
+int	ft_key_handler_3_part(char *str, t_data *data)
 {
-//	int		td[2];
+	free(str);
+	close(data->td[1]);
+	rl_getc_function = data->sg;
+	signal(SIGINT, ft_ctrl);
+	signal(SIGQUIT, ft_hz);
+	f = 0;
+	return (0);
+}
+
+int	ft_key_handler_4(char *str, t_data *data)
+{
+	close(data->td[0]);
+	dup2(data->td[1], 1);
+	close(data->td[1]);
+	printf("%s\n", str);
+	free(str);
+	exit(0);
+}
+
+int	ft_key_handler_3(t_redirect *redirect, t_data *data)
+{
 	char	*str;
 	int		pid;
-//	void	*sg;
 
+	while (1)
+	{
+		str = readline("> ");
+		if (!str)
+			break ;
+		if (!strcmp(str, redirect->filename))
+			return (ft_key_handler_3_part(str, data));
+		pid = fork();
+		if (pid == 0)
+			ft_key_handler_4(str, data);
+		if (pid != 0)
+		{
+			wait(NULL);
+			free(str);
+		}
+	}
+	return (0);
+}
+
+int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
+{
+	f = 2;
 	signal(SIGINT, ft_emp);
 	signal(SIGQUIT, SIG_IGN);
-//	(sg = rl_getc_function);
 	rl_getc_function = getc;
-
 	if (redirect->flag == 0)
-		return (ft_key_handler_2(NULL, data->sg, redirect));
+		return (ft_key_handler_2(data->sg, redirect));
 	else if (redirect->flag == 1)
 	{
 		pipe(data->td);
 		list->fd0 = data->td[0];
-		while (1)
-		{
-			str = readline("> ");
-			if (!str)
-			{
-				close(data->td[1]);
-				break ;
-			}
-			if (!strcmp(str, redirect->filename))
-			{
-				free(str);
-				close(data->td[1]);
-				rl_getc_function = data->sg;
-				signal(SIGINT, ft_ctrl);
-				signal(SIGQUIT, ft_hz);
-				return (0);
-			}
-			pid = fork();
-			if (pid == 0)
-			{
-				close(data->td[0]);
-				dup2(data->td[1], 1);
-				close(data->td[1]);
-				printf("%s\n", str);
-				free(str);
-				exit(0);
-			}
-			if (pid != 0)
-			{
-				wait(NULL);
-				free(str);
-			}
-		}
-		close(data->td[1]);
+		return (ft_key_handler_3(redirect, data));
 	}
-	rl_getc_function = data->sg;
-	signal(SIGINT, ft_ctrl);
-	signal(SIGQUIT, ft_hz);
 	return (0);
 }
 

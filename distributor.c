@@ -1,27 +1,12 @@
 #include "minishell.h" //jiestjkeeeeeeeeee
 
-// тут происходит распределение по командам на исполнение cat << 6 << 7 > 8 >> 2 < 5 | wc -l | cat > 100
-
-void	printjkee(t_data *data)
-{
-	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
-}
-
-void	printpath(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (data->path[++i])
-		printf("%d: %s\n", i, data->path[i]);
-}
-
 int ft_realization(t_list *list, t_data *data)
 {
 	int pid;
 	int p[2];
-	pid = 0;
 	int flag;
+
+	pid = 0;
 	flag = 0;
 	if (list->flag_for_job == 1)
 	{
@@ -259,8 +244,6 @@ void ft_echo(t_list *list)
 {
 	int qw;
 	int k;
-	int i;
-	int flag;
 
 	qw = 0;
 	while (list->cmd[qw])
@@ -272,30 +255,41 @@ void ft_echo(t_list *list)
 	}
 	k = 1;
 	if (list->cmd[1])
-		while (k < qw)
+		k = ft_echo_part_null(list, k, qw);
+	if (k == 1)
+		ft_echo_part(list, 1, qw);
+	else
+		ft_echo_part2(list, k, qw);
+	exit(0);
+}
+
+int ft_echo_part_null(t_list *list, int k, int qw)
+{
+	int i;
+	int flag;
+
+	while (k < qw)
+	{
+		if (list->cmd[k][0] != '-')
+			break;
+		if (list->cmd[k][0] == '-' && !list->cmd[k][1])
+			break;
+		i = 1;
+		flag = 0;
+		while (list->cmd[k][i])
 		{
-			if (list->cmd[k][0] != '-')
-				break;
-			i = 1;
-			flag = 0;
-			while (list->cmd[k][i])
+			if (list->cmd[k][i] != 'n')
 			{
-				if (list->cmd[k][i] != 'n')
-				{
-					flag = 1;
-					break ;
-				}
-				i++;
+				flag = 1;
+				break ;
 			}
-			if (flag == 1)
-				break;
-			k++;
+			i++;
 		}
-		if (k == 1)
-			ft_echo_part(list, 1, qw);
-		else
-			ft_echo_part2(list, k, qw);
-		exit(0);
+		if (flag == 1)
+			break;
+		k++;
+	}
+	return (k);
 }
 
 void ft_echo_part(t_list *list, int i, int qw)
@@ -379,15 +373,15 @@ int ft_cd_part(t_list *list, t_data *data)
 int ft_find_home(t_list *list, t_data *data)
 {
 	int i;
-	int f;
-	f = 0;
+	int fr;
+	fr = 0;
 	i = 0;
 	while (data->current_env[i])
 	{
 		if (data->current_env[i][0] == 'H' && data->current_env[i][1] == 'O' && data->current_env[i][2] == 'M'
 		&& data->current_env[i][3] == 'E' && data->current_env[i][4] == '=')
 		{
-			f = 1;
+			fr = 1;
 			if (!list->cmd[1])
 			{
 				free(list->cmd[0]);
@@ -404,7 +398,7 @@ int ft_find_home(t_list *list, t_data *data)
 		}
 		i++;
 	}
-	if (f == 0)
+	if (fr == 0)
 		return (1);
 	return (0);
 }

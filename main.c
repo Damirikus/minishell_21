@@ -43,7 +43,6 @@ int main(int argc, char **argv, char **env)
 	if (export_env_variable_present(data, "PATH"))
 		data->path = ft_path(getenv("PATH"));
 	while (1)
-	// for (int k = 0; k < 1; k++)
 	{
 		f = 0;
 		if (data->td[0])
@@ -53,7 +52,6 @@ int main(int argc, char **argv, char **env)
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
 		rl_getc_function = data->sg;
-//		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
 		{
@@ -70,12 +68,17 @@ int main(int argc, char **argv, char **env)
 			data->head_command = parser(input, data);
 			// ft_print_all(data);
 			data->len = ft_chek_all_files(data->head_command, data);
+			if (data->len == -1)
+			{
+				free(input);
+				continue;
+			}
 			data->flat = 0;
 			current = data->head_command;
 			while (current)
 			{
 
-					pid = ft_realization(current, data);
+				pid = ft_realization(current, data);
 				current = current->next;
 			}
 			int i = 0;//количество fork
