@@ -3,7 +3,7 @@
 int	ft_lstsize_redirect(t_redirect *lst)
 {
 	t_redirect	*tmp;
-	int		i;
+	int			i;
 
 	i = 0;
 	tmp = lst;

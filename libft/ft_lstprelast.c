@@ -1,6 +1,6 @@
 #include "libft.h"
 
-t_list *ft_lstprelast(t_list *lst)
+t_list	*ft_lstprelast(t_list *lst)
 {
 	t_list	*tmp;
 	t_list	*pre;

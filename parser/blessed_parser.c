@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:36:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 13:57:12 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 14:51:24 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	redirect_check(t_list *head_command)
 	}
 }
 
-// t_list	*parser(char *str, char **env)
 t_list	*parser(char *str, t_data *data)
 {
 	char	**pipe_mass;

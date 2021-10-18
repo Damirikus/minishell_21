@@ -19,6 +19,7 @@
 # define RED "\x1B[31m"
 # define WHITE "\x1B[37m"
 
+
 typedef struct	s_env
 {
 	int				sys;
@@ -48,7 +49,6 @@ typedef struct s_data
 	int code_exit;
 
 } t_data;
-
 
 /* SIGNAL */
 void    rl_replace_line(const char *buffer, int val);
@@ -154,6 +154,9 @@ void	ft_skip_quotes(char *str, int *i);
 /* DOLLAR PULL  */
 void	dollar_pull(char **pipe_mass, t_data *data);
 void	dollar_pull_for_redirect(t_list *head_command, t_data *data);
+void	dollar_pull_swaper(char **pipe_mass, int number, char *value, int start);
+void	dollar_cut_from_str(char **pipe_mass, int number, int start, int finish);
+int		ft_isalnum_strong(char c, int flag);
 
 /*	REDIRECT CUTTER	*/
 void	redirect_parser(char **pipe_mass, t_list **head_command);

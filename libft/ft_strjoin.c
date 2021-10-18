@@ -41,6 +41,5 @@ char	*ft_strjoin_export(char *s1, char *s2)
 	while (j < sl2)
 		dd[i++] = s2[j++];
 	dd[i] = '\0';
-	// free(s2);
 	return (dd);
 }
