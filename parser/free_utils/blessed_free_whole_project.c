@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 21:12:19 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 21:12:20 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 21:49:17 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	list_free_env(t_env **env)
 {
 	t_env	*last;
 	t_env	*pre;
-	int			i;
-	int			lst_size;
+	int		i;
+	int		lst_size;
 
 	i = 0;
 	lst_size = ft_lstsize_env(*env);
