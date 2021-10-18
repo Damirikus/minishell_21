@@ -39,8 +39,8 @@ char	*dollar_pull_swaper_result_maker_redirect(char *tmp, char *value, int start
 	j = -1;
 	while (++j < strlen(value))
 		result[i++] = value[j];
-	while (tmp[finish++])
-		result[i++] = tmp[finish];
+	while (tmp[finish])
+		result[i++] = tmp[finish++];
 	result[i] = 0;
 	return (result);
 }
