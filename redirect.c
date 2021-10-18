@@ -46,6 +46,8 @@ int	ft_key_handler_creat(t_list *list, t_data *data)
 					ft_key_handler(current, redent, data);
 				redent = redent->next;
 			}
+			if (f == 2)
+				return (-1);
 		}
 		current = current->next;
 	}
@@ -142,6 +144,7 @@ int	ft_key_handler_2(void *sg, t_redirect *redirect)
 		if (!strcmp(tmp, redirect->filename))
 		{
 			free(tmp);
+			f = 0;
 			return (1);
 		}
 		free(tmp);
@@ -149,7 +152,28 @@ int	ft_key_handler_2(void *sg, t_redirect *redirect)
 	return (0);
 }
 
-int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data)
+int	ft_key_handler_3_part(char *str, t_data *data)
+{
+	free(str);
+	close(data->td[1]);
+	rl_getc_function = data->sg;
+	signal(SIGINT, ft_ctrl);
+	signal(SIGQUIT, ft_hz);
+	f = 0;
+	return (0);
+}
+
+int	ft_key_handler_4(char *str, t_data *data)
+{
+	close(data->td[0]);
+	dup2(data->td[1], 1);
+	close(data->td[1]);
+	printf("%s\n", str);
+	free(str);
+	exit(0);
+}
+
+int	ft_key_handler_3(t_redirect *redirect, t_data *data)
 {
 	char	*str;
 	int		pid;
@@ -158,29 +182,12 @@ int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data)
 	{
 		str = readline("> ");
 		if (!str)
-		{
-			close(data->td[1]);
 			break ;
-		}
 		if (!strcmp(str, redirect->filename))
-		{
-			free(str);
-			close(data->td[1]);
-			rl_getc_function = data->sg;
-			signal(SIGINT, ft_ctrl);
-			signal(SIGQUIT, ft_hz);
-			return (0);
-		}
+			return (ft_key_handler_3_part(str, data));
 		pid = fork();
 		if (pid == 0)
-		{
-			close(data->td[0]);
-			dup2(data->td[1], 1);
-			close(data->td[1]);
-			printf("%s\n", str);
-			free(str);
-			exit(0);
-		}
+			ft_key_handler_4(str, data);
 		if (pid != 0)
 		{
 			wait(NULL);
@@ -192,6 +199,7 @@ int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data)
 
 int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
 {
+	f = 2;
 	signal(SIGINT, ft_emp);
 	signal(SIGQUIT, SIG_IGN);
 	rl_getc_function = getc;
@@ -201,7 +209,7 @@ int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
 	{
 		pipe(data->td);
 		list->fd0 = data->td[0];
-		return (ft_key_handler_3(list, redirect, data));
+		return (ft_key_handler_3(redirect, data));
 	}
 	return (0);
 }

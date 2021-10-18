@@ -78,7 +78,8 @@ int ft_stdout(t_list *list, t_redirect *redirect);
 int ft_stdoutout(t_list *list, t_redirect *redirect);
 int ft_stdin(t_list *list, t_redirect *redirect);
 int	ft_key_handler_2(void *sg, t_redirect *redirect);
-int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data);
+int ft_key_handler_3(t_redirect *redirect, t_data *data);
+int ft_key_handler_3_part(char *str, t_data *data);
 int ft_key_handler_creat(t_list *list, t_data *data);
 
 /* build commands */
@@ -86,6 +87,7 @@ int ft_key_handler_creat(t_list *list, t_data *data);
 void ft_echo(t_list *list);
 void ft_echo_part(t_list *list, int i, int qw);
 void ft_echo_part2(t_list *list, int i, int qw);
+int ft_echo_part_null(t_list *list, int k, int qw);
 /* pwd */
 void ft_pwd(void);
 /* ft_cd */
