@@ -68,6 +68,8 @@ int main(int argc, char **argv, char **env)
 			data->head_command = parser(input, data);
 			// ft_print_all(data);
 			data->len = ft_chek_all_files(data->head_command, data);
+			if (data->len == -1)
+				continue;
 			data->flat = 0;
 			current = data->head_command;
 			while (current)

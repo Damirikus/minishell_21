@@ -6,6 +6,8 @@ int	ft_chek_all_files(t_list *list, t_data *data)
 	t_redirect	*redent;
 	int			len;
 
+	if (ft_key_handler_creat(list, data))
+		return (-1);
 	len = 0;
 	current = list;
 	while (current)
@@ -22,7 +24,6 @@ int	ft_chek_all_files(t_list *list, t_data *data)
 		}
 		current = current->next;
 	}
-	ft_key_handler_creat(list, data);
 	return (len);
 }
 
@@ -40,7 +41,7 @@ int	ft_key_handler_creat(t_list *list, t_data *data)
 			while (redent)
 			{
 				if (f == 1)
-					return (0);
+					return (1);
 				if (redent->flag_for_stdin == 2)
 					ft_key_handler(current, redent, data);
 				redent = redent->next;
@@ -126,6 +127,7 @@ void	ft_emp(int sig)
 {
 	(void)sig;
 	f = 1;
+	write(1, "\e[C", 3);
 }
 
 int	ft_key_handler_2(void *sg, t_redirect *redirect)
@@ -139,9 +141,6 @@ int	ft_key_handler_2(void *sg, t_redirect *redirect)
 			break ;
 		if (!strcmp(tmp, redirect->filename))
 		{
-//			rl_getc_function = sg;
-//			signal(SIGINT, ft_ctrl);
-//			signal(SIGQUIT, ft_hz);
 			free(tmp);
 			return (1);
 		}
@@ -154,7 +153,7 @@ int ft_key_handler_3(t_list *list, t_redirect *redirect, t_data *data)
 {
 	char	*str;
 	int		pid;
-	printf("HERERERERERER\n");
+
 	while (1)
 	{
 		str = readline("> ");
@@ -196,7 +195,6 @@ int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
 	signal(SIGINT, ft_emp);
 	signal(SIGQUIT, SIG_IGN);
 	rl_getc_function = getc;
-	printf("%d\n", redirect->flag);
 	if (redirect->flag == 0)
 		return (ft_key_handler_2(data->sg, redirect));
 	else if (redirect->flag == 1)
