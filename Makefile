@@ -36,13 +36,15 @@ SRCS	=	main.c \
 			./parser/dollar_pull/blessed_dollar_pull.c \
 			./parser/dollar_pull/blessed_dollar_pull_utils.c \
 			./parser/dollar_pull/dollar_pull_redirect/blessed_dollar_pull_redirect.c \
+			./parser/dollar_pull/dollar_pull_redirect/blessed_dollar_pull_redirect_utils.c \
 \
-            ./parser/blessed_cmd_maker.c \
+            ./parser/cmd_maker/blessed_cmd_maker.c \
             ./parser/blessed_parser.c \
-			./parser/list_free_utils.c \
-			./parser/blessed_quotes_killer_command.c \
-			./parser/blessed_quotes_killer_redirect.c \
-			./parser/blessed_free_whole_project.c \
+			./parser/quotes_killer/blessed_quotes_killer_command.c \
+			./parser/quotes_killer/blessed_quotes_killer_redirect.c \
+			./parser/quotes_killer/blessed_quotes_killer_utils.c \
+			./parser/free_utils/blessed_free_whole_project.c \
+			./parser/free_utils/list_free_utils.c \
 
 
 %.o: 	%.c $(HEADER)

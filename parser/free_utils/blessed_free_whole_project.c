@@ -1,4 +1,16 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blessed_free_whole_project.c                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/18 21:12:19 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/10/18 21:12:20 by rphoebe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell.h"
 
 void	ft_lstclear_env(t_env **lst, void (*del)(void *))
 {
@@ -59,7 +71,7 @@ void	ft_free_path(t_data *data)
 	data->path = NULL;
 }
 
-void	free_whole_project(t_data *data) // data->path?
+void	free_whole_project(t_data *data)
 {
 	int	i;
 

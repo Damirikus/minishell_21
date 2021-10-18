@@ -1,6 +1,19 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blessed_quotes_killer_command.c                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/18 21:08:29 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/10/18 21:09:32 by rphoebe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	quotes_killer_command_helper_copy(char *result, char *name, int *i, int *j) // копирует то что вы кавыках
+#include "../../minishell.h"
+
+void	quotes_killer_command_helper_copy(char *result, \
+char *name, int *i, int *j)
 {
 	if (name[*i] == '\'')
 	{
@@ -44,7 +57,6 @@ void	quotes_killer_command_helper(t_list *tmp, int number)
 			result[j] = tmp->cmd[number][i];
 			j++;
 		}
-		// if (tmp->cmd[number][i] != 0 && tmp->cmd[number][i] != '\'' && tmp->cmd[number][i] != '\"')
 		if (tmp->cmd[number][i] != 0)
 			i++;
 	}

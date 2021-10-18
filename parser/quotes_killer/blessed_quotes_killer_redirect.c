@@ -1,50 +1,19 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blessed_quotes_killer_redirect.c                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/18 21:08:26 by rphoebe           #+#    #+#             */
+/*   Updated: 2021/10/18 21:09:53 by rphoebe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	quotes_killer_result_len_skip(char *name, int *i, int *result)
-{
-	if (name[*i] == '\'')
-	{
-		*i = *i + 1;
-		while (name[*i] != '\'')
-		{
-			*i = *i + 1;
-			*result = *result + 1;
-		}
-		return ;
-	}
-	if (name[*i] == '\"')
-	{
-		*i = *i + 1;
-		while (name[*i] != '\"')
-		{
-			*i = *i + 1;
-			*result = *result + 1;
-		}
-		return ;
-	}
-}
+#include "../../minishell.h"
 
-int	quotes_killer_result_len(char *name) // Считаем длину итоговой строки без кавычек
-{
-	int	result;
-	int	i;
-
-	result = 0;
-	i = 0;
-	while (name[i] != '\0')
-	{
-		if (name[i] == '\'' || name[i] == '\"')
-			quotes_killer_result_len_skip(name, &i, &result);
-		if (name[i] != '\'' && name[i] != '\"')
-			result++;
-		if (name[i] != 0)
-			i++;
-	}
-	// printf("Xname: %s len: %d\n", name, result + 1);
-	return (result + 1);
-}
-
-void	quotes_killer_redirect_helper_copy(char *result, char *name, int *i, int *j) // копирует то что вы кавыках
+void	quotes_killer_redirect_helper_copy(char *result, \
+char *name, int *i, int *j)
 {
 	if (name[*i] == '\'')
 	{
@@ -79,6 +48,8 @@ void	quotes_killer_redirect_helper(t_redirect *tmp)
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char) * quotes_killer_result_len(tmp->filename));
+	if (!result)
+		ft_error(8, NULL);
 	while (tmp->filename[i])
 	{
 		if (tmp->filename[i] == '\'' || tmp->filename[i] == '\"')
