@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_split_by_pipe.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:56:14 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 15:01:29 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:38:16 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	*take_coordinates(char *str)
 	j = 0;
 	pipes = how_much_pipes(str);
 	coordinates = malloc(sizeof(int) * (pipes + 1));
-	if (coordinates == NULL)
-		return (NULL);
+	if (!coordinates)
+		ft_error(8, NULL);
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
@@ -91,7 +91,7 @@ char	*ft_cutstr(char *str, int start, int finish)
 	len = finish - start;
 	result = malloc(sizeof(char) * (len + 1));
 	if (!result)
-		return (NULL);
+		ft_error(8, NULL);
 	while (i < len)
 	{
 		result[i] = str[start];
@@ -116,8 +116,8 @@ char	**ft_split_by_pipe(char *str)
 		i++;
 	mass_size = i + 1;
 	result = malloc(sizeof(char *) * (mass_size + 1));
-	if (result == NULL)
-		return (NULL);
+	if (!result)
+		ft_error(8, NULL);
 	result[0] = ft_cutstr(str, 0, coordinates[0]);
 	i = 1;
 	while (i < mass_size)

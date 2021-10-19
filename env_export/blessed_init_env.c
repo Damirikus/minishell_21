@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_init_env.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:02 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 23:03:50 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:39:08 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	list_to_2D_massive_env_execve(t_data *shell)
 		free(shell->execve_env);
 	shell->execve_env = malloc(sizeof(char *) \
 	* (list_to_2D_massive_env_len(shell) + 1));
+	if (!shell->execve_env)
+		ft_error(8, NULL);
 	i = 0;
 	tmp = shell->head_env;
 	while (tmp)
@@ -44,6 +46,8 @@ void	list_to_2D_massive_env(t_data *shell)
 		free(shell->current_env);
 	shell->current_env = malloc(sizeof(char *) \
 	 * (list_to_2D_massive_env_len(shell) + 1));
+	if (!shell->current_env)
+		ft_error(8, NULL);
 	i = 0;
 	tmp = shell->head_env;
 	while (tmp)

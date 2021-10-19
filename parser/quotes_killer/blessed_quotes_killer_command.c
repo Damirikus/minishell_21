@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_quotes_killer_command.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 21:08:29 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 21:09:32 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:36:36 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	quotes_killer_command_helper(t_list *tmp, int number)
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char) * quotes_killer_result_len(tmp->cmd[number]));
+	if (!result)
+		ft_error(8, NULL);
 	while (tmp->cmd[number][i])
 	{
 		if (tmp->cmd[number][i] == '\'' || tmp->cmd[number][i] == '\"')
