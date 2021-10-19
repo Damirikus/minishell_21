@@ -35,6 +35,7 @@ int main(int argc, char **argv, char **env)
 	int pid;
 	char* input;
 	t_data *data;
+
 	data = malloc(sizeof(t_data));
 	initial_env_maker(data, env);
 	t_list *current;
@@ -77,21 +78,22 @@ int main(int argc, char **argv, char **env)
 			current = data->head_command;
 			while (current)
 			{
-
 				pid = ft_realization(current, data);
 				current = current->next;
 			}
 			int i = 0;//количество fork
 			int status;
-			if(pid != -99)
-			while(i < data->len)
+			if (pid != -99)
 			{
-				if (waitpid(pid, &status, 0) != pid)
-					status = -1;
+				while (i < data->len)
+				{
+					if (waitpid(pid, &status, 0) != pid)
+						status = -1;
 //				printf("STATUS = %d\n", status);
-				if (status != -1)
-					data->code_exit = status / 256;
-				i++;
+					if (status != -1)
+						data->code_exit = status / 256;
+					i++;
+				}
 			}
 			usleep(10000);
 		}
@@ -100,7 +102,6 @@ int main(int argc, char **argv, char **env)
 	}
 	free_whole_project(data);
 	free(data);
-	// while (1);
 }
 
 void ft_print_all(t_data *data)

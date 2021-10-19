@@ -67,8 +67,10 @@ char *ft_make_path(char **path, t_list *list);
 int ft_distributor(t_list *list, t_data *data);
 void ft_distributor_part(t_list *list, t_data *data, char *full_path);
 int ft_realization(t_list *list, t_data *data);
-
-
+void ft_realization_mother(t_list *list, t_data *data);
+int ft_realization_part(t_list *list, t_data *data);
+void ft_realization_daughter(t_list *list, t_data *data);
+void ft_closer(t_list *list);
 
 /* REDIRECTS */
 int ft_chek_all_files(t_list *list, t_data *data);
