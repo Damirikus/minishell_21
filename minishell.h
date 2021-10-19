@@ -70,7 +70,9 @@ int ft_realization(t_list *list, t_data *data);
 void ft_realization_mother(t_list *list, t_data *data);
 int ft_realization_part(t_list *list, t_data *data);
 void ft_realization_daughter(t_list *list, t_data *data);
+void	ft_realization_daughter_part2(t_list *list, t_data *data);
 void ft_closer(t_list *list);
+void ft_check_bild_func(t_list *list, t_data *data);
 
 /* REDIRECTS */
 int ft_chek_all_files(t_list *list, t_data *data);
@@ -96,11 +98,16 @@ void ft_pwd(void);
 int ft_cd(t_list *list, t_data *data);
 int ft_cd_part(t_list *list, t_data *data);
 int ft_find_home(t_list *list, t_data *data);
+void ft_find_home_part(t_list *list, t_data *data, int i);
+int ft_cd_part_last(t_list *list, t_data *data);
 /* exit */
-void ft_exit_part(long code, t_list *list, int len, t_data *data);
+int ft_exit_part(long code, t_list *list, int len, t_data *data);
+int ft_exit_part2(t_data *data);
 void ft_exit(t_list *list, int len, t_data *data);
 int	ft_check_max_min(char *str);
 int ft_exit_inner_part( t_list *list, int i, int len, t_data *data);
+void ft_exit_part_inner(t_list *list, t_data *data, int len);
+int ft_exit_exit(t_data *data, int len, long code);
 
 
 
