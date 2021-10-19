@@ -1,45 +1,118 @@
 #include "minishell.h" //jiestjkeeeeeeeeee
 
-// тут происходит распределение по командам на исполнение cat << 6 << 7 > 8 >> 2 < 5 | wc -l | cat > 100
-
-void	printjkee(t_data *data)
+void	ft_closer(t_list *list)
 {
-	printf("pwd: %s\noldpwd: %s\n", data->current_pwd, data->current_oldpwd);
+	if (list->fd0 != -1)
+		close(list->fd0);
+	if (list->fd1 != -1)
+		close(list->fd1);
 }
 
-void	printpath(t_data *data)
+void	ft_realization_mother(t_list *list, t_data *data)
 {
-	int	i;
-
-	i = -1;
-	while (data->path[++i])
-		printf("%d: %s\n", i, data->path[i]);
+	if (data->len > 1 && !list->next && data->flat % 2 == 0)
+		close(data->b[0]);
+	else if (data->len > 1 && !list->next && data->flat % 2 == 1)
+		close(data->a[0]);
+	if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+	{
+		if (data->b[0])
+			close(data->b[0]);
+		close(data->a[1]);
+	}
+	else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+	{
+		if (data->a[0])
+			close(data->a[0]);
+		close(data->b[1]);
+	}
+	ft_closer(list);
+	data->flat++;
 }
 
-int ft_realization(t_list *list, t_data *data)
+int	ft_realization_part(t_list *list, t_data *data)
 {
-	int pid;
-	int p[2];
+	int	p[2];
+
+	if (data->len > 1 && list->next)
+	{
+		pipe(p);
+		close(p[1]);
+		if (list->next->fd0 == -1)
+			list->next->fd0 = p[0];
+	}
+	printf("minishell: %s: No such file or directory\n", list->filename_for_job);
+	ft_closer(list);
+	data->code_exit = 1;
+	return (0);
+}
+
+void	ft_realization_daughter_part(t_list *list, t_data *data)
+{
+	if (data->flat == 0 && list->flag_for_pipe == 1)
+	{
+		close(data->a[0]);
+		if (list->fd1 == -1)
+			dup2(data->a[1], 1);
+		close(data->a[1]);
+	}
+	else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
+	{
+		if (list->fd0 == -1)
+			dup2(data->a[0], 0);
+		close(data->a[0]);
+		close(data->b[0]);
+		if (list->fd1 == -1)
+			dup2(data->b[1], 1);
+		close(data->b[1]);
+	}
+	else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
+	{
+		if (list->fd0 == -1)
+			dup2(data->b[0], 0);
+		close(data->b[0]);
+		close(data->a[0]);
+		if (list->fd1 == -1)
+			dup2(data->a[1], 1);
+		close(data->a[1]);
+	}
+}
+
+void	ft_realization_daughter(t_list *list, t_data *data)
+{
+	if (list->fd0 != -1)
+		dup2(list->fd0, 0);
+	if (list->fd1 != -1)
+		dup2(list->fd1, 1);
+	if (!list->next && data->len > 1)
+	{
+		if (data->flat % 2 == 0)
+		{
+			if (list->fd0 == -1)
+				dup2(data->b[0], 0);
+			close(data->b[0]);
+		}
+		else
+		{
+			if (list->fd0 == -1)
+				dup2(data->a[0], 0);
+			close(data->a[0]);
+		}
+	}
+	else
+		ft_realization_daughter_part(list, data);
+	ft_distributor(list, data);
+}
+
+int	ft_realization(t_list *list, t_data *data)
+{
+	int	pid;
+	int	flag;
+
 	pid = 0;
-	int flag;
 	flag = 0;
 	if (list->flag_for_job == 1)
-	{
-		if (data->len > 1 && list->next)
-		{
-			pipe(p);
-			close(p[1]);
-			if (list->next->fd0 == -1)
-				list->next->fd0 = p[0];
-		}
-		printf("minishell: %s: No such file or directory\n", list->filename_for_job);
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
-		data->code_exit = 1;
-		return (0);
-	}
+		return (ft_realization_part(list, data));
 	if (list->cmd[0])
 	{
 		if (!strcmp(list->cmd[0], "exit"))
@@ -59,79 +132,9 @@ int ft_realization(t_list *list, t_data *data)
 			pid = fork();
 			flag = 1;
 			if (pid == 0)
-			{
-				if (list->fd0 != -1)
-					dup2(list->fd0, 0);
-				if (list->fd1 != -1)
-					dup2(list->fd1, 1);
-				if (!list->next && data->len > 1)
-				{
-					if (data->flat % 2 == 0)
-					{
-						if (list->fd0 == -1)
-							dup2(data->b[0], 0);
-						close(data->b[0]);
-					}
-					else
-					{
-						if (list->fd0 == -1)
-							dup2(data->a[0], 0);
-						close(data->a[0]);
-					}
-				}
-				else if (data->flat == 0 && list->flag_for_pipe == 1)
-				{
-					close(data->a[0]);
-					if (list->fd1 == -1)
-						dup2(data->a[1], 1);
-					close(data->a[1]);
-				}
-				else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-				{
-					if (list->fd0 == -1)
-						dup2(data->a[0], 0);
-					close(data->a[0]);
-					close(data->b[0]);
-					if (list->fd1 == -1)
-						dup2(data->b[1], 1);
-					close(data->b[1]);
-				}
-				else if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-				{
-					if (list->fd0 == -1)
-						dup2(data->b[0], 0);
-					close(data->b[0]);
-					close(data->a[0]);
-					if (list->fd1 == -1)
-						dup2(data->a[1], 1);
-					close(data->a[1]);
-				}
-				ft_distributor(list, data);
-			}
+				ft_realization_daughter(list, data);
 			if (pid != 0)
-			{
-				if (data->len > 1 && !list->next && data->flat % 2 == 0)
-					close(data->b[0]);
-				else if (data->len > 1 && !list->next && data->flat % 2 == 1)
-					close(data->a[0]);
-				if (data->flat % 2 == 0 && list->flag_for_pipe == 1)
-				{
-					if (data->b[0])
-						close(data->b[0]);
-					close(data->a[1]);
-				}
-				else if (data->flat % 2 == 1 && list->flag_for_pipe == 1)
-				{
-					if (data->a[0])
-						close(data->a[0]);
-					close(data->b[1]);
-				}
-				if (list->fd0 != -1)
-					close(list->fd0);
-				if (list->fd1 != -1)
-					close(list->fd1);
-				data->flat++;
-			}
+				ft_realization_mother(list, data);
 		}
 		if (flag == 1)
 			return (pid);
@@ -139,16 +142,11 @@ int ft_realization(t_list *list, t_data *data)
 			return (-99);
 	}
 	else
-	{
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
-	}
+		ft_closer(list);
 	return (0);
 }
 
-int ft_distributor(t_list *list, t_data *data)
+int	ft_distributor(t_list *list, t_data *data)
 {
 	char	*full_path;
 
@@ -163,14 +161,11 @@ int ft_distributor(t_list *list, t_data *data)
 		print_2d_massive(data->current_export, list, data);
 	else
 		ft_distributor_part(list, data, full_path);
-	if (list->fd0 != -1)
-		close(list->fd0);
-	if (list->fd1 != -1)
-		close(list->fd1);
+	ft_closer(list);
 	exit(0);
 }
 
-void ft_distributor_part(t_list *list, t_data *data, char *full_path)
+void	ft_distributor_part(t_list *list, t_data *data, char *full_path)
 {
 	if (execve(full_path, list->cmd, data->execve_env) == -1)
 	{
@@ -180,10 +175,7 @@ void ft_distributor_part(t_list *list, t_data *data, char *full_path)
 			printf("minishell: %s: no such file or directory\n", list->cmd[0]);
 		else
 			printf("minishell: %s: command not found\n", list->cmd[0]);
-		if (list->fd0 != -1)
-			close(list->fd0);
-		if (list->fd1 != -1)
-			close(list->fd1);
+		ft_closer(list);
 		exit (127);
 	}
 }
@@ -232,10 +224,10 @@ void	ft_export(t_data *data, t_list *list) // Если приходит аргу
 	data->code_exit = flag;
 }
 
-void ft_pwd(void)
+void	ft_pwd(void)
 {
-	char *str;
-	int i;
+	char	*str;
+	int		i;
 	
 	str = malloc(200);
     if (!str)
@@ -255,12 +247,10 @@ void ft_pwd(void)
 	exit(0);
 }
 
-void ft_echo(t_list *list)
+void	ft_echo(t_list *list)
 {
-	int qw;
-	int k;
-	int i;
-	int flag;
+	int	qw;
+	int	k;
 
 	qw = 0;
 	while (list->cmd[qw])
@@ -272,35 +262,47 @@ void ft_echo(t_list *list)
 	}
 	k = 1;
 	if (list->cmd[1])
-		while (k < qw)
-		{
-			if (list->cmd[k][0] != '-')
-				break;
-			i = 1;
-			flag = 0;
-			while (list->cmd[k][i])
-			{
-				if (list->cmd[k][i] != 'n')
-				{
-					flag = 1;
-					break ;
-				}
-				i++;
-			}
-			if (flag == 1)
-				break;
-			k++;
-		}
-		if (k == 1)
-			ft_echo_part(list, 1, qw);
-		else
-			ft_echo_part2(list, k, qw);
-		exit(0);
+		k = ft_echo_part_null(list, k, qw);
+	if (k == 1)
+		ft_echo_part(list, 1, qw);
+	else
+		ft_echo_part2(list, k, qw);
+	exit(0);
 }
 
-void ft_echo_part(t_list *list, int i, int qw)
+int	ft_echo_part_null(t_list *list, int k, int qw)
 {
-	int count;
+	int	i;
+	int	flag;
+
+	while (k < qw)
+	{
+		if (list->cmd[k][0] != '-')
+			break;
+		if (list->cmd[k][0] == '-' && !list->cmd[k][1])
+			break;
+		i = 1;
+		flag = 0;
+		while (list->cmd[k][i])
+		{
+			if (list->cmd[k][i] != 'n')
+			{
+				flag = 1;
+				break ;
+			}
+			i++;
+		}
+		if (flag == 1)
+			break;
+		k++;
+	}
+	return (k);
+}
+
+void	ft_echo_part(t_list *list, int i, int qw)
+{
+	int	count;
+
 	while (list->cmd[i])
 	{
 		count = 0;
@@ -316,9 +318,10 @@ void ft_echo_part(t_list *list, int i, int qw)
 	write(1, "\n", 1);
 }
 
-void ft_echo_part2(t_list *list, int i, int qw)
+void	ft_echo_part2(t_list *list, int i, int qw)
 {
-	int count;
+	int	count;
+
 	while (list->cmd[i])
 	{
 		count = 0;
@@ -333,10 +336,10 @@ void ft_echo_part2(t_list *list, int i, int qw)
 	}
 }
 
-int ft_cd(t_list *list, t_data *data)
+int	ft_cd(t_list *list, t_data *data)
 {
-	int i;
-	DIR *str;
+	int	i;
+	DIR	*str;
 	if (data->a[0])
 		close(data->a[0]);
 	if (data->b[0])
@@ -369,25 +372,26 @@ int ft_cd(t_list *list, t_data *data)
 	return (0);
 }
 
-int ft_cd_part(t_list *list, t_data *data)
+int	ft_cd_part(t_list *list, t_data *data)
 {
 	printf("minishell: cd: %s: no such file or directory\n", list->cmd[1]);
 	data->code_exit = 1;
 	return (0);
 }
 
-int ft_find_home(t_list *list, t_data *data)
+int	ft_find_home(t_list *list, t_data *data)
 {
-	int i;
-	int f;
-	f = 0;
+	int	i;
+	int	fr;
+
+	fr = 0;
 	i = 0;
 	while (data->current_env[i])
 	{
 		if (data->current_env[i][0] == 'H' && data->current_env[i][1] == 'O' && data->current_env[i][2] == 'M'
 		&& data->current_env[i][3] == 'E' && data->current_env[i][4] == '=')
 		{
-			f = 1;
+			fr = 1;
 			if (!list->cmd[1])
 			{
 				free(list->cmd[0]);
@@ -404,16 +408,16 @@ int ft_find_home(t_list *list, t_data *data)
 		}
 		i++;
 	}
-	if (f == 0)
+	if (fr == 0)
 		return (1);
 	return (0);
 }
 
 
-void ft_exit(t_list *list, int len, t_data *data)
+void	ft_exit(t_list *list, int len, t_data *data)
 {
-	int i;
-	long code;
+	int		i;
+	long	code;
 
 	code = 0;
 	if (len == 1)
@@ -441,7 +445,7 @@ void ft_exit(t_list *list, int len, t_data *data)
 	ft_exit_part(code, list, len, data);
 }
 
-int ft_exit_inner_part(t_list *list, int i, int len, t_data *data)
+int	ft_exit_inner_part(t_list *list, int i, int len, t_data *data)
 {
 	if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
 		i++;
@@ -463,9 +467,10 @@ int ft_exit_inner_part(t_list *list, int i, int len, t_data *data)
 	return (0);
 }
 
-void ft_exit_part(long code, t_list *list, int len, t_data *data)
+void	ft_exit_part(long code, t_list *list, int len, t_data *data)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	while (list->cmd[i])
 		i++;
