@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:37:11 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 14:01:53 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/19 21:02:34 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ void	dollar_pull_swaper_redirect(char **str, char *value, int start)
 	char	*result;
 	char	*tmp;
 	int		finish;
-	int		i;
-	int		j;
 
 	tmp = *str;
 	start--;
