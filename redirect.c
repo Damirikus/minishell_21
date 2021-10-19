@@ -76,52 +76,55 @@ int	ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data)
 
 int	ft_stdout(t_list *list, t_redirect *redirect)
 {
-	list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (list->fd1 == -1)
+	int	fd;
+
+	fd = open(redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
 	{
 		list->flag_for_job = 1;
 		list->filename_for_job = redirect->filename;
 		return (1);
 	}
-	if (redirect->flag != 1)
-	{
-		close(list->fd1);
-		list->fd1 = -1;
-	}
+	if (redirect->flag == 1)
+		list->fd1 = fd;
+	else
+		close(fd);
 	return (0);
 }
 
 int	ft_stdoutout(t_list *list, t_redirect *redirect)
 {
-	list->fd1 = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (list->fd1 == -1)
+	int fd;
+
+	fd = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
 	{
 		list->flag_for_job = 1;
 		list->filename_for_job = redirect->filename;
 		return (1);
 	}
-	if (redirect->flag != 1)
-	{
-		close(list->fd1);
-		list->fd1 = -1;
-	}
+	if (redirect->flag == 1)
+		list->fd1 = fd;
+	else
+		close(fd);
 	return (0);
 }
 
 int	ft_stdin(t_list *list, t_redirect *redirect)
 {
-	list->fd0 = open(redirect->filename, O_RDONLY, 0644);
-	if (list->fd0 == -1)
+	int fd;
+
+	fd = open(redirect->filename, O_RDONLY, 0644);
+	if (fd == -1)
 	{
 		list->flag_for_job = 1;
 		list->filename_for_job = redirect->filename;
 		return (0);
 	}
-	if (redirect->flag != 1)
-	{
-		close(list->fd0);
-		list->fd0 = -1;
-	}
+	if (redirect->flag == 1)
+		list->fd0 = fd;
+	else
+		close(fd);
 	return (1);
 }
 

@@ -67,7 +67,7 @@ int main(int argc, char **argv, char **env)
 		if (!preparser(input, data))
 		{
 			data->head_command = parser(input, data);
-			// ft_print_all(data);
+//			 ft_print_all(data);
 			data->len = ft_chek_all_files(data->head_command, data);
 			if (data->len == -1)
 			{
@@ -96,10 +96,15 @@ int main(int argc, char **argv, char **env)
 				}
 			}
 			usleep(10000);
+			if (data->td[0])
+				close(data->td[0]);
+			if (data->td[1])
+				close(data->td[1]);
 		}
 		list_free(&data->head_command);
 		free(input);
 	}
+
 	free_whole_project(data);
 	free(data);
 }
@@ -135,6 +140,7 @@ void ft_print_all(t_data *data)
 			printf("REDIRECTS\n");
 			printf("stdin = %d\n", red->flag_for_stdin);
 			printf("stdout = %d\n", red->flag_for_stdout);
+			printf("flag = %d\n", red->flag);
 			red = red->next;
 		}
 		printf("______________________________________________________________\n");
