@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_dollar_pull.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:50 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 18:45:20 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:03:21 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int start, t_data *data)
 	exit_code_str = ft_itoa(data->code_exit);
 	result = malloc(sizeof(char) * (ft_strlen(pipe_mass[number]) \
 	- 2 + ft_strlen(exit_code_str) + 1));
+	if (!result)
+		ft_error(8, NULL);
 	i = -1;
 	j = -1;
 	while (++i < start)
@@ -46,16 +48,16 @@ t_data *data)
 	int		i;
 
 	value = NULL;
-	while (isalnum(pipe_mass[*j]) || pipe_mass[*j] == '_')
+	while (ft_isalnum(pipe_mass[*j]) || pipe_mass[*j] == '_')
 		*j = *j + 1;
 	key = ft_cutstr(pipe_mass, start, *j);
 	i = -1;
 	while (data->current_env[++i])
 	{
-		if (!strncmp(data->current_env[i], key, strlen(key)) \
-		&& data->current_env[i][strlen(key)] == '=')
+		if (!ft_strncmp(data->current_env[i], key, ft_strlen(key)) \
+		&& data->current_env[i][ft_strlen(key)] == '=')
 		{
-			value = strdup(data->current_env[i] + strlen(key) + 1);
+			value = ft_strdup(data->current_env[i] + ft_strlen(key) + 1);
 			break ;
 		}
 	}

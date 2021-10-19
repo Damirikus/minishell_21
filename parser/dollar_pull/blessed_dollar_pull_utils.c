@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_dollar_pull_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 20:40:23 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:02:57 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	dollar_cut_from_str(char **pipe_mass, int number, int start, int finish)
 	char	*result;
 	int		i;
 
-	result = malloc(sizeof(char) * (strlen(pipe_mass[number]) \
+	result = malloc(sizeof(char) * (ft_strlen(pipe_mass[number]) \
 	- (finish - start + 1) + 1));
+	if (!result)
+		ft_error(8, NULL);
 	i = 0;
 	while (i < start)
 	{
@@ -59,13 +61,15 @@ char *value, int start, int finish)
 	int		i;
 	int		j;
 
-	result = malloc(sizeof(char) * (strlen(pipe_mass) \
-	- (finish - start) + strlen(value) + 1));
+	result = malloc(sizeof(char) * (ft_strlen(pipe_mass) \
+	- (finish - start) + ft_strlen(value) + 1));
+	if (!result)
+		ft_error(8, NULL);
 	i = -1;
 	while (++i < start)
 		result[i] = pipe_mass[i];
 	j = -1;
-	while (++j < strlen(value))
+	while (++j < ft_strlen(value))
 		result[i++] = value[j];
 	while (pipe_mass[finish])
 		result[i++] = pipe_mass[finish++];
@@ -83,7 +87,7 @@ int start)
 
 	start--;
 	finish = start + 1;
-	while (isalnum(pipe_mass[number][finish]) || \
+	while (ft_isalnum(pipe_mass[number][finish]) || \
 	pipe_mass[number][finish] == '_')
 		finish++;
 	result = dollar_pull_swaper_result_maker(pipe_mass[number], \
