@@ -56,6 +56,7 @@ int	ft_key_handler_creat(t_list *list, t_data *data)
 
 int	ft_creat_chek_files(t_list *list, t_redirect *redirect, t_data *data)
 {
+	(void)data;
 	if (redirect->flag_for_stdout == 1 && list->flag_for_job == 0)
 	{
 		if (ft_stdout(list, redirect))
@@ -137,6 +138,7 @@ void	ft_emp(int sig)
 
 int	ft_key_handler_2(void *sg, t_redirect *redirect)
 {
+	(void)sg;
 	char	*tmp;
 
 	while (1)

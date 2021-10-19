@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_list_env.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:04 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 23:16:54 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 14:40:03 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	print_list_env(t_env *head)
-{
-	t_env	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		printf("%s\n", tmp->content);
-		tmp = tmp->next;
-	}
-}
 
 t_env	*ft_lstnew_initial_env(char *content)
 {
