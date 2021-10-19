@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_init_env_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:55:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 14:04:04 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 21:04:46 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	list_to_2D_massive_export_sort_sys(t_data *shell)
 
 void	print_2d_massive(char **mass, t_list *list, t_data *data)
 {
+	(void)list;
 	int	i;
 
 	i = -1;

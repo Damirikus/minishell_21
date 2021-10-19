@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:50 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 14:03:21 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/19 21:03:26 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_data *data)
 void	dollar_pull_helper(char **pipe_mass, int number, int j, t_data *data)
 {
 	int		start;
-	char	*key;
 	char	*value;
 
 	start = j + 1;

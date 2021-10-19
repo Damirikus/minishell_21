@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 17:55:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 14:02:57 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/19 21:02:55 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int start)
 {
 	char	*result;
 	int		finish;
-	int		i;
-	int		j;
 
 	start--;
 	finish = start + 1;

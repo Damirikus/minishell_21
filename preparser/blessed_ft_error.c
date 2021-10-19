@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_ft_error.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:49:25 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 15:24:05 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 20:36:03 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	ft_error(int code, t_data *data)
 		return (1);
 	}
 	else if (code == 6 || code == 5 || code == 4)
-		ft_error1(code, data);
+		return (ft_error1(code, data));
 	else if (code == 8)
-		allocation_error();
+		return (allocation_error());
 	return (0);
 }
