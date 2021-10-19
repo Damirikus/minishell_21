@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_env_append_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:17:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 23:18:38 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:58:48 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	export_env_variable_strong(char *string)
 	int	i;
 
 	i = 0;
-	while (isalnum(string[i]) || string[i] == '_')
+	while (ft_isalnum(string[i]) || string[i] == '_')
 		i++;
 	if (string[i] == '+')
 		i++;

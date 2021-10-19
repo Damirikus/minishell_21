@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:17:59 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 23:20:44 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:59:18 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pwd_remaker(t_data *data)
 	while (tmp_pwd)
 	{
 		if (ft_strncmp(tmp_pwd->content, "PWD", ft_strlen_key("PWD")) == 0 && \
-		 ft_strlen_key(tmp_pwd->content) == strlen("PWD"))
+		 ft_strlen_key(tmp_pwd->content) == ft_strlen("PWD"))
 		{
 			data->current_pwd = ft_cutstr(tmp_pwd->content, 0, -1);
 			break ;
@@ -34,13 +34,13 @@ int	check_name_unset(char *str, t_data *data)
 	int	i;
 
 	i = 0;
-	if (!isalpha(str[i]) && str[i] != '_')
+	if (!ft_isalpha(str[i]) && str[i] != '_')
 	{
 		printf("minishell: unset: `%s': not a valid identifier\n", str);
 		data->code_exit = 1;
 		return (1);
 	}
-	while (isalnum(str[i]) || str[i] == '_')
+	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	if (str[i] != '\0')
 	{
@@ -56,13 +56,13 @@ int	check_name_export(char *str, t_data *data)
 	int	i;
 
 	i = 0;
-	if (!isalpha(str[i]) && str[i] != '_')
+	if (!ft_isalpha(str[i]) && str[i] != '_')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", str);
 		data->code_exit = 1;
 		return (1);
 	}
-	while (isalnum(str[i]) || str[i] == '_')
+	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	if (str[i] == '+')
 		i++;

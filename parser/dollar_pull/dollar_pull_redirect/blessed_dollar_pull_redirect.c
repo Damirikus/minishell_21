@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_dollar_pull_redirect.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:37:19 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 20:39:05 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/19 13:35:57 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	dollar_pull_exit_code_redirect(char **str, int start, t_data *data)
 	tmp = *str;
 	result = malloc(sizeof(char) * (ft_strlen(tmp) - \
 	2 + ft_strlen(exit_code_str) + 1));
+	if (!result)
+		ft_error(8, NULL);
 	i = -1;
 	j = -1;
 	while (++i < start)
