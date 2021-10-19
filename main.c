@@ -99,12 +99,20 @@ void	signals_and_add_history(char *input, t_data *data)
 
 int	preparation_main(char *input, t_data *data)
 {
+	t_list	*current;
+
 	if (!preparser(input, data))
 	{
 		data->head_command = parser(input, data);
 		data->len = ft_chek_all_files(data->head_command, data);
 		if (data->len == -1)
 		{
+			current = data->head_command;
+			while (current)
+			{
+				ft_closer(current);
+				current = current->next;
+			}
 			free(input);
 			return (1);
 		}
