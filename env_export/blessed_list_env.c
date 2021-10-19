@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:04 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/16 23:42:28 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 23:16:54 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_list_env(t_env *head)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = head;
 	while (tmp)
@@ -24,22 +24,23 @@ void	print_list_env(t_env *head)
 	}
 }
 
-t_env *ft_lstnew_initial_env(char *content)
+t_env	*ft_lstnew_initial_env(char *content)
 {
-	t_env *result;
+	t_env	*result;
 
-	if (!(result = malloc(sizeof(t_env))))
-		return (NULL);
+	result = malloc(sizeof(t_env));
+	if (!result)
+		ft_error(8, NULL);
 	result->sys = 1;
 	result->content = ft_strdup(content);
 	result->next = NULL;
 	return (result);
 }
 
-
-void ft_lstadd_back_env(t_env **lst, t_env *new)
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
-	t_env *last;
+	t_env	*last;
+
 	if (*lst == NULL)
 	{
 		*lst = new;
@@ -50,9 +51,9 @@ void ft_lstadd_back_env(t_env **lst, t_env *new)
 	new->next = NULL;
 }
 
-t_env *ft_lstlast_env(t_env *lst)
+t_env	*ft_lstlast_env(t_env *lst)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = lst;
 	while (tmp)
@@ -64,11 +65,10 @@ t_env *ft_lstlast_env(t_env *lst)
 	return (tmp);
 }
 
-
-int ft_lstsize_env(t_env *lst)
+int	ft_lstsize_env(t_env *lst)
 {
-	t_env *tmp;
-	int i;
+	t_env	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = lst;

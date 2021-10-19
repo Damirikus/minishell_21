@@ -6,7 +6,7 @@
 /*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:02 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/17 00:05:32 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/18 23:03:50 by rphoebe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,13 @@ void	list_to_2D_massive_env(t_data *shell)
 	shell->current_env[i] = NULL;
 }
 
-void	list_to_2D_massive_export(t_data *shell)
+void	list_to_2D_massive_export_helper(t_data *shell)
 {
 	int		i;
-	int		j;
 	t_env	*tmp;
 	char	*str;
+	int		j;
 
-	if (shell->current_export)
-		ft_free_for_export(shell);
-	shell->current_export = malloc(sizeof(char *) \
-	* (ft_lstsize_env(shell->head_env) + 1));
 	i = -1;
 	j = 0;
 	tmp = shell->head_env;
@@ -84,6 +80,17 @@ void	list_to_2D_massive_export(t_data *shell)
 		tmp = tmp->next;
 	}
 	shell->current_export[j] = NULL;
+}
+
+void	list_to_2D_massive_export(t_data *shell)
+{
+	if (shell->current_export)
+		ft_free_for_export(shell);
+	shell->current_export = malloc(sizeof(char *) \
+	* (ft_lstsize_env(shell->head_env) + 1));
+	if (!shell->current_export)
+		ft_error(8, NULL);
+	list_to_2D_massive_export_helper(shell);
 	list_to_2D_massive_export_sort_sys(shell);
 }
 

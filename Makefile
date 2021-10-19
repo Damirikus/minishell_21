@@ -22,6 +22,7 @@ SRCS	=	main.c \
 			./env_export/blessed_pwd_oldpwd.c \
 			./env_export/blessed_shlvl_changing.c \
 			./env_export/blessed_init_env_utils.c \
+			./env_export/export_env_append_utils.c \
 \
 			./preparser/blessed_ft_error.c \
 			./preparser/blessed_preparser.c \
@@ -45,6 +46,7 @@ SRCS	=	main.c \
 			./parser/quotes_killer/blessed_quotes_killer_utils.c \
 			./parser/free_utils/blessed_free_whole_project.c \
 			./parser/free_utils/list_free_utils.c \
+			
 
 
 %.o: 	%.c $(HEADER)

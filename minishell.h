@@ -140,7 +140,12 @@ void	pwd_oldpwd_remaker(t_data *data);
 void	renew_pwd_oldpwd(t_data *data);
 void	shlvl_plus(t_data *data);
 int		list_to_2D_massive_env_len(t_data *shell);
-
+void	export_env_append(t_data *shell, char *string);
+t_env	*export_env_append_tmp(t_data *shell, char *clean_string);
+char	*clean_string_export(char *string);
+int		export_env_variable_strong(char *string);
+int		export_env_variable_present(t_data *shell, char *str);
+void	pwd_remaker(t_data *data);
 
 /* prepars && pars */
 int		ft_error(int code, t_data *data);
