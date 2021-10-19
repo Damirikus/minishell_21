@@ -1,9 +1,4 @@
-#include "minishell.h" //comment for merge
-
-/*	1) Поменять местами доллар пулл и редирект парсер | √
-	2) Добавлять в энв только сильные переменные окружения | √
-	3) Научиться добавлять олдпвд если он слаб | x
-*/
+#include "minishell.h"
 
 void	initial_env_maker(t_data *data, char **env)
 {
@@ -22,81 +17,120 @@ void	initial_env_maker(t_data *data, char **env)
 	shlvl_plus(data);
 }
 
-void ft_hz(int sig)
+void	ft_hz(int sig)
 {
 	(void)sig;
 	printf("Quit: 3\n");
 }
 
-int main(int argc, char **argv, char **env)
+t_data	*inital_setting(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	int pid;
-	char* input;
-	t_data *data;
+	t_data	*tmp;
 
-	data = malloc(sizeof(t_data));
-	initial_env_maker(data, env);
-	t_list *current;
-	data->len = 0;
-	data->code_exit = 0;
-	if (export_env_variable_present(data, "PATH"))
-		data->path = ft_path(getenv("PATH"));
+	tmp = malloc(sizeof(t_data));
+	initial_env_maker(tmp, env);
+	tmp->len = 0;
+	tmp->code_exit = 0;
+	if (export_env_variable_present(tmp, "PATH"))
+		tmp->path = ft_path(getenv("PATH"));
+	return (tmp);
+}
+
+void	initial_loop_setting(t_data *data)
+{
+	f = 0;
+	if (data->td[0])
+		close(data->td[0]);
+	if (data->td[1])
+		close(data->td[1]);
+	signal(SIGINT, ft_ctrlc);
+	signal(SIGQUIT, SIG_IGN);
+	rl_getc_function = data->sg;
+}
+
+void	main_helper(t_data *data)
+{
+	int		i;
+	int		status;
+	t_list	*current;
+	int		pid;
+
+	data->flat = 0;
+	current = data->head_command;
+	while (current)
+	{
+		pid = ft_realization(current, data);
+		current = current->next;
+	}
+	i = 0;
+	if (pid != -99)
+	{
+		while (i < data->len)
+		{
+			if (waitpid(pid, &status, 0) != pid)
+				status = -1;
+			if (status != -1)
+				data->code_exit = status / 256;
+			i++;
+		}
+	}
+}
+
+void	main_sleep_and_close(t_data *data)
+{
+	main_helper(data);
+	usleep(10000);
+	if (data->td[0])
+		close(data->td[0]);
+	if (data->td[1])
+		close(data->td[1]);
+}
+
+void	signals_and_add_history(char *input, t_data *data)
+{
+	if (*input)
+		add_history(input);
+	signal(SIGINT, ft_ctrl);
+	signal(SIGQUIT, ft_hz);
+	rl_getc_function = data->sg;
+}
+
+int	preparation_main(char *input, t_data *data)
+{
+	if (!preparser(input, data))
+	{
+		data->head_command = parser(input, data);
+		data->len = ft_chek_all_files(data->head_command, data);
+		if (data->len == -1)
+		{
+			free(input);
+			return (1);
+		}
+		main_sleep_and_close(data);
+	}
+	return (0);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	char	*input;
+	t_data	*data;
+
+	data = inital_setting(argc, argv, env);
 	while (1)
 	{
-		f = 0;
-		if (data->td[0])
-			close(data->td[0]);
-		if (data->td[1])
-			close(data->td[1]);
-		signal(SIGINT, ft_ctrlc);
-		signal(SIGQUIT, SIG_IGN);
-		rl_getc_function = data->sg;
+		initial_loop_setting(data);
 		input = readline("minishell %> ");
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
-		if (*input)
-			add_history(input);
-		signal(SIGINT, ft_ctrl);
-		signal(SIGQUIT, ft_hz);
-		rl_getc_function = data->sg;
-		if (!preparser(input, data))
-		{
-			data->head_command = parser(input, data);
-			// ft_print_all(data);
-			data->len = ft_chek_all_files(data->head_command, data);
-			if (data->len == -1)
-			{
-				free(input);
-				continue;
-			}
-			data->flat = 0;
-			current = data->head_command;
-			while (current)
-			{
-				pid = ft_realization(current, data);
-				current = current->next;
-			}
-			int i = 0;//количество fork
-			int status;
-			if (pid != -99)
-			{
-				while (i < data->len)
-				{
-					if (waitpid(pid, &status, 0) != pid)
-						status = -1;
-//				printf("STATUS = %d\n", status);
-					if (status != -1)
-						data->code_exit = status / 256;
-					i++;
-				}
-			}
-			usleep(10000);
-		}
+		signals_and_add_history(input, data);
+		if (preparation_main(input, data))
+			continue ;
 		list_free(&data->head_command);
 		free(input);
 	}
@@ -104,45 +138,7 @@ int main(int argc, char **argv, char **env)
 	free(data);
 }
 
-void ft_print_all(t_data *data)
-{
-	int i;
-//	i = 0;
-//	while (data->path[i])
-//	{
-//		printf("path[%d] = %s\n", i, data->path[i]);
-//		i++;
-//	}
-//	printf("\n");
-//	i = 0;
-	t_list *tmp;
-	t_redirect *red;
-	tmp = data->head_command;
-	while (tmp)
-	{
-		red = tmp->head_redirect;
-		i = 0;
-		while (tmp->cmd[i])
-		{
-			printf("CMD[%d] = %s\n", i, tmp->cmd[i]);
-			i++;
-		}
-		printf("_____________________\n");
-		printf("flag_for_pipe = %d\n", tmp->flag_for_pipe);
-		printf("_____________________\n");
-		while (red)
-		{
-			printf("REDIRECTS\n");
-			printf("stdin = %d\n", red->flag_for_stdin);
-			printf("stdout = %d\n", red->flag_for_stdout);
-			red = red->next;
-		}
-		printf("______________________________________________________________\n");
-		tmp = tmp->next;
-	}
-}
-
-void ft_ctrlc(int signal)
+void	ft_ctrlc(int signal)
 {
 	(void)signal;
 	rl_on_new_line();
@@ -153,7 +149,7 @@ void ft_ctrlc(int signal)
 	rl_redisplay();
 }
 
-void ft_ctrl(int signal)
+void	ft_ctrl(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);
