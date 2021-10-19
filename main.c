@@ -35,6 +35,7 @@ int main(int argc, char **argv, char **env)
 	int pid;
 	char* input;
 	t_data *data;
+
 	data = malloc(sizeof(t_data));
 	initial_env_maker(data, env);
 	t_list *current;
@@ -43,7 +44,6 @@ int main(int argc, char **argv, char **env)
 	if (export_env_variable_present(data, "PATH"))
 		data->path = ft_path(getenv("PATH"));
 	while (1)
-	// for (int k = 0; k < 1; k++)
 	{
 		f = 0;
 		if (data->td[0])
@@ -53,7 +53,6 @@ int main(int argc, char **argv, char **env)
 		signal(SIGINT, ft_ctrlc);
 		signal(SIGQUIT, SIG_IGN);
 		rl_getc_function = data->sg;
-//		snprintf(shell_prompt, sizeof(shell_prompt), "%s:%s $ ", getenv("USER"), getcwd(NULL, 1024));
 		input = readline("minishell %> ");
 		if (!input)
 		{
@@ -70,25 +69,31 @@ int main(int argc, char **argv, char **env)
 			data->head_command = parser(input, data);
 			// ft_print_all(data);
 			data->len = ft_chek_all_files(data->head_command, data);
+			if (data->len == -1)
+			{
+				free(input);
+				continue;
+			}
 			data->flat = 0;
 			current = data->head_command;
 			while (current)
 			{
-
-					pid = ft_realization(current, data);
+				pid = ft_realization(current, data);
 				current = current->next;
 			}
 			int i = 0;//количество fork
 			int status;
-			if(pid != -99)
-			while(i < data->len)
+			if (pid != -99)
 			{
-				if (waitpid(pid, &status, 0) != pid)
-					status = -1;
+				while (i < data->len)
+				{
+					if (waitpid(pid, &status, 0) != pid)
+						status = -1;
 //				printf("STATUS = %d\n", status);
-				if (status != -1)
-					data->code_exit = status / 256;
-				i++;
+					if (status != -1)
+						data->code_exit = status / 256;
+					i++;
+				}
 			}
 			usleep(10000);
 		}
@@ -97,7 +102,6 @@ int main(int argc, char **argv, char **env)
 	}
 	free_whole_project(data);
 	free(data);
-	// while (1);
 }
 
 void ft_print_all(t_data *data)
