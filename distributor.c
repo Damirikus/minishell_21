@@ -142,6 +142,7 @@ int	ft_realization(t_list *list, t_data *data)
 		return (ft_realization_part(list, data));
 	if (list->cmd[0])
 	{
+		ft_check_bild_func(list, data);
 		if (!strcmp(list->cmd[0], "exit"))
 			ft_exit(list, data->len, data);
 		else if (!strcmp(list->cmd[0], "cd"))
@@ -156,6 +157,23 @@ int	ft_realization(t_list *list, t_data *data)
 	else
 		ft_closer(list);
 	return (0);
+}
+
+void	ft_check_bild_func(t_list *list, t_data *data)
+{
+	int	p[2];
+
+	if ((!strcmp(list->cmd[0], "exit") || !strcmp(list->cmd[0], "cd") \
+		|| (!strcmp(list->cmd[0], "export") && list->cmd[1]) \
+		|| !strcmp(list->cmd[0], "unset")) \
+		&& (list->flag_for_pipe == 1 \
+		&& data->len > 1 && list->flag_for_job == 0))
+	{
+		pipe(p);
+		close(p[1]);
+		if (list->next->fd0 == -1)
+			list->next->fd0 = p[0];
+	}
 }
 
 int	ft_distributor(t_list *list, t_data *data)
@@ -377,7 +395,7 @@ int	ft_cd(t_list *list, t_data *data)
 	return (0);
 }
 
-int ft_cd_part_last(t_list *list, t_data *data)
+int	ft_cd_part_last(t_list *list, t_data *data)
 {
 	DIR	*str;
 
@@ -389,6 +407,7 @@ int ft_cd_part_last(t_list *list, t_data *data)
 	closedir(str);
 	return (1);
 }
+
 int	ft_cd_part(t_list *list, t_data *data)
 {
 	printf("minishell: cd: %s: no such file or directory\n", list->cmd[1]);
@@ -411,15 +430,7 @@ int	ft_find_home(t_list *list, t_data *data)
 		{
 			fr = 1;
 			if (!list->cmd[1])
-			{
-				free(list->cmd[0]);
-				free(list->cmd);
-				list->cmd = malloc(sizeof(char *) * 3);
-				list->cmd[2] = NULL;
-				list->cmd[0] = malloc(sizeof(char) * 3);
-				ft_strlcpy(list->cmd[0], "cd", 3);
-				list->cmd[1] = ft_strjoin_cd(data->current_env[i] + 5, "");
-			}
+				ft_find_home_part(list, data, i);
 			else if (list->cmd[1][0] == '~')
 				list->cmd[1] = ft_strjoin_cd(data->current_env[i] + 5,
 						list->cmd[1] + 1);
@@ -429,6 +440,17 @@ int	ft_find_home(t_list *list, t_data *data)
 	if (fr == 0)
 		return (1);
 	return (0);
+}
+
+void	ft_find_home_part(t_list *list, t_data *data, int i)
+{
+	free(list->cmd[0]);
+	free(list->cmd);
+	list->cmd = malloc(sizeof(char *) * 3);
+	list->cmd[2] = NULL;
+	list->cmd[0] = malloc(sizeof(char) * 3);
+	ft_strlcpy(list->cmd[0], "cd", 3);
+	list->cmd[1] = ft_strjoin_cd(data->current_env[i] + 5, "");
 }
 
 void	ft_exit(t_list *list, int len, t_data *data)
@@ -447,20 +469,23 @@ void	ft_exit(t_list *list, int len, t_data *data)
 		if (ft_exit_inner_part(list, i, len, data) == 1)
 			return ;
 		if (!ft_check_max_min(list->cmd[1]))
-		{
-			printf("minishell: exit: %s: numeric argument required\n",
-				list->cmd[1]);
-			if (len == 1)
-			{
-				free_whole_project(data);
-				exit(255);
-			}
-			else
-				return ;
-		}
+			ft_exit_part_inner(list, data, len);
 		code = ft_atoi(list->cmd[1]);
 	}
 	ft_exit_part(code, list, len, data);
+}
+
+void	ft_exit_part_inner(t_list *list, t_data *data, int len)
+{
+	printf("minishell: exit: %s: numeric argument required\n",
+		   list->cmd[1]);
+	if (len == 1)
+	{
+		free_whole_project(data);
+		exit(255);
+	}
+	else
+		return ;
 }
 
 int	ft_exit_inner_part(t_list *list, int i, int len, t_data *data)
@@ -508,6 +533,11 @@ int	ft_exit_part(long code, t_list *list, int len, t_data *data)
 		else
 			return (0);
 	}
+	return (ft_exit_exit(data, len, code));
+}
+
+int	ft_exit_exit(t_data *data, int len, long code)
+{
 	if (len == 1)
 	{
 		free_whole_project(data);

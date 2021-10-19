@@ -94,7 +94,7 @@ int	ft_stdout(t_list *list, t_redirect *redirect)
 
 int	ft_stdoutout(t_list *list, t_redirect *redirect)
 {
-	int fd;
+	int	fd;
 
 	fd = open(redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
@@ -112,7 +112,7 @@ int	ft_stdoutout(t_list *list, t_redirect *redirect)
 
 int	ft_stdin(t_list *list, t_redirect *redirect)
 {
-	int fd;
+	int	fd;
 
 	fd = open(redirect->filename, O_RDONLY, 0644);
 	if (fd == -1)
@@ -216,4 +216,3 @@ int	ft_key_handler(t_list *list, t_redirect *redirect, t_data *data)
 	}
 	return (0);
 }
-
