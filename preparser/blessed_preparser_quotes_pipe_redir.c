@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_preparser_quotes_pipe_redir.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:20:49 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 13:47:59 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/20 15:42:01 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	check_redir(char *str, int *i, t_data *data)
 		return (ft_error(4, data));
 	if ((str[*i] == '>' && str[*i + 1] == '|'))
 		return (ft_error(5, data));
-	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && \
-	 str[*i + 1] == '>') || (str[*i] == '<' && str[*i + 1] == '>'))
+	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' \
+	&& str[*i + 1] == '>') || (str[*i] == '<' && str[*i + 1] == '>'))
 		j = *i + 2;
 	else
 		j = *i + 1;

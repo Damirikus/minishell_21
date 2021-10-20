@@ -6,13 +6,13 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:02 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 13:39:08 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 15:49:05 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	list_to_2D_massive_env_execve(t_data *shell)
+void	list_to_2d_massive_env_execve(t_data *shell)
 {
 	int		i;
 	t_env	*tmp;
@@ -20,7 +20,7 @@ void	list_to_2D_massive_env_execve(t_data *shell)
 	if (shell->execve_env)
 		free(shell->execve_env);
 	shell->execve_env = malloc(sizeof(char *) \
-	* (list_to_2D_massive_env_len(shell) + 1));
+	* (list_to_2d_massive_env_len(shell) + 1));
 	if (!shell->execve_env)
 		ft_error(8, NULL);
 	i = 0;
@@ -37,7 +37,7 @@ void	list_to_2D_massive_env_execve(t_data *shell)
 	shell->execve_env[i] = NULL;
 }
 
-void	list_to_2D_massive_env(t_data *shell)
+void	list_to_2d_massive_env(t_data *shell)
 {
 	int		i;
 	t_env	*tmp;
@@ -45,7 +45,7 @@ void	list_to_2D_massive_env(t_data *shell)
 	if (shell->current_env)
 		free(shell->current_env);
 	shell->current_env = malloc(sizeof(char *) \
-	 * (list_to_2D_massive_env_len(shell) + 1));
+	* (list_to_2d_massive_env_len(shell) + 1));
 	if (!shell->current_env)
 		ft_error(8, NULL);
 	i = 0;
@@ -62,7 +62,7 @@ void	list_to_2D_massive_env(t_data *shell)
 	shell->current_env[i] = NULL;
 }
 
-void	list_to_2D_massive_export_helper(t_data *shell)
+void	list_to_2d_massive_export_helper(t_data *shell)
 {
 	int		i;
 	t_env	*tmp;
@@ -86,7 +86,7 @@ void	list_to_2D_massive_export_helper(t_data *shell)
 	shell->current_export[j] = NULL;
 }
 
-void	list_to_2D_massive_export(t_data *shell)
+void	list_to_2d_massive_export(t_data *shell)
 {
 	if (shell->current_export)
 		ft_free_for_export(shell);
@@ -94,8 +94,8 @@ void	list_to_2D_massive_export(t_data *shell)
 	* (ft_lstsize_env(shell->head_env) + 1));
 	if (!shell->current_export)
 		ft_error(8, NULL);
-	list_to_2D_massive_export_helper(shell);
-	list_to_2D_massive_export_sort_sys(shell);
+	list_to_2d_massive_export_helper(shell);
+	list_to_2d_massive_export_sort_sys(shell);
 }
 
 void	env_to_list(t_data *shell)
@@ -106,7 +106,7 @@ void	env_to_list(t_data *shell)
 	while (shell->original_env[++i])
 		ft_lstadd_back_env(&shell->head_env, \
 		ft_lstnew_initial_env(shell->original_env[i]));
-	list_to_2D_massive_env(shell);
-	list_to_2D_massive_export(shell);
-	list_to_2D_massive_env_execve(shell);
+	list_to_2d_massive_env(shell);
+	list_to_2d_massive_export(shell);
+	list_to_2d_massive_env_execve(shell);
 }

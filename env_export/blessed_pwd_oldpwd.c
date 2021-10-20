@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:08 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 13:58:16 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 15:42:57 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	renew_pwd(t_data *data)
 	while (tmp_pwd)
 	{
 		if (ft_strncmp(tmp_pwd->content, "PWD", ft_strlen_key("PWD")) == 0 && \
-		 ft_strlen_key(tmp_pwd->content) == ft_strlen("PWD"))
+		ft_strlen_key(tmp_pwd->content) == ft_strlen("PWD"))
 		{
 			free(tmp_pwd->content);
 			tmp_pwd->content = ft_strdup(data->current_pwd);

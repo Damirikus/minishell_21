@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_free_whole_project.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 21:12:19 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 21:49:17 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/20 16:29:28 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,13 @@ void	ft_free_path(t_data *data)
 	int	i;
 
 	i = -1;
-	while (data->path[++i])
-		free(data->path[i]);
 	if (data->path)
-		free(data->path);
+	{
+		while (data->path[++i])
+			free(data->path[i]);
+		if (data->path)
+			free(data->path);
+	}
 	data->path = NULL;
 }
 
@@ -88,4 +91,6 @@ void	free_whole_project(t_data *data)
 		free(data->path);
 	}
 	close(data->fd_mother);
+	if (data->pids)
+		free(data->pids);
 }

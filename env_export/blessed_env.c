@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blessed_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rphoebe <champenao@gmail.com>              +#+  +:+       +#+        */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:41:57 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/18 23:13:22 by rphoebe          ###   ########.fr       */
+/*   Updated: 2021/10/20 15:46:28 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	renew_env_export_massive(t_data *shell)
 {
-	list_to_2D_massive_env(shell);
-	list_to_2D_massive_export(shell);
+	list_to_2d_massive_env(shell);
+	list_to_2d_massive_export(shell);
 }
 
 void	unset_env(t_data *shell, char *key)

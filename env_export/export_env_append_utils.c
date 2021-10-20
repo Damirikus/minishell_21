@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:17:55 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/19 13:58:48 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/19 23:30:20 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	export_env_variable_present(t_data *shell, char *str)
 	{
 		if (ft_strncmp(tmp->content, str, ft_strlen_key(str)) == 0 && \
 		ft_strlen_key(tmp->content) == ft_strlen_key(str))
+		{
 			return (1);
+		}
 		tmp = tmp->next;
 	}
 	return (0);

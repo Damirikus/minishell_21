@@ -1,51 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/19 21:40:35 by sdominqu          #+#    #+#             */
+/*   Updated: 2021/10/20 00:16:54 by sdominqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//функция получает path из окржуения и сплитом делит все пути и заполняет двумерный массив
-// char **ft_path(char *str)
-// {
-// 	char **tmp;
-
-// 	int i;
-// 	tmp = ft_split(str, ':');
-// 	i = 0;
-// 	while (tmp[i])
-// 	{
-// 		tmp[i] = ft_strjoin(tmp[i], "/");
-// 		i++;
-// 	}
-// 	return (tmp);
-// }
-
-char	**ft_path_2(char **tmp, int size)
+void	remake_path(t_data *data)
 {
-	char	**result;
+	t_env	*tmp;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
-	result = malloc(sizeof(char *) * (size + 1));
-	result[i] = malloc(305);
-	getcwd(result[i], 305);
-	result[i] = ft_strjoin(result[i], "/");
-	i++;
-	while (tmp[j])
+	tmp = data->head_env;
+	ft_free_path(data);
+	while (tmp)
 	{
-		result[i] = ft_strdup(tmp[j]);
-		free(tmp[j]);
-		i++;
-		j++;
+		if (ft_strncmp(tmp->content, "PATH", ft_strlen_key(tmp->content)) \
+		== 0 && ft_strlen_key(tmp->content) == 4)
+			break ;
+		tmp = tmp->next;
 	}
-	free(tmp);
-	result[i] = NULL;
-	return (result);
+	data->path = ft_split(tmp->content + 5, ':');
+	while (data->path[i])
+	{
+		data->path[i] = ft_strjoin(data->path[i], "/");
+		i++;
+	}
+	data->path[i] = NULL;
 }
 
-char **ft_path(char *str)
+char	**ft_path(char *str)
 {
-	char **tmp;
+	char	**tmp;
+	int		i;
 
-	int i;
 	tmp = ft_split(str, ':');
 	i = 0;
 	while (tmp[i])
@@ -54,11 +49,12 @@ char **ft_path(char *str)
 		i++;
 	}
 	tmp[i] = malloc(305);
+	if (!tmp[i])
+		ft_error(8, NULL);
 	getcwd(tmp[i], 305);
 	tmp[i] = ft_strjoin(tmp[i], "/");
 	i++;
 	tmp[i] = NULL;
-	// return (ft_path_2(tmp, i));
 	return (tmp);
 }
 
@@ -68,6 +64,8 @@ char	*try_current_dir(char *filename)
 	int		fd;
 
 	dir = malloc(305);
+	if (!dir)
+		ft_error(8, NULL);
 	getcwd(dir, 305);
 	dir = ft_strjoin(dir, "/");
 	dir = ft_strjoin(dir, filename);
@@ -83,34 +81,31 @@ char	*try_current_dir(char *filename)
 	return (NULL);
 }
 
-//создаем полный путь исполняемого файлы для execve
-char *ft_make_path(char **path, t_list *list) //jiest
+char	*ft_make_path(char **path, t_list *list)
 {
-	int i;
-	int fd;
-	char *tmp;
+	int		i;
+	int		fd;
+	char	*tmp;
 
 	if (list->cmd[0][0] == '/')
 		return (list->cmd[0]);
 	i = 0;
-	if (path) {
-	while (path[i])
+	if (path)
 	{
-		tmp = ft_strjoin(path[i], list->cmd[0]);
-		fd = open(tmp, O_RDONLY);
-		if (fd > 0)
+		while (path[i])
 		{
-			close(fd);
-			return (tmp);
+			tmp = ft_strjoin(path[i], list->cmd[0]);
+			fd = open(tmp, O_RDONLY);
+			if (fd > 0)
+			{
+				close(fd);
+				return (tmp);
+			}
+			if (fd)
+				close(fd);
+			free(tmp);
+			i++;
 		}
-		if (fd)
-			close(fd);
-		free(tmp);
-		i++;
 	}
-	}
-	// printf("%s")
 	return (try_current_dir(list->cmd[0]));
 }
-
-

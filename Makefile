@@ -1,4 +1,3 @@
-
 NAME	= minishell
 
 CFLAGS	= -Wall -Wextra -Werror
@@ -8,12 +7,24 @@ CC		= gcc
 HEADER		= minishell.h
 
 SRCS	=	main.c \
+			main_utils.c \
 			pipex.c \
-			redirect.c \
 			distributor.c \
 \
-			get_next_line.c \
-			get_next_line_utils.c  \
+			./redirect/redirect.c \
+			./redirect/key_handler.c \
+			./redirect/ft_chek_all_files.c \
+\
+			./built_ins/b-ins_pwd_export_unset.c \
+			./built_ins/ft_cd.c \
+			./built_ins/ft_echo.c \
+			./built_ins/ft_exit.c \
+			./built_ins/ft_exit_utils.c \
+\
+			./ft_realization/ft_realization.c \
+			./ft_realization/ft_realization_daughter.c \
+\
+			./signals/signals.c \
 \
 			./env_export/utils_env.c \
 			./env_export/blessed_init_env.c \
@@ -69,6 +80,3 @@ fclean: clean
 re:		fclean all
 
 .PHONY: all clean fclean re
-
-# -L .brew/opt/readline/lib -I .brew/opt/readline/include
-#-L/Users/$(USER)/.brew/Cellar/readline/8.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1/include
