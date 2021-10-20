@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:39:20 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 19:17:38 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 21:07:39 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,14 @@ void	list_free_redirect_cmd(t_list *tmp)
 	int	i;
 
 	i = 0;
-	if (tmp->cmd) {
-	while (tmp->cmd[i])
+	if (tmp->cmd)
 	{
-		free(tmp->cmd[i]);
-		i++;
-	}
-	free(tmp->cmd);
+		while (tmp->cmd[i])
+		{
+			free(tmp->cmd[i]);
+			i++;
+		}
+		free(tmp->cmd);
 	}
 	list_free_redirect(&tmp->head_redirect);
 }

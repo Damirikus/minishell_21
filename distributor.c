@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:38:53 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/19 22:36:20 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 21:50:57 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_check_bild_func(t_list *list, t_data *data)
 int	ft_distributor(t_list *list, t_data *data)
 {
 	char	*full_path;
-
 	full_path = ft_make_path(data->path, list);
 	if (!ft_strcmp(list->cmd[0], "echo"))
 		ft_echo(list);

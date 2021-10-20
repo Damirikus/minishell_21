@@ -66,7 +66,7 @@ SRCS	=	main.c \
 $(NAME):	$(SRCS) $(HEADER)
 			$(MAKE) all -C ./libft
 			cp libft/libft.a ./$(NAME)
-			$(CC) $(SRCS) $(CFLAGS) -g ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME} -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include
+			$(CC) $(SRCS) -g ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME} -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include
 	
 all: $(NAME)
 	

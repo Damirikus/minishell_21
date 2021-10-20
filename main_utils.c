@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:05 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 19:20:50 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 22:59:40 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 void	initial_loop_setting(t_data *data)
 {
-	data->a[0] = 0;
-	data->a[1] = 0;
-	data->b[0] = 0;
-	data->b[1] = 0;
+	data->a[0] = -10000;
+	data->a[1] = -10000;
+	data->b[0] = -10000;
+	data->b[1] = -10000;
+	// int aa[2];
+	// data->a[0] = aa[0];
+	// data->a[1] = aa[1];
+	// int bb[2];
+	// data->a[0] = bb[0];
+	// data->a[1] = bb[1];
+	// int tt[2];
 	data->pids = NULL;
 	g_f = 0;
 	if (data->td[0])
 		close(data->td[0]);
 	if (data->td[1])
 		close(data->td[1]);
-	data->td[0] = 0;
-	data->td[1] = 0;
+	data->td[0] = -10000;
+	data->td[1] = -10000;
 	signal(SIGINT, ft_ctrlc);
 	signal(SIGQUIT, SIG_IGN);
 	rl_getc_function = data->sg;
@@ -35,20 +42,19 @@ void	main_helper(t_data *data, int i, int status, int pid)
 {
 	t_list	*current;
 
-	data->flat = 0;
 	current = data->head_command;
 	while (current)
 	{
 		if (g_f == 1)
-			return	;
+			return ;
 		pid = ft_realization(current, data);
 		data->pids[++i] = pid;
 		current = current->next;
 	}
-	i = 0;
+	i = -1;
 	if (pid != -99)
 	{
-		while (i < data->len)
+		while (++i < data->len)
 		{
 			if (data->pids[i] != 0)
 			{
@@ -57,7 +63,6 @@ void	main_helper(t_data *data, int i, int status, int pid)
 			}
 			if (status != -1)
 				data->code_exit = status / 256;
-			i++;
 		}
 	}
 }
@@ -72,6 +77,7 @@ void	main_sleep_and_close(t_data *data)
 	status = 0;
 	pid = 0;
 	data->pids = malloc(sizeof(int) * data->len);
+	data->flat = 0;
 	main_helper(data, i, status, pid);
 	usleep(10000);
 	if (data->td[0])

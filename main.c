@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:08 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 19:19:01 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 22:28:59 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	initial_env_maker(t_data *data, char **env)
 {
 	data->head_command = NULL;
 	data->current_env = NULL;
+	data->execve_env = NULL;
 	data->current_export = NULL;
 	data->original_env = env;
 	data->head_env = NULL;
@@ -47,11 +48,13 @@ t_data	*inital_setting(int argc, char **argv, char **env)
 	return (tmp);
 }
 
+int flagJkee = 0;
+
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_data	*data;
-
+	
 	data = inital_setting(argc, argv, env);
 	while (1)
 	{

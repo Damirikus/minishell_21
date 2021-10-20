@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:00:02 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 19:22:22 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 21:29:48 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_realization(t_list *list, t_data *data)
 
 	flag = 0;
 	if (g_f == 1)
-			return (0);
+		return (0);
 	if (list->flag_for_job == 1)
 		return (ft_realization_part(list, data));
 	if (list->cmd[0])

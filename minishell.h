@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:12:25 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 18:16:36 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 22:20:58 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ typedef struct s_data
 	int		*pids;
 }	t_data;
 
+
 void	rl_replace_line(const char *buffer, int val);
 void	ft_ctrlc(int signal);
 void	ft_ctrl(int signal);
 void	ft_hz(int sig);
 void	ft_emp(int sig);
 char	**ft_path(char *str);
-int		ft_pipe(char **path, t_list *list);
 char	*ft_make_path(char **path, t_list *list);
 int		ft_distributor(t_list *list, t_data *data);
 void	ft_distributor_part(t_list *list, t_data *data, char *full_path);
@@ -108,21 +108,16 @@ int		ft_exit_inner_part( t_list *list, int i, int len, t_data *data);
 void	ft_exit_part_inner(t_list *list, t_data *data, int len);
 int		ft_exit_exit(t_data *data, int len, long code);
 char	*add_quotes(char *str);
-void	print_list_env(t_env *head);
 t_env	*ft_lstnew_initial_env(char *content);
-t_env	*ft_lstnew_export_env(char *content);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstlast_env(t_env *lst);
 int		ft_lstsize_env(t_env *lst);
 void	env_to_list(t_data *shell);
-int		both_are_sys(t_data *shell, int i);
 void	list_to_2d_massive_env(t_data *shell);
 void	list_to_2d_massive_export(t_data *shell);
 void	list_to_2d_massive_env_execve(t_data *shell);
 void	ft_free_for_export(t_data *shell);
-void	ft_free_for_env(t_data *shell);
 void	list_to_2d_massive_export_sort_sys(t_data *shell);
-void	print_list_env1(t_env *head);
 void	print_2d_massive(char **mass, t_list *list, t_data *data);
 void	unset_env(t_data *shell, char *key);
 void	export_env(t_data *shell, char *string);
@@ -182,10 +177,8 @@ void	quotes_killer_result_len_skip(char *name, int *i, int *result);
 void	list_free_redirect(t_redirect **redirect);
 void	list_free_command(t_list **head);
 void	list_free(t_list **head);
-void	ft_print_list(t_list *head_command);
 void	free_whole_project(t_data *data);
 void	ft_free_path(t_data *data);
-void	ft_print_all(t_data *data);
 int		preparation_main(char *input, t_data *data);
 void	signals_and_add_history(char *input, t_data *data);
 void	main_sleep_and_close(t_data *data);

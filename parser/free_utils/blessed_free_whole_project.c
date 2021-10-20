@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 21:12:19 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 19:19:07 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 21:07:40 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ void	ft_lstclear_env(t_env **lst, void (*del)(void *))
 	t_env	*tmp;
 
 	tmp = *lst;
-	if (tmp) {
 	(*del)(tmp->content);
 	(*del)(tmp->next);
 	free(tmp);
 	*lst = NULL;
-	}
 }
 
 t_env	*ft_lstprelast_env(t_env *lst)
