@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:08 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 18:28:36 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 19:19:01 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ int	main(int argc, char **argv, char **env)
 		if (preparation_main(input, data))
 			continue ;
 		list_free(&data->head_command);
-		free(data->pids);
-		free(input);
+		if (data->pids != NULL)
+			free(data->pids);
+		if (input)
+			free(input);
 	}
 	free_whole_project(data);
 	free(data);

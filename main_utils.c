@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:05 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 18:16:15 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 19:20:50 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ void	initial_loop_setting(t_data *data)
 	data->a[1] = 0;
 	data->b[0] = 0;
 	data->b[1] = 0;
-	data->td[0] = 0;
-	data->td[1] = 0;
+	data->pids = NULL;
 	g_f = 0;
 	if (data->td[0])
 		close(data->td[0]);
 	if (data->td[1])
 		close(data->td[1]);
+	data->td[0] = 0;
+	data->td[1] = 0;
 	signal(SIGINT, ft_ctrlc);
 	signal(SIGQUIT, SIG_IGN);
 	rl_getc_function = data->sg;
@@ -38,6 +39,8 @@ void	main_helper(t_data *data, int i, int status, int pid)
 	current = data->head_command;
 	while (current)
 	{
+		if (g_f == 1)
+			return	;
 		pid = ft_realization(current, data);
 		data->pids[++i] = pid;
 		current = current->next;
@@ -102,7 +105,8 @@ int	preparation_main(char *input, t_data *data)
 				ft_closer(current);
 				current = current->next;
 			}
-			free(input);
+			if (input)
+				free(input);
 			return (1);
 		}
 		main_sleep_and_close(data);

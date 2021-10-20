@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:55:51 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 15:48:21 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 18:49:09 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ void	ft_free_for_export(t_data *shell)
 	int	i;
 
 	i = 0;
+	if (shell->current_export) {
 	while (shell->current_export[i])
 	{
 		free(shell->current_export[i]);
 		i++;
 	}
 	free(shell->current_export);
+	}
 }

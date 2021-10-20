@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 21:12:19 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 16:29:28 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/20 19:19:07 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	ft_lstclear_env(t_env **lst, void (*del)(void *))
 	t_env	*tmp;
 
 	tmp = *lst;
+	if (tmp) {
 	(*del)(tmp->content);
 	(*del)(tmp->next);
 	free(tmp);
 	*lst = NULL;
+	}
 }
 
 t_env	*ft_lstprelast_env(t_env *lst)
@@ -28,6 +30,7 @@ t_env	*ft_lstprelast_env(t_env *lst)
 	t_env	*tmp;
 	t_env	*pre;
 
+	tmp = NULL;
 	tmp = lst;
 	pre = tmp;
 	while (tmp)
@@ -79,11 +82,14 @@ void	free_whole_project(t_data *data)
 	int	i;
 
 	i = -1;
-	free(data->current_env);
+	if (data->current_env)
+		free(data->current_env);
 	ft_free_for_export(data);
 	list_free_env(&data->head_env);
-	free(data->current_pwd);
-	free(data->current_oldpwd);
+	if (data->current_pwd)
+		free(data->current_pwd);
+	if (data->current_oldpwd)
+		free(data->current_oldpwd);
 	if (data->path)
 	{
 		while (data->path[++i])
@@ -91,6 +97,6 @@ void	free_whole_project(t_data *data)
 		free(data->path);
 	}
 	close(data->fd_mother);
-	if (data->pids)
+	if (data->pids != NULL)
 		free(data->pids);
 }
