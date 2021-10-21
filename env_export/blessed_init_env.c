@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 23:42:02 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 20:35:09 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:34:04 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,4 @@ void	env_to_list(t_data *shell)
 	list_to_2d_massive_env(shell);
 	list_to_2d_massive_export(shell);
 	list_to_2d_massive_env_execve(shell);
-	// while (1);
 }

@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:59:58 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 21:31:28 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:33:45 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	ft_realization_daughter_part2(t_list *list, t_data *data)
 
 void	ft_realization_daughter(t_list *list, t_data *data)
 {
-	
 	if (list->fd0 != -1)
 		dup2(list->fd0, 0);
 	if (list->fd1 != -1)

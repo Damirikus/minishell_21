@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:12:25 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 22:20:58 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:35:39 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_data
 	int		code_exit;
 	int		*pids;
 }	t_data;
-
 
 void	rl_replace_line(const char *buffer, int val);
 void	ft_ctrlc(int signal);

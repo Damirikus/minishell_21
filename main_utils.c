@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:05 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 22:59:40 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:33:00 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@ void	initial_loop_setting(t_data *data)
 	data->a[1] = -10000;
 	data->b[0] = -10000;
 	data->b[1] = -10000;
-	// int aa[2];
-	// data->a[0] = aa[0];
-	// data->a[1] = aa[1];
-	// int bb[2];
-	// data->a[0] = bb[0];
-	// data->a[1] = bb[1];
-	// int tt[2];
 	data->pids = NULL;
 	g_f = 0;
 	if (data->td[0])

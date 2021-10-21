@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:26:31 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 22:20:08 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:33:07 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	ft_strlcpy(str, s1, ls1 + 1);
 	ft_strlcpy(str + ls1, s2, ls2 + 1);
-	// free((void *)s1);
+	free((void *)s1);
 	return (str);
 }
 
