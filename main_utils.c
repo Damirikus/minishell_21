@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:39:05 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/21 12:33:00 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:30:26 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ void	main_helper(t_data *data, int i, int status, int pid)
 		current = current->next;
 	}
 	i = -1;
-	if (pid != -99)
+	while (++i < data->len)
 	{
-		while (++i < data->len)
+		if (data->pids[i] != 0)
 		{
-			if (data->pids[i] != 0)
-			{
-				if (waitpid(data->pids[i], &status, 0) != data->pids[i])
-					status = -1;
-			}
-			if (status != -1)
+			if (waitpid(data->pids[i], &status, 0) != data->pids[i])
+				status = -1;
+		}
+		if (status != -1)
+		{
+			if (data->pids[i] != 1337)
 				data->code_exit = status / 256;
 		}
 	}
@@ -72,7 +72,6 @@ void	main_sleep_and_close(t_data *data)
 	data->pids = malloc(sizeof(int) * data->len);
 	data->flat = 0;
 	main_helper(data, i, status, pid);
-	usleep(10000);
 	if (data->td[0])
 		close(data->td[0]);
 	if (data->td[1])

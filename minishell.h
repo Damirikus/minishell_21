@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:12:25 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/21 12:35:39 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:32:42 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,11 @@
 # include "./libft/libft.h"
 # include <signal.h>
 # include <fcntl.h>
-# include <stdint.h>
-# include <limits.h>
-# include <time.h>
-# include <stdbool.h>
-# include <sys/types.h>
+# include <stdio.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <errno.h>
-# include <ctype.h>
 # include <dirent.h>
-# define RED "\x1B[31m"
-# define WHITE "\x1B[37m"
 
 int	g_f;
 

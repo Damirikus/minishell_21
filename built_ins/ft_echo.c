@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:02:51 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/19 22:03:49 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 15:41:32 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	ft_echo(t_list *list)
 	{
 		write(1, "\n", 1);
 		exit(0);
+	}
+	if (!list->cmd[1] || list->cmd[1][0] == '~')
+	{
+		printf("%s\n", getenv("HOME"));
+		return ;
 	}
 	k = 1;
 	if (list->cmd[1])

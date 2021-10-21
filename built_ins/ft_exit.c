@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:02:56 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 15:49:29 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 15:07:44 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	ft_exit_inner_part(t_list *list, int i, int len, t_data *data)
 {
 	if (list->cmd[1][0] == 45 || list->cmd[1][0] == 43)
 		i++;
+	if (!list->cmd[1][i])
+		i--;
 	while (list->cmd[1][i])
 	{
 		if (!ft_isdigit(list->cmd[1][i]))

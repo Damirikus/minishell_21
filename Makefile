@@ -1,5 +1,7 @@
 NAME	= minishell
 
+NAME_BONUS	= minishell_bonus
+
 CFLAGS	= -Wall -Wextra -Werror
 
 CC		= gcc
@@ -66,9 +68,16 @@ SRCS	=	main.c \
 $(NAME):	$(SRCS) $(HEADER)
 			$(MAKE) all -C ./libft
 			cp libft/libft.a ./$(NAME)
-			$(CC) $(SRCS) -g ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME} -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include
+			$(CC) $(SRCS) $(CFLAGS) -g ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME}
+
+$(NAME_BONUS):	$(SRCS) $(HEADER)
+			$(MAKE) all -C ./libft
+			cp libft/libft.a ./$(NAME_BONUS)
+			$(CC) $(SRCS) $(CFLAGS) -g ./libft/libft.a -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1.1/lib/ -I/Users/$(USER)/.brew/Cellar/readline/8.1.1/include -o ${NAME}
 	
 all: $(NAME)
+
+bonus: $(NAME_BONUS)
 	
 clean:
 	$(MAKE) clean -C ./libft
@@ -76,6 +85,7 @@ clean:
 fclean: clean	
 	$(MAKE) fclean -C ./libft
 	-rm -rf $(NAME)
+	-rm -rf $(NAME_BONUS)
 	
 re:		fclean all
 

@@ -6,11 +6,25 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:53:40 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 15:49:48 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 14:35:50 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_strlen_key_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0' && str[i] != '=')
+		i++;
+	if (i != 0 && str[i - 1] == '+')
+		i--;
+	return (i);
+}
 
 void	ft_unset(t_data *data, t_list *list)
 {
@@ -51,9 +65,11 @@ void	ft_export(t_data *data, t_list *list)
 			flag = 1;
 		if (!code && data->head_command->next == NULL)
 			export_env(data, list->cmd[i]);
-		if (!ft_strncmp("PATH", list->cmd[i], 4) && ft_strlen_key(list->cmd[i]) \
+		if ((!ft_strncmp("PATH", list->cmd[i], 4) || \
+		!ft_strncmp("PATH+", list->cmd[i], 5)) \
+		&& ft_strlen_key_export(list->cmd[i]) \
 		== 4 && export_env_variable_strong(list->cmd[i]) && \
-		!data->head_command->next)
+		!data->head_command->next && !code)
 			remake_path(data);
 		i++;
 	}

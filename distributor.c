@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 21:38:53 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/21 12:34:29 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 16:50:15 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ void	ft_check_bild_func(t_list *list, t_data *data)
 		close(p[1]);
 		if (list->next->fd0 == -1)
 			list->next->fd0 = p[0];
+	}
+	if ((!ft_strcmp(list->cmd[0], "exit") || !ft_strcmp(list->cmd[0], "cd") \
+		|| (!ft_strcmp(list->cmd[0], "export") && list->cmd[1]) \
+		|| !ft_strcmp(list->cmd[0], "unset")) \
+		&& (list->flag_for_pipe == 0 \
+		&& data->len > 1 && list->flag_for_job == 0))
+	{
+		if (data->a[0])
+			close(data->a[0]);
+		if (data->b[0])
+			close(data->b[0]);
 	}
 }
 

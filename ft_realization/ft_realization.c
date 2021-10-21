@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 22:00:02 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/20 21:29:48 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 16:16:15 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,18 @@ int	ft_realization_part(t_list *list, t_data *data)
 {
 	int	p[2];
 
+	if (data->a[0])
+		close(data->a[0]);
+	if (data->b[0])
+		close(data->b[0]);
 	if (data->len > 1 && list->next)
 	{
 		pipe(p);
 		close(p[1]);
 		if (list->next->fd0 == -1)
 			list->next->fd0 = p[0];
+		else
+			close(p[0]);
 	}
 	printf("minishell: %s: No such file or directory\n", list->filename_for_job);
 	ft_closer(list);
@@ -98,7 +104,7 @@ int	ft_realization(t_list *list, t_data *data)
 		if (flag == 1)
 			return (pid);
 		else
-			return (-99);
+			return (1337);
 	}
 	else
 		ft_closer(list);

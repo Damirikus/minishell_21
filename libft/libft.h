@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:26:54 by sdominqu          #+#    #+#             */
-/*   Updated: 2021/10/18 23:26:55 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:32:11 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <string.h>
-# include <strings.h>
 
 void		ft_bzero1(int *s, size_t n);
 void		ft_bzero(void *s, size_t n);

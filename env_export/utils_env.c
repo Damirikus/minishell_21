@@ -6,7 +6,7 @@
 /*   By: sdominqu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:17:59 by rphoebe           #+#    #+#             */
-/*   Updated: 2021/10/20 15:42:34 by sdominqu         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:02:12 by sdominqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_name_export(char *str, t_data *data)
 	}
 	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
-	if (str[i] == '+')
+	if (str[i] == '+' && str[i + 1] != '\0')
 		i++;
 	if (str[i] != '=' && str[i] != '\0')
 	{
